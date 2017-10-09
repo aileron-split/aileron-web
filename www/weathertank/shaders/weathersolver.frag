@@ -36,6 +36,7 @@ float diffusion = u_diffusion * linearScale;
 varying vec2 v_texCoord;
 
 // compute 1 pixel in texture coordinates.
+vec2 resolution;
 vec2 onePixel;
 
 // BUOYANCY
@@ -142,34 +143,36 @@ vec4 diffuse_solutes(vec2 coord) {
 }
 
 vec4 advect_base(vec2 coord, vec2 v) {
-	vec2 srcCoord00 = coord + onePixel * (-v - vec2(0.5));
-	vec2 srcCoord01 = srcCoord00 + onePixel * vec2(0.0, 1.0);
-	vec2 srcCoord10 = srcCoord00 + onePixel * vec2(1.0, 0.0);
-	vec2 srcCoord11 = srcCoord00 + onePixel * vec2(1.0, 1.0);
+	vec2 srcCoord = coord * resolution - v - vec2(0.5);
+	vec2 srcCoord00 = floor(srcCoord);
+	vec2 srcCoord01 = srcCoord00 + vec2(0.0, 1.0);
+	vec2 srcCoord10 = srcCoord00 + vec2(1.0, 0.0);
+	vec2 srcCoord11 = srcCoord00 + vec2(1.0, 1.0);
 
-	vec4 X00 = get_bounded_basefluid(srcCoord00);
-	vec4 X01 = get_bounded_basefluid(srcCoord01);
-	vec4 X10 = get_bounded_basefluid(srcCoord10);
-	vec4 X11 = get_bounded_basefluid(srcCoord11);
+	vec4 X00 = get_bounded_basefluid(srcCoord00 * onePixel);
+	vec4 X01 = get_bounded_basefluid(srcCoord01 * onePixel);
+	vec4 X10 = get_bounded_basefluid(srcCoord10 * onePixel);
+	vec4 X11 = get_bounded_basefluid(srcCoord11 * onePixel);
 
-	vec2 S1 = ceil(v) - v;
+	vec2 S1 = srcCoord - srcCoord00;
 	vec2 S0 = vec2(1.0, 1.0) - S1;
 
 	return S0.x * (S0.y * X00 + S1.y * X01) + S1.x * (S0.y * X10 + S1.y * X11);
 }
 
 vec4 advect_solutes(vec2 coord, vec2 v) {
-	vec2 srcCoord00 = coord + onePixel * (-v - vec2(0.5));
-	vec2 srcCoord01 = srcCoord00 + onePixel * vec2(0.0, 1.0);
-	vec2 srcCoord10 = srcCoord00 + onePixel * vec2(1.0, 0.0);
-	vec2 srcCoord11 = srcCoord00 + onePixel * vec2(1.0, 1.0);
+	vec2 srcCoord = coord * resolution - v - vec2(0.5);
+	vec2 srcCoord00 = floor(srcCoord);
+	vec2 srcCoord01 = srcCoord00 + vec2(0.0, 1.0);
+	vec2 srcCoord10 = srcCoord00 + vec2(1.0, 0.0);
+	vec2 srcCoord11 = srcCoord00 + vec2(1.0, 1.0);
 
-	vec4 X00 = get_bounded_solutes(srcCoord00);
-	vec4 X01 = get_bounded_solutes(srcCoord01);
-	vec4 X10 = get_bounded_solutes(srcCoord10);
-	vec4 X11 = get_bounded_solutes(srcCoord11);
+	vec4 X00 = get_bounded_solutes(srcCoord00 * onePixel);
+	vec4 X01 = get_bounded_solutes(srcCoord01 * onePixel);
+	vec4 X10 = get_bounded_solutes(srcCoord10 * onePixel);
+	vec4 X11 = get_bounded_solutes(srcCoord11 * onePixel);
 
-	vec2 S1 = ceil(v) - v;
+	vec2 S1 = srcCoord - srcCoord00;
 	vec2 S0 = vec2(1.0, 1.0) - S1;
 
 	return S0.x * (S0.y * X00 + S1.y * X01) + S1.x * (S0.y * X10 + S1.y * X11);
@@ -280,6 +283,7 @@ vec4 atmospherics() {
 
 void main() {
 	// compute 1 pixel in texture coordinates.
+	resolution = vec2(1.0, 1.0) * u_resolution;
 	onePixel = vec2(1.0, 1.0) / u_resolution;
 
  	if (u_calcFunction == 0) {
