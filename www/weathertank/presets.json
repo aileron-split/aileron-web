@@ -1,0 +1,770 @@
+{
+  "preset": "Colorful",
+  "remembered": {
+    "Default": {
+      "0": {
+        "globalWind": 0.05,
+        "globalStability": 0.02,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.005,
+        "rainFallingFactor": 0.005,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": 256,
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": 0,
+        "backgroundImageTint": [
+          179.99999999999997,
+          179.99999999999997,
+          179.99999999999997
+        ],
+        "backgroundImageBrightness": 0.05,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0,
+        "cloudIOR": 0,
+        "rainColor": [
+          55.85784313725489,
+          61.93339100346023,
+          107.49999999999999
+        ],
+        "rainOpacity": 20,
+        "rainCutoff": 0,
+        "rainIOR": 0,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 0,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0.001,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 0,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          0,
+          255,
+          1.1324274851176597e-13
+        ],
+        "updraftOpacity": 1,
+        "updraftCutoff": 0.1,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0
+      }
+    },
+    "RainyDay": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": 256,
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": 0,
+        "backgroundImageTint": [
+          179.99999999999997,
+          179.99999999999997,
+          179.99999999999997
+        ],
+        "backgroundImageBrightness": 0.05,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0,
+        "cloudIOR": 0,
+        "rainColor": [
+          0,
+          30.00000000000012,
+          255
+        ],
+        "rainOpacity": 30,
+        "rainCutoff": 0,
+        "rainIOR": 0,
+        "humidityColor": [
+          100.00000000000001,
+          136.47058823529414,
+          255
+        ],
+        "humidityOpacity": 1,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 3,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          239.99999999999994,
+          255,
+          0
+        ],
+        "updraftOpacity": 0,
+        "updraftCutoff": 0,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0
+      }
+    },
+    "PsychoRain": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": 256,
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": 0,
+        "backgroundImageTint": [
+          179.99999999999997,
+          179.99999999999997,
+          179.99999999999997
+        ],
+        "backgroundImageBrightness": 0.05,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 60,
+        "cloudCutoff": 0,
+        "cloudIOR": 0,
+        "rainColor": [
+          0,
+          160,
+          37.64705882352942
+        ],
+        "rainOpacity": 30,
+        "rainCutoff": 0,
+        "rainIOR": 0,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 3.9000000000000004,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 5.22,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          239.99999999999994,
+          255,
+          0
+        ],
+        "updraftOpacity": 0,
+        "updraftCutoff": 0,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 11.620000000000001,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0
+      }
+    },
+    "ClearSky": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": 256,
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": "3",
+        "backgroundImageTint": [
+          120.2354563148789,
+          125.00000000000001,
+          119.60018382352942
+        ],
+        "backgroundImageBrightness": 0.11,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0,
+        "cloudIOR": 0,
+        "rainColor": [
+          26.544117647058826,
+          33.36505190311422,
+          142.5
+        ],
+        "rainOpacity": 30,
+        "rainCutoff": 0,
+        "rainIOR": 0,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 0,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 0,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftOpacity": 0,
+        "updraftCutoff": 0,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0.02
+      }
+    },
+    "ClearSky1024": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "condensationFactor": 1,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": "1024",
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": "3",
+        "backgroundImageTint": [
+          120.2354563148789,
+          125.00000000000001,
+          119.60018382352942
+        ],
+        "backgroundImageBrightness": 0.11,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0.008,
+        "cloudIOR": 0,
+        "rainColor": [
+          26.544117647058826,
+          33.36505190311422,
+          142.5
+        ],
+        "rainOpacity": 30,
+        "rainCutoff": 0,
+        "rainIOR": 0,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 0,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 0,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftOpacity": 0,
+        "updraftCutoff": 0,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0.005
+      }
+    },
+    "Colorful": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "condensationFactor": 1,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": 256,
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": "3",
+        "backgroundImageTint": [
+          120.2354563148789,
+          125.00000000000001,
+          119.60018382352942
+        ],
+        "backgroundImageBrightness": 0.11,
+        "pressureColor": [
+          255,
+          0,
+          0
+        ],
+        "pressureOpacity": 0,
+        "pressureCutoff": 0,
+        "pressureIOR": 0,
+        "updraftColor": [
+          1.8382352941176408,
+          187.5,
+          56.444636678200666
+        ],
+        "updraftOpacity": 2.86,
+        "updraftCutoff": 0.37,
+        "updraftIOR": 0,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0.258,
+        "cloudIOR": 0,
+        "rainColor": [
+          26.544117647058826,
+          33.36505190311422,
+          142.5
+        ],
+        "rainOpacity": 15,
+        "rainCutoff": 0,
+        "rainIOR": -0.01,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 0,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 0,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0.02
+      }
+    },
+    "Colorful1024": {
+      "0": {
+        "globalWind": 0.02,
+        "globalStability": 0.03,
+        "inversionAltitude": 0.9,
+        "inversionTemperature": 0.8,
+        "groundInversionDepth": 0.1,
+        "groundInversionTemperature": 0.3,
+        "heatDisipationRate": 0.0005,
+        "buoyancyFactor": 0.01,
+        "rainFallingFactor": 0.012,
+        "temperatureDiffusion": 0.01,
+        "humidityDiffusion": 0.01,
+        "condensationFactor": 1,
+        "mistDiffusion": 0.01,
+        "mistToRainFactor": 0.001,
+        "rainFallDiffusion": 0.2,
+        "rainEvaporation": 0.00008,
+        "initialHumidity": 0.02,
+        "condensationLevel": 0.6,
+        "latentHeat": 1,
+        "resolution": "1024",
+        "pressureSolveSteps": 10,
+        "diffusion": 0.01,
+        "displayOutline": false,
+        "backgroundImage": "3",
+        "backgroundImageTint": [
+          120.2354563148789,
+          125.00000000000001,
+          119.60018382352942
+        ],
+        "backgroundImageBrightness": 0.11,
+        "cloudColor": [
+          255,
+          255,
+          255
+        ],
+        "cloudOpacity": 70,
+        "cloudCutoff": 0.008,
+        "cloudIOR": 0,
+        "rainColor": [
+          26.544117647058826,
+          33.36505190311422,
+          142.5
+        ],
+        "rainOpacity": 15,
+        "rainCutoff": 0.02,
+        "rainIOR": 0,
+        "humidityColor": [
+          0,
+          0,
+          255
+        ],
+        "humidityOpacity": 0,
+        "humidityCutoff": 0,
+        "humidityIOR": 0,
+        "temperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "temperatureOpacity": 0,
+        "temperatureCutoff": 0,
+        "temperatureIOR": 0,
+        "humidityTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "humidityTemperatureOpacity": 0,
+        "humidityTemperatureCutoff": 0,
+        "humidityTemperatureIOR": 0,
+        "relativeTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "relativeTemperatureOpacity": 2.02,
+        "relativeTemperatureCutoff": 0,
+        "relativeTemperatureIOR": 0,
+        "updraftColor": [
+          83.38235294117642,
+          157.5,
+          0
+        ],
+        "updraftOpacity": 2.86,
+        "updraftCutoff": 0,
+        "updraftIOR": 0,
+        "updraftTemperatureColor": [
+          255,
+          0,
+          0
+        ],
+        "updraftTemperatureOpacity": 0,
+        "updraftTemperatureCutoff": 0,
+        "updraftTemperatureIOR": 0.005
+      }
+    }
+  },
+  "closed": false,
+  "folders": {
+    "Simulation Params": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {
+        "Stability": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Water Content": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        }
+      }
+    },
+    "Solver Settings": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    },
+    "Display Options": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {
+        "Pressure": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Updraft": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Cloud": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Rain": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Humidity": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Temperature": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Humidity Temperature": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Relative Temperature": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        },
+        "Updraft Temperature": {
+          "preset": "Default",
+          "closed": true,
+          "folders": {}
+        }
+      }
+    }
+  }
+}
