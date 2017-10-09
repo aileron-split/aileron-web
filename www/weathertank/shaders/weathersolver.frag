@@ -82,6 +82,20 @@ float rainFallDiffusion = u_rainFallDiffusion * linearScale;
 uniform float u_condensationLevel;
 uniform float u_latentHeat;
 
+float ambient_temperature(float altitude) {
+	if (altitude > u_inversionAltitude) {
+		float belowInversionTemperature = u_groundInversionTemperature + u_globalStability * (u_inversionAltitude - u_groundInversionDepth);
+		float inversionRate = (u_inversionTemperature - belowInversionTemperature) / (1.0 - u_inversionAltitude);
+
+		return belowInversionTemperature + inversionRate * (altitude - u_inversionAltitude);
+	}
+	if (altitude < u_groundInversionDepth) {
+		float grounInversionRate = u_groundInversionTemperature / u_groundInversionDepth;
+		return altitude * grounInversionRate;
+	}
+	return u_groundInversionTemperature + u_globalStability * (altitude - u_groundInversionDepth);
+}
+
 vec4 get_bounded_basefluid(vec2 coord) {
 	vec4 X = texture2D(u_basefluid, coord);
 
@@ -109,7 +123,9 @@ vec4 get_bounded_solutes(vec2 coord) {
 		
 		return X + 0.02 * groundDelta * min(linearScale, 1.0);
 	}
-	if (coord.y > 1.0) return vec4(u_inversionTemperature, X.g, X.b, X.a); // Top of inversion layer is hot
+	if (coord.y > 1.0) {
+		return vec4(ambient_temperature(coord.y), X.g, X.b, X.a); // Keep the Top of inversion layer hot	
+	}
 
 	return X;
 }
@@ -130,8 +146,12 @@ vec4 diffuse_solutes(vec2 coord) {
 	vec4 solutes_v0 = get_bounded_solutes(coord - onePixel * vec2(0.0, -1.0));
 	vec4 solutes_v1 = get_bounded_solutes(coord - onePixel * vec2(0.0, 1.0));
 
+	float temp_v0 = solutes_v0.r - ambient_temperature(coord.y - onePixel.y);
+	float temp_v1 = solutes_v1.r - ambient_temperature(coord.y + onePixel.y);
+	float vTempAvg = 0.5 * (temp_v0 + temp_v1) + ambient_temperature(coord.y);
+
 	return vec4(
-		(solutes.r + temperatureDiffusion * (solutes_u0.r + solutes_u1.r + solutes_v0.r + solutes_v1.r)) / (1.0 + temperatureDiffusion * 4.0),
+		(solutes.r + temperatureDiffusion * (solutes_u0.r + solutes_u1.r + 2.0 * vTempAvg)) / (1.0 + temperatureDiffusion * 4.0),
 		(solutes.g +
 			diffusion * (solutes_u0.g + solutes_u1.g + solutes_v0.g + solutes_v1.g) +
 			rainFallDiffusion * solutes_v0.g * (1.0 + solutes_v0.g)) /
@@ -203,20 +223,6 @@ vec2 project_v(vec2 coord, vec2 v) {
 	float py0 = get_bounded_basefluid(coord - onePixel * vec2(0.0, -1.0)).p;
 	float py1 = get_bounded_basefluid(coord - onePixel * vec2(0.0, 1.0)).p;
 	return v - 0.5 * vec2(px1 - px0, py1 - py0) / h;
-}
-
-float ambient_temperature(float altitude) {
-	if (altitude > u_inversionAltitude) {
-		float belowInversionTemperature = u_groundInversionTemperature + u_globalStability * (u_inversionAltitude - u_groundInversionDepth);
-		float inversionRate = (u_inversionTemperature - belowInversionTemperature) / (1.0 - u_inversionAltitude);
-
-		return belowInversionTemperature + inversionRate * (altitude - u_inversionAltitude);
-	}
-	if (altitude < u_groundInversionDepth) {
-		float grounInversionRate = u_groundInversionTemperature / u_groundInversionDepth;
-		return altitude * grounInversionRate;
-	}
-	return u_groundInversionTemperature + u_globalStability * (altitude - u_groundInversionDepth);
 }
 
 vec4 add_sources() {
