@@ -580,7 +580,7 @@
           0,
           0
         ],
-        "relativeTemperatureOpacity": 0,
+        "relativeTemperatureOpacity": 2.0,
         "relativeTemperatureCutoff": 0,
         "relativeTemperatureIOR": 0,
         "updraftTemperatureColor": [
@@ -670,7 +670,7 @@
           0,
           0
         ],
-        "relativeTemperatureOpacity": 2.02,
+        "relativeTemperatureOpacity": 2.0,
         "relativeTemperatureCutoff": 0,
         "relativeTemperatureIOR": 0,
         "updraftColor": [

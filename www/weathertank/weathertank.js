@@ -1,5 +1,7 @@
 /************************************************************************
 
+   WeatherTank - WebGL boundary layer weather simulation.
+
    Copyright (C) 2017, Davor Bokun <bokundavor@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
@@ -74,18 +76,6 @@ window.onload = function() {
       // console.log(e.clientX / canvas.width + ' ' + e.clientY / canvas.height);
       readCoords[0] = e.clientX / canvas.width;
       readCoords[1] = 1.0 - e.clientY / canvas.height;
-
-      simParams.basefluid =
-         ' vx: ' + readBasefluid[0].toFixed(2) +
-         ', vy: ' + readBasefluid[1].toFixed(2) +
-         ', p: ' + readBasefluid[2].toFixed(2) +
-         ', div: ' + readBasefluid[3].toFixed(2);
-      simParams.solutes = 
-         ' t: ' + readSolutes[0].toFixed(3) +
-         ', w: ' + readSolutes[1].toFixed(3) +
-         ', h: ' + readSolutes[2].toFixed(3) +
-         ', m: ' + readSolutes[3].toFixed(3);
-
    }
 
 
@@ -376,7 +366,9 @@ window.onload = function() {
 
       doRender(); // RENDER
 
-      simParams.runSimulation();
+      if (window.location.hash!='#nostart') {
+         simParams.runSimulation();
+      }
    }
 
    function initSolverProgram() {
@@ -530,6 +522,30 @@ window.onload = function() {
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bgTexCoord), gl.STATIC_DRAW);
    }
 
+   // Solver's grid position on canvas
+   var marginTopSolver = 0.1;
+   var marginBottomSolver = 0.1;
+   var aspectSolver = 1.25;
+   var hMarginSolver = 0.5 * (canvas.width * (marginTopSolver + 1.0 + marginBottomSolver) / (canvas.height * aspectSolver) - 1.0);
+
+   function setupSolverGridCoords() {
+      gl.bindBuffer(gl.ARRAY_BUFFER, renderer.texCoordBuffer);
+      var texCoord = [
+         -hMarginSolver, -marginBottomSolver,
+         -hMarginSolver, 1.0 + marginTopSolver,
+          1.0 + hMarginSolver, -marginBottomSolver,
+         -hMarginSolver, 1.0 + marginTopSolver,
+          1.0 + hMarginSolver, 1.0 + marginTopSolver,
+          1.0 + hMarginSolver, -marginBottomSolver,
+      ];
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoord), gl.STATIC_DRAW);
+   }
+
+   function getPointOnSolverGrid(canvasPoint) {
+      var x = canvasPoint[0] * (1.0 + 2.0 * hMarginSolver) - hMarginSolver;
+      var y = canvasPoint[1] * (1.0 + marginBottomSolver + marginTopSolver) - marginBottomSolver;
+      return [x, y];
+   }
 
 
    function initRendererProgram(solverCanvasScale) {
@@ -548,33 +564,16 @@ window.onload = function() {
       ];
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-      var marginTopSolver = 0.1;
-      var marginBottomSolver = 0.1;
-      var aspectSolver = 1.25;
-      var hMarginSolver = 0.5 * (canvas.width * (marginTopSolver + 1.0 + marginBottomSolver) / (canvas.height * aspectSolver) - 1.0);
-
 
       // Solver texture coordinates
       renderer.texCoordAttributeLocation = gl.getAttribLocation(renderer.program, "a_texCoord");
       renderer.texCoordBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, renderer.texCoordBuffer);
-      var texCoord = [
-         -hMarginSolver, -marginBottomSolver,
-         -hMarginSolver, 1.0 + marginTopSolver,
-          1.0 + hMarginSolver, -marginBottomSolver,
-         -hMarginSolver, 1.0 + marginTopSolver,
-          1.0 + hMarginSolver, 1.0 + marginTopSolver,
-          1.0 + hMarginSolver, -marginBottomSolver,
-      ];
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoord), gl.STATIC_DRAW);
-
+      setupSolverGridCoords();
 
       // Background texture coordinates
       renderer.bgTexCoordAttributeLocation = gl.getAttribLocation(renderer.program, "a_bgTexCoord");
       renderer.bgTexCoordBuffer = gl.createBuffer();
-
       setupBackgroundCoords();
-
 
       // Uniform variables locations   
       renderer.resolutionUniformLocation = gl.getUniformLocation(renderer.program, "u_resolution");
@@ -1032,11 +1031,24 @@ window.onload = function() {
 
 
    function doRender() {
+      var sloverGridCoords = getPointOnSolverGrid(readCoords);
+
       doCalcFunction(renderer.transferBasefluidFramebuffer, 0); // 0 - COPY basefluid
-      gl.readPixels(readCoords[0] * solverResolution, readCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readBasefluid);
+      gl.readPixels(sloverGridCoords[0] * solverResolution, sloverGridCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readBasefluid);
       
       doCalcFunction(renderer.transferSolutesFramebuffer, 1); // 1 - COPY solutes
-      gl.readPixels(readCoords[0] * solverResolution, readCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readSolutes);
+      gl.readPixels(sloverGridCoords[0] * solverResolution, sloverGridCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readSolutes);
+
+      simParams.basefluid =
+         ' vx: ' + readBasefluid[0].toFixed(2) +
+         ', vy: ' + readBasefluid[1].toFixed(2) +
+         ', p: ' + readBasefluid[2].toFixed(2) +
+         ', div: ' + readBasefluid[3].toFixed(2);
+      simParams.solutes = 
+         ' t: ' + readSolutes[0].toFixed(3) +
+         ', h: ' + readSolutes[2].toFixed(3) +
+         ', m: ' + readSolutes[3].toFixed(3) +
+         ', r: ' + readSolutes[1].toFixed(3);
 
       // Tell it to use our renderer program (pair of shaders)
       gl.useProgram(renderer.program);

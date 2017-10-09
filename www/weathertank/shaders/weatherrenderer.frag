@@ -1,5 +1,7 @@
 /************************************************************************
 
+   WeatherTank WebGL boundary layer weather simulation.
+
    Copyright (C) 2017, Davor Bokun <bokundavor@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
