@@ -76,6 +76,10 @@ window.onload = function() {
       // console.log(e.clientX / canvas.width + ' ' + e.clientY / canvas.height);
       readCoords[0] = e.clientX / canvas.width;
       readCoords[1] = 1.0 - e.clientY / canvas.height;
+
+      if (!isRunning) {
+         updateReaderGUI();
+      }
    }
 
 
@@ -235,8 +239,7 @@ window.onload = function() {
    }
 
 
-
-   var isRunning = false;
+   var isRunning = window.location.hash!='#nostart';
    var stepSimulation; // Function declaration
    
 
@@ -366,9 +369,7 @@ window.onload = function() {
 
       doRender(); // RENDER
 
-      if (window.location.hash!='#nostart') {
-         simParams.runSimulation();
-      }
+      stepSimulation();
    }
 
    function initSolverProgram() {
@@ -1030,6 +1031,27 @@ window.onload = function() {
    }
 
 
+   function updateReaderGUI() {
+      if (!isRunning) {
+         // If not running, maunaly read the data
+         var sloverGridCoords = getPointOnSolverGrid(readCoords);
+         gl.bindFramebuffer(gl.FRAMEBUFFER, renderer.transferBasefluidFramebuffer);
+         gl.readPixels(sloverGridCoords[0] * solverResolution, sloverGridCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readBasefluid);
+         gl.bindFramebuffer(gl.FRAMEBUFFER, renderer.transferSolutesFramebuffer);
+         gl.readPixels(sloverGridCoords[0] * solverResolution, sloverGridCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readSolutes);
+      }
+
+      simParams.basefluid =
+         ' vx: ' + readBasefluid[0].toFixed(2) +
+         ', vy: ' + readBasefluid[1].toFixed(2) +
+         ', t: ' + readSolutes[0].toFixed(3);
+      simParams.solutes = 
+         ' h: ' + readSolutes[2].toFixed(3) +
+         ', m: ' + readSolutes[3].toFixed(3) +
+         ', r: ' + readSolutes[1].toFixed(3);
+   }
+
+
    function doRender() {
       var sloverGridCoords = getPointOnSolverGrid(readCoords);
 
@@ -1039,16 +1061,7 @@ window.onload = function() {
       doCalcFunction(renderer.transferSolutesFramebuffer, 1); // 1 - COPY solutes
       gl.readPixels(sloverGridCoords[0] * solverResolution, sloverGridCoords[1] * solverResolution, 1, 1, gl.RGBA, gl.FLOAT, readSolutes);
 
-      simParams.basefluid =
-         ' vx: ' + readBasefluid[0].toFixed(2) +
-         ', vy: ' + readBasefluid[1].toFixed(2) +
-         ', p: ' + readBasefluid[2].toFixed(2) +
-         ', div: ' + readBasefluid[3].toFixed(2);
-      simParams.solutes = 
-         ' t: ' + readSolutes[0].toFixed(3) +
-         ', h: ' + readSolutes[2].toFixed(3) +
-         ', m: ' + readSolutes[3].toFixed(3) +
-         ', r: ' + readSolutes[1].toFixed(3);
+      updateReaderGUI();
 
       // Tell it to use our renderer program (pair of shaders)
       gl.useProgram(renderer.program);
