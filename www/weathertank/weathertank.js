@@ -56,6 +56,8 @@ window.onload = function() {
    canvas.height = canvas.clientHeight;
    var gl = canvas.getContext('webgl2', { premultipliedAlpha: false }); // ('experimental-webgl');
 
+   var useLinear = true;
+
    ext = gl.getExtension("EXT_color_buffer_float");
    if (!ext) {
       console.log("need EXT_color_buffer_float");
@@ -63,8 +65,8 @@ window.onload = function() {
    }
    ext = gl.getExtension('OES_texture_float_linear');
    if (!ext) {
-      console.log("need OES_texture_float_linear");
-      return;
+      console.log("No OES_texture_float_linear extension available, falling back to NEAREST");
+      useLinear = false;
    }
 
 
@@ -85,6 +87,8 @@ window.onload = function() {
 
    var gui = null;
 
+
+   // FLUID RENDERER
    var RendererClass = function() {
       this.program = null;
       this.vertexShader = null;
@@ -149,7 +153,6 @@ window.onload = function() {
 
       // TEXTURES
       this.backgroundImageTexture = null;
-      this.logoImageTexture = null;
 
       // Transfer textures and framebuffers
       this.transferBasefluidTexture = null;
@@ -162,6 +165,8 @@ window.onload = function() {
       this.u_backgroundLocation = null;
    };
 
+
+   // CFD SOLVER
    var SolverClass = function() {
       this.program = null;
       this.vertexShader = null;
@@ -353,7 +358,7 @@ window.onload = function() {
 
    var simParams = new SimParams();
 
-   function initPrograms() {
+   function initPrograms(skipStep) {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
 
@@ -369,7 +374,8 @@ window.onload = function() {
 
       doRender(); // RENDER
 
-      stepSimulation();
+      if (!skipStep)
+         stepSimulation();
    }
 
    function initSolverProgram() {
@@ -645,21 +651,14 @@ window.onload = function() {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, backgroundImage);
 
 
-/*
-      if (renderer.logoImageTexture)
-         gl.deleteTexture(renderer.logoImageTexture);
-      renderer.logoImageTexture = setupTexture();
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-*/ 
-      // Upload the image into the texture.
-      //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image2);
-
       // Make transfer texture and framebuffer (uses linear interpolation)
       if (renderer.transferBasefluidTexture)
          gl.deleteTexture(renderer.transferBasefluidTexture);
       renderer.transferBasefluidTexture = setupTexture();
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (useLinear)
+         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, simParams.resolution, simParams.resolution, 0, gl.RGBA, gl.FLOAT, null);
+      
       if (renderer.transferBasefluidFramebuffer)
          gl.deleteFramebuffer(renderer.transferBasefluidFramebuffer);
       renderer.transferBasefluidFramebuffer = gl.createFramebuffer();
@@ -669,8 +668,10 @@ window.onload = function() {
       if (renderer.transferSolutesTexture)
          gl.deleteTexture(renderer.transferSolutesTexture);
       renderer.transferSolutesTexture = setupTexture();
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (useLinear)
+         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, simParams.resolution, simParams.resolution, 0, gl.RGBA, gl.FLOAT, null);
+      
       if (renderer.transferSolutesFramebuffer)
          gl.deleteFramebuffer(renderer.transferSolutesFramebuffer);
       renderer.transferSolutesFramebuffer = gl.createFramebuffer();
@@ -1032,7 +1033,7 @@ window.onload = function() {
 
 
    function updateReaderGUI() {
-      if (!isRunning) {
+      if (!isRunning && renderer.transferBasefluidFramebuffer && renderer.transferSolutesFramebuffer) {
          // If not running, maunaly read the data
          var sloverGridCoords = getPointOnSolverGrid(readCoords);
          gl.bindFramebuffer(gl.FRAMEBUFFER, renderer.transferBasefluidFramebuffer);
@@ -1221,7 +1222,7 @@ window.onload = function() {
 
    function resolutionChanged(value) {
       if (value != solverResolution) {
-         initPrograms();
+         initPrograms(true);
          solverResolution = value;
       }
    }
