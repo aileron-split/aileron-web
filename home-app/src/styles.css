@@ -1,0 +1,16 @@
+div.container7 {
+    height: 119px;
+    width: 100%;
+}
+
+div.container7 img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 744px;
+}
+
+body {
+    background: white;
+}
+
