@@ -1,0 +1,13 @@
+div#menu {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    background: white;
+    padding: 0px 10px;
+}
+
+div#menu button:last-child {
+    margin-left: auto;
+    margin-right: 10px;
+}
