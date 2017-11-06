@@ -1,7 +1,22 @@
-<div id="menu">
-  <button mat-button> <label> About </label> </button>
-  <button mat-button> <label> Showcase </label> </button>
-  <button mat-button> <label> Contact </label> </button>
-  <button mat-fab color="primary"> Blog </button>
-  <button mat-icon-button disabled="disabled"> <mat-icon aria-label="Paperplane">send</mat-icon> </button>
+<div class="logo content-width">
+  <img src="/images/white-logo-horizontal.png">
+</div>
+<div class="whiteline"></div>
+<div id="mainmenu">
+  <div class="content-width">
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link [routerLink]="['/news']" [active]="this.router.url === '/news'"> News </a>
+      <a mat-tab-link [routerLink]="['/about']" [active]="this.router.url === '/about'"> About </a>
+      <a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>
+      <a mat-tab-link [routerLink]="['/blog']" [active]="this.router.url === '/blog'"> DevBlog </a>
+      <app-paperplane-launcher></app-paperplane-launcher>
+    </nav>
+    <!--
+      <app-paperplane-launcher></app-paperplane-launcher>
+      
+      <button mat-button color="primary" (click)="gotoNews()"> <label> News </label> </button>
+      <button mat-button color="primary" (click)="gotoAbout()"> <label> About </label> </button>
+      <button mat-button color="primary" (click)="gotoDevBlog()"> Blog </button>
+    -->
+  </div>
 </div>

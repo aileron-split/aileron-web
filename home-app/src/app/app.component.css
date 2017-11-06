@@ -2,3 +2,12 @@ div.container7 {
     height: auto;
     width: 100%;
 }
+
+div.container7 div.content {
+    min-height: 0px;
+}
+
+div.container7 div.content:last-child {
+    
+}
+

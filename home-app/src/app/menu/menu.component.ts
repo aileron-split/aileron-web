@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { TweenLite } from 'gsap';
 import $ from 'jquery';
 
@@ -9,11 +11,10 @@ import $ from 'jquery';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    TweenLite.set($('#menu'), {y: -100});
-    TweenLite.to($('#menu'), 0.7, {y: 42});
+//    TweenLite.set($('#menu'), {y: -100});
+//    TweenLite.to($('#menu'), 0.7, {y: 42});
   }
-
 }

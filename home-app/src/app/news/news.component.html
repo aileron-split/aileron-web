@@ -1,0 +1,10 @@
+<br>
+<div class="table">
+  <div class="cell" *ngFor="let articles of columns">
+    <mat-list>
+      <mat-list-item *ngFor="let article of articles">
+        <app-news-article-preview [article]="article"></app-news-article-preview>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

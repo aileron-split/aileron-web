@@ -31,14 +31,51 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
-
+/*
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+@import '~@angular/material/prebuilt-themes/purple-green.css';
+*/
 
+/* default theme palette 
+#5d2800
+#e27001
+#feb820
+#929984
+#155767
+*/
 
 body {
-    background: whitesmoke;
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Roboto', sans-serif;
+  background: url('/images/004.png');
+  background-position: center -300px;
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-color: #281e34;
+  color: whitesmoke;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
+body div.bg-overlay {
+  background: url('/images/bg-overlay-001.png');
+  opacity: 0.5;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.content-width {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1024px;
+  overflow-x: hidden;
+}
+
+.whiteline {
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  opacity: 0.75;
+}

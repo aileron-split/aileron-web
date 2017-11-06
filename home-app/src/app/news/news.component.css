@@ -1,0 +1,14 @@
+div.table {
+    display: table;
+}
+
+div.cell {
+    display: table-cell;
+    width: 30%;
+    padding-right: 10px;
+}
+
+div.cell:last-child {
+    padding-right: 0px;
+}
+
