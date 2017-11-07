@@ -21,6 +21,8 @@ import { DevblogArticleComponent } from './devblog-article/devblog-article.compo
 import { DevblogArticlePreviewComponent } from './devblog-article-preview/devblog-article-preview.component';
 import { NewsArticlePreviewComponent } from './news-article-preview/news-article-preview.component';
 
+import { AnimateService } from './animate.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +51,7 @@ import { NewsArticlePreviewComponent } from './news-article-preview/news-article
     MatCardModule,
     MatGridListModule
   ],
-  providers: [],
+  providers: [AnimateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

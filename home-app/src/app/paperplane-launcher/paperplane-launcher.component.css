@@ -1,0 +1,11 @@
+div#container {
+    height: 0px;
+    overflow: visible;
+}
+
+div#container div#alignment-box {
+    position: relative;
+    width: 70px;
+    margin-left: auto;
+    top: -40px;
+}

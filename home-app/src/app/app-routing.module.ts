@@ -9,7 +9,7 @@ import { DevblogComponent } from './devblog/devblog.component';
 import { PaperplaneComponent } from './paperplane/paperplane.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/blog', pathMatch: 'full'},
+  { path: '', redirectTo: '/news', pathMatch: 'full'},
   { path: 'news', component: NewsComponent },
   { path: 'about', component: AboutComponent },
   { path: 'showcase', component: ShowcaseComponent },

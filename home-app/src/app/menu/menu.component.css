@@ -1,5 +1,5 @@
 div#mainmenu {
-    background: #e2700169;
+    background: url('/images/darkorange-40.png');
     /*padding: 0px 20px;*/
 }
 
@@ -14,11 +14,6 @@ div.logo {
     padding-left: 4px;
 }
 
-div#menu button {
-    margin: 0px;
-}
-
-div#menu button:last-child {
-    margin-left: auto;
-    margin-right: 10px;
+div#mainmenu .mat-tab-link {
+    height: 42px;
 }

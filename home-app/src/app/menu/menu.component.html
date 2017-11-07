@@ -9,14 +9,7 @@
       <a mat-tab-link [routerLink]="['/about']" [active]="this.router.url === '/about'"> About </a>
       <a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>
       <a mat-tab-link [routerLink]="['/blog']" [active]="this.router.url === '/blog'"> DevBlog </a>
-      <app-paperplane-launcher></app-paperplane-launcher>
     </nav>
-    <!--
-      <app-paperplane-launcher></app-paperplane-launcher>
-      
-      <button mat-button color="primary" (click)="gotoNews()"> <label> News </label> </button>
-      <button mat-button color="primary" (click)="gotoAbout()"> <label> About </label> </button>
-      <button mat-button color="primary" (click)="gotoDevBlog()"> Blog </button>
-    -->
   </div>
 </div>
+<app-paperplane-launcher></app-paperplane-launcher>

@@ -46,6 +46,7 @@
 #155767
 */
 
+
 body {
   background: url('/images/004.png');
   background-position: center -300px;
@@ -56,6 +57,49 @@ body {
   padding: 0px;
   margin: 0px;
   font-family: 'Roboto', sans-serif;
+  overflow-y: scroll;
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    background-image: url('/images/004-480.png');
+    background-position: center -70px;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 600px) {
+  body {
+    background-image: url('/images/004-600.png');
+    background-position: center -90px;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 800px) {
+  body {
+    background-image: url('/images/004-800.png');
+    background-position: center -120px;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1024px) {
+  body {
+    background-image: url('/images/004-1024.png');
+    background-position: center -160px;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  body {
+    background-image: url('/images/004-1200.png');
+    background-position: center -180px;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+  body {
+    background-image: url('/images/004-1600.png');
+    background-position: center -240px;
+  }
 }
 
 body div.bg-overlay {
@@ -64,6 +108,7 @@ body div.bg-overlay {
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: -1;
 }
 
 .content-width {
