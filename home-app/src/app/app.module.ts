@@ -14,14 +14,17 @@ import { ShowcaseComponent } from './showcase/showcase.component';
 import { FooterComponent } from './footer/footer.component';
 import { PaperplaneComponent } from './paperplane/paperplane.component';
 import { PaperplaneLauncherComponent } from './paperplane-launcher/paperplane-launcher.component';
-import { DevblogComponent } from './devblog/devblog.component';
+import { BlogComponent } from './blog/blog.component';
 import { NewsComponent } from './news/news.component';
 import { NewsArticleComponent } from './news-article/news-article.component';
-import { DevblogArticleComponent } from './devblog-article/devblog-article.component';
-import { DevblogArticlePreviewComponent } from './devblog-article-preview/devblog-article-preview.component';
+import { BlogPostComponent } from './blog-post/blog-post.component';
+import { BlogPostPreviewComponent } from './blog-post-preview/blog-post-preview.component';
 import { NewsArticlePreviewComponent } from './news-article-preview/news-article-preview.component';
 
 import { AnimateService } from './animate.service';
+import { NewsService } from './news.service';
+import { BlogService } from './blog.service';
+
 
 @NgModule({
   declarations: [
@@ -33,11 +36,11 @@ import { AnimateService } from './animate.service';
     FooterComponent,
     PaperplaneComponent,
     PaperplaneLauncherComponent,
-    DevblogComponent,
+    BlogComponent,
     NewsComponent,
     NewsArticleComponent,
-    DevblogArticleComponent,
-    DevblogArticlePreviewComponent,
+    BlogPostComponent,
+    BlogPostPreviewComponent,
     NewsArticlePreviewComponent
   ],
   imports: [
@@ -51,7 +54,7 @@ import { AnimateService } from './animate.service';
     MatCardModule,
     MatGridListModule
   ],
-  providers: [AnimateService],
+  providers: [AnimateService, NewsService, BlogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
