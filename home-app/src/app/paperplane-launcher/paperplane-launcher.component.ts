@@ -16,7 +16,6 @@ export class PaperplaneLauncherComponent implements OnInit {
   }
 
   launchPaperplane() {
-    this.animate.hideNav();
     this.router.navigate(['/paperplane']);
   }
 

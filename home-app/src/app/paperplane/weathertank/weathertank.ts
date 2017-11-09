@@ -64,6 +64,8 @@ export class Weathertank {
     private backgroundImageURLs: string[];
     private backgroundImage: any;
 
+    public isLoaded: boolean;
+
 
     constructor() {
         this.readCoords = new Float32Array(2);
@@ -93,6 +95,8 @@ export class Weathertank {
         ];
 
         this.backgroundImage = new Image();
+
+        this.isLoaded = false;
     }
 
 
@@ -145,6 +149,49 @@ export class Weathertank {
         return texture;
     }
 
+
+
+/*
+    // Controls
+    this.runSimulation = function() {
+     if (!this.isRunning) {      
+        console.log('START');
+
+        this.isRunning = true; // reset stop signal
+        requestAnimationFrame(stepSimulation);
+     }
+    };
+    this.stopSimulation = function() {
+     if (this.isRunning) {
+        this.isRunning = false;
+        console.log('STOP');
+     } else {
+        console.log('RESET');
+        this.initPrograms();
+     }
+    };
+    this.stepSimulation =  function() {
+     if (!this.isRunning) {
+        stepSimulation();
+        console.log('STEP');
+     }
+    };
+*/        
+    public start() {
+        if (!this.isRunning) {      
+            this.isRunning = true; // reset stop signal
+            requestAnimationFrame(this.stepSimulation.bind(this));
+        }
+    }
+
+    public pause() {
+        if (this.isRunning) {
+            this.isRunning = false;
+        } else {
+            this.initPrograms();
+        }
+    }
+
     public load(canvas: any) {
         this.canvas = canvas;
         this.canvas.width = this.canvas.clientWidth;
@@ -161,6 +208,9 @@ export class Weathertank {
             console.log('No OES_texture_float_linear extension available, falling back to NEAREST');
             this.useLinear = false;
         }
+
+        // Has all the capability, continue loading
+        this.isLoaded = true;
 
         var tank = this;
         this.canvas.onmousemove = function(e) {
@@ -295,34 +345,6 @@ export class Weathertank {
             xhrPresets.send(null);
         }
     }
-
-
-/*
-    // Controls
-    this.runSimulation = function() {
-     if (!this.isRunning) {      
-        console.log('START');
-
-        this.isRunning = true; // reset stop signal
-        requestAnimationFrame(stepSimulation);
-     }
-    };
-    this.stopSimulation = function() {
-     if (this.isRunning) {
-        this.isRunning = false;
-        console.log('STOP');
-     } else {
-        console.log('RESET');
-        this.initPrograms();
-     }
-    };
-    this.stepSimulation =  function() {
-     if (!this.isRunning) {
-        stepSimulation();
-        console.log('STEP');
-     }
-    };
-*/        
 
 
     private initPrograms(skipStep?:boolean) {

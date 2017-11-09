@@ -20,12 +20,16 @@ export class PaperplaneComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.animate.hideNav();
         let canvas = $('canvas#paperplane-canvas')[0];
         canvas.height = 0.5 * canvas.clientWidth;
-        this.weathertank.load(canvas);
+        if (!this.weathertank.isLoaded)
+            this.weathertank.load(canvas);
+        this.weathertank.start();
     }
 
     goBack() {
+        this.weathertank.pause();
         this.animate.restoreNav();
         this.location.back();
     }
