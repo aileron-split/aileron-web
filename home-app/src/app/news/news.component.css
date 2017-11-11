@@ -1,9 +1,15 @@
 div.table {
     display: table;
+    overflow: hidden;
+}
+
+div.row {
+    display: table-row;
 }
 
 div.cell {
     display: table-cell;
+    vertical-align: top;
     width: 30%;
     padding-right: 10px;
 }

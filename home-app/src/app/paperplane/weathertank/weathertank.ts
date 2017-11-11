@@ -26,6 +26,8 @@ import { WeathertankSolver } from './solver';
 import { WeathertankParams } from './sim-params';
 import { PaperplaneGlider } from './glider';
 
+import { PaperplaneSitePrefs } from './paperplane-site-prefs';
+
 
 export class Weathertank {
     private canvas: any;
@@ -33,6 +35,8 @@ export class Weathertank {
 
     private renderer: WeathertankRenderer;
     private solver: WeathertankSolver;
+
+    private sitePrefs: PaperplaneSitePrefs;
 
     public simParams: WeathertankParams;
     public glider: PaperplaneGlider;
@@ -42,9 +46,8 @@ export class Weathertank {
     private readSolutes: Float32Array;
     private solverToCanvasPixelScale: number[];
 
-    private groundData: Uint8Array;
-
     private isRunning: boolean;
+    private requestId: any;
 
     // Solver's grid position on canvas
     private marginTopSolver: number;
@@ -52,16 +55,10 @@ export class Weathertank {
     private aspectSolver: number;
     private hMarginSolver: number;
 
-    private baseSrc: number;
-    private baseDst: number;
-    private solutesSrc: number;
-    private solutesDst: number;
-
     private useLinear: boolean;
 
     private solverResolution: number;
 
-    private backgroundImageURLs: string[];
     private backgroundImage: any;
 
     public isLoaded: boolean;
@@ -73,26 +70,16 @@ export class Weathertank {
         this.readSolutes = new Float32Array(4);
         this.solverToCanvasPixelScale = [1.0, 1.0];
 
-        this.renderer = new WeathertankRenderer();
         this.solver = new WeathertankSolver();
+        this.renderer = new WeathertankRenderer(this.solver);
         this.simParams = new WeathertankParams();
         this.glider = new PaperplaneGlider();
 
-        this.groundData = new Uint8Array(16 * 4);
         this.isRunning = true;
-
-        this.baseSrc = 0;
-        this.baseDst = 1;
-        this.solutesSrc = 0;
-        this.solutesDst = 1;
 
         this.useLinear = true;
 
         this.solverResolution = 256.0;
-
-        this.backgroundImageURLs = [
-            '/images/004.png',
-        ];
 
         this.backgroundImage = new Image();
 
@@ -116,86 +103,53 @@ export class Weathertank {
         this.gl.deleteShader(shader);
     }
 
-    private createProgram(vertexShader, fragmentShader) {
-        var program = this.gl.createProgram();
-        this.gl.attachShader(program, vertexShader);
-        this.gl.attachShader(program, fragmentShader);
-        this.gl.linkProgram(program);
-        var success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
-        if (success) {
-            return program;
-        }
 
-       console.log(this.gl.getProgramInfoLog(program));
-       this.gl.deleteProgram(program);
-    }
-
-    private groundDataToTexture() {
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.solver.groundTexture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 16, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.groundData);
-    }
-
-    private setupTexture() {
-        // Create a texture.
-        var texture = this.gl.createTexture();
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-
-        // Set the parameters so we can render any size image.
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-
-        return texture;
-    }
-
-
-
-/*
     // Controls
-    this.runSimulation = function() {
-     if (!this.isRunning) {      
-        console.log('START');
-
-        this.isRunning = true; // reset stop signal
-        requestAnimationFrame(stepSimulation);
-     }
-    };
-    this.stopSimulation = function() {
-     if (this.isRunning) {
-        this.isRunning = false;
-        console.log('STOP');
-     } else {
-        console.log('RESET');
-        this.initPrograms();
-     }
-    };
-    this.stepSimulation =  function() {
-     if (!this.isRunning) {
-        stepSimulation();
-        console.log('STEP');
-     }
-    };
-*/        
     public start() {
         if (!this.isRunning) {      
             this.isRunning = true; // reset stop signal
             requestAnimationFrame(this.stepSimulation.bind(this));
+            // console.log('START');
         }
     }
 
     public pause() {
         if (this.isRunning) {
             this.isRunning = false;
+            cancelAnimationFrame(this.requestId);
+            // console.log('STOP');
         } else {
             this.initPrograms();
+            // console.log('RESET');
         }
     }
 
-    public load(canvas: any) {
+    public step() {
+        if (!this.isRunning) {
+            this.stepSimulation();
+            // console.log('STEP');
+        }
+    }
+
+    public setPaperplaneTarget(canvasX: number, canvasY: number) {
+        this.readCoords[0] = canvasX / this.sitePrefs.canvasBox.width;
+        this.readCoords[1] = 1.0 - canvasY / this.sitePrefs.canvasBox.height;
+
+        if (!this.isRunning) {
+           this.updateReaderGUI();
+        }
+
+    }
+
+    
+    // Loading
+    public load(canvas: any, sitePrefs: PaperplaneSitePrefs) {
+        this.sitePrefs = sitePrefs;
+
         this.canvas = canvas;
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
+        this.canvas.width = this.sitePrefs.canvasBox.width;
+        this.canvas.height = this.sitePrefs.canvasBox.height;
+
         this.gl = this.canvas.getContext('webgl2', { premultipliedAlpha: false }); // ('experimental-webgl');
 
         var ext = this.gl.getExtension('EXT_color_buffer_float');
@@ -214,21 +168,15 @@ export class Weathertank {
 
         var tank = this;
         this.canvas.onmousemove = function(e) {
-            // console.log(e.clientX / canvas.width + ' ' + e.clientY / canvas.height);
-            tank.readCoords[0] = e.clientX / tank.canvas.width;
-            tank.readCoords[1] = 1.0 - e.clientY / tank.canvas.height;
-
-            if (!tank.isRunning) {
-               tank.updateReaderGUI();
-            }
+            tank.setPaperplaneTarget(e.clientX, e.clientY);
         }
 
         // Solver's grid position on canvas
         this.marginTopSolver = 0.1;
         this.marginBottomSolver = 0.1;
         this.aspectSolver = 1.25;
-        this.hMarginSolver = 0.5 * (this.canvas.width * (this.marginTopSolver + 1.0 + this.marginBottomSolver) / (this.canvas.height * this.aspectSolver) - 1.0);
-
+        this.hMarginSolver = 0.5 * (this.canvas.width * (this.marginTopSolver + 1.0 + this.marginBottomSolver) / (this.sitePrefs.canvasBox.height * this.aspectSolver) - 1.0);
+        
 
         // sync loading, init when all is loaded
         var tank = this;
@@ -241,20 +189,13 @@ export class Weathertank {
             }
         }
 
-
-        // Loading new background image and pushing it into the background texture
-        function loadBackgroundImage() {
-            if (this.renderer.backgroundImageTexture) {
-                this.backgroundImage.onload = function () {
-                    // Upload the backgroundImage into the texture.
-                    this.gl.bindTexture(this.gl.TEXTURE_2D, this.renderer.backgroundImageTexture);
-                    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.backgroundImage);
-                    this.setupBackgroundCoords();
-                    this.updateCanvas();
-                }
-                this.backgroundImage.src = this.backgroundImageURLs[this.simParams.backgroundImage];
-            }
+        // Start loading of background texture
+        var checkIndexImage = checkpoints.push(false);
+        tank.backgroundImage.onload = function () {
+           sync(checkIndexImage);
         }
+        tank.backgroundImage.src = sitePrefs.backgroundImageUrl;
+        
 
         // Load and compile solver shaders
         var xhrVertSolver:any = new XMLHttpRequest();
@@ -331,14 +272,10 @@ export class Weathertank {
             xhrPresets.open('GET', 'presets.json', true);
             xhrPresets.onload = function(e) {
                 if (this.status == 200) {
-
-                    // Start loading of default background texture
-                    var checkIndexImage = checkpoints.push(false);
-                    tank.backgroundImage.onload = function () {
-                       sync(checkIndexImage);
-                    }
-                    tank.backgroundImage.src = tank.backgroundImageURLs[tank.simParams.backgroundImage];
-
+                    let presets = JSON.parse(xhrPresets.response);
+                    let clearSky = presets.remembered.ClearSky[0];
+                    tank.simParams.update(clearSky);
+                    tank.simParams.update(sitePrefs);
                     sync(checkIndexPresets);
                 }
             };
@@ -348,172 +285,45 @@ export class Weathertank {
 
 
     private initPrograms(skipStep?:boolean) {
-        this.canvas.width = this.canvas.clientWidth;
-        this.canvas.height = this.canvas.clientHeight;
+//        this.canvas.width = this.canvas.clientWidth;
+//        this.canvas.height = this.canvas.clientHeight;
 
-        this.initSolverProgram();
-        this.initRendererProgram();
+        this.solver.initProgram(this.gl, this.simParams);
+        this.renderer.initProgram(this.gl, this.simParams, { backgroundImage: this.backgroundImage, useLinear: this.useLinear});
         this.glider.initPaperplaneProgram(this.gl, this.canvas, this.simParams, this.marginBottomSolver - 0.015);
+
+        this.setupSolverGridReadCoords();
+        this.setupBackgroundCoords();
         this.updateCanvas();
 
-        this.solutesSrc = 0;
-        this.solutesDst = 1;
-        this.baseSrc = 0;
-        this.baseDst = 1;
-        this.doCalcFunction(this.solver.solutesFramebuffers[this.solutesDst], 11); this.swapSolutes(); // 1 - Initialize ATMOSPHERE
-
+        this.solver.initializeAtmosphere();
         this.doRender(); // RENDER
 
         if (!skipStep)
             this.stepSimulation();
     }
 
-    private initSolverProgram() {
-        this.solver.program = this.createProgram(this.solver.vertexShader, this.solver.fragmentShader);
-
-        this.solver.positionAttributeLocation = this.gl.getAttribLocation(this.solver.program, 'a_position');
-        this.solver.positionBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.solver.positionBuffer);
-        var positions = [
-         -1, -1,
-         -1,  1,
-          1, -1,
-         -1,  1,
-          1,  1,
-          1, -1,
-        ];
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
-
-        this.solver.texCoordAttributeLocation = this.gl.getAttribLocation(this.solver.program, 'a_texCoord');
-        this.solver.texCoordBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.solver.texCoordBuffer);
-        var texCoord = [
-         0, 0,
-         0, 1,
-         1, 0,
-         0, 1,
-         1, 1,
-         1, 0,
-        ];
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoord), this.gl.STATIC_DRAW);
-
-        this.solver.calcFunctionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_calcFunction');
-        this.solver.resolutionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_resolution');
-        this.solver.diffusionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_diffusion');
-
-        // Buoyancy
-        this.solver.buoyancyFactorUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_buoyancyFactor');
-        this.solver.rainFallingFactorUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_rainFallingFactor');
-
-        // Stability uniforms
-        this.solver.globalWindUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_globalWind');
-        this.solver.globalStabilityUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_globalStability');
-        this.solver.inversionAltitudeUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_inversionAltitude');
-        this.solver.inversionTemperatureUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_inversionTemperature');
-        this.solver.groundInversionDepthUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_groundInversionDepth');
-        this.solver.groundInversionTemperatureUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_groundInversionTemperature');
-        this.solver.heatDisipationRateUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_heatDisipationRate');
-
-        // Atmosphere uniforms
-        this.solver.temperatureDiffusionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_temperatureDiffusion');
-        this.solver.humidityDiffusionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_humidityDiffusion');
-        this.solver.condensationFactorUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_condensationFactor');
-        this.solver.mistDiffusionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_mistDiffusion');
-        this.solver.mistToRainFactorUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_mistToRainFactor');
-        this.solver.rainFallDiffusionUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_rainFallDiffusion');
-        this.solver.rainEvaporationUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_rainEvaporation');
-        this.solver.initialHumidityUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_initialHumidity');
-        this.solver.condensationLevelUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_condensationLevel');
-        this.solver.latentHeatUniformLocation = this.gl.getUniformLocation(this.solver.program, 'u_latentHeat');
-
-        // Samplers locations.
-        this.solver.u_basefluidLocation = this.gl.getUniformLocation(this.solver.program, 'u_basefluid');
-        this.solver.u_solutesLocation = this.gl.getUniformLocation(this.solver.program, 'u_solutes');
-        this.solver.u_groundLocation = this.gl.getUniformLocation(this.solver.program, 'u_ground');
-
-
-        if (this.solver.groundTexture) {
-         this.gl.deleteTexture(this.solver.groundTexture);
-        }
-        this.solver.groundTexture = this.setupTexture();
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
-        this.groundDataToTexture();
-
-        var res = this.simParams.resolution;
-
-        const level = 0;
-        const internalFormat = this.gl.RGBA32F;
-        const border = 0;
-        const format = this.gl.RGBA;
-        const type = this.gl.FLOAT;
-        const data = null;
-
-        // Base fluid textures
-        for (var ii = 0; ii < 2; ++ii) {
-         var basefluidTexture = this.setupTexture();
-         if (ii < this.solver.basefluidTextures.length) {
-            this.gl.deleteTexture(this.solver.basefluidTextures[ii]);
-            this.solver.basefluidTextures[ii] = basefluidTexture;
-         }
-         else
-            this.solver.basefluidTextures.push(basefluidTexture);
-
-         // make the texture of the right size
-         this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
-
-         // create a framebuffer
-         var basefluidFramebuffer = this.gl.createFramebuffer();
-         if (ii < this.solver.basefluidFramebuffers.length) {
-            this.gl.deleteFramebuffer(this.solver.basefluidFramebuffers[ii]);
-            this.solver.basefluidFramebuffers[ii] = basefluidFramebuffer;
-         }
-         else
-            this.solver.basefluidFramebuffers.push(basefluidFramebuffer);
-
-         // Attach a texture to it
-         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, basefluidFramebuffer);
-         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, basefluidTexture, 0);
-        }
-
-        // Solutes textures
-        for (var ii = 0; ii < 2; ++ii) {
-         var solutesTexture = this.setupTexture();
-         if (ii < this.solver.solutesTextures.length) {
-            this.gl.deleteTexture(this.solver.solutesTextures[ii]);
-            this.solver.solutesTextures[ii] = solutesTexture;
-         }
-         else
-            this.solver.solutesTextures.push(solutesTexture);
-
-         // make the texture of the right size
-         this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
-
-         // create a framebuffer
-         var solutesFramebuffer = this.gl.createFramebuffer();
-         if (ii < this.solver.solutesFramebuffers.length) {
-            this.gl.deleteFramebuffer(this.solver.solutesFramebuffers[ii]);
-            this.solver.solutesFramebuffers[ii] = solutesFramebuffer;
-         }
-         else
-            this.solver.solutesFramebuffers.push(solutesFramebuffer);
-
-         // Attach a texture to it
-         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, solutesFramebuffer);
-         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, solutesTexture, 0);
-        }
-    }
 
     private setupBackgroundCoords() {
-        var vMarginBackground = 0.5 * (this.canvas.height / this.backgroundImage.height - 1.0);
-        var hMarginBackground = 0.5 * (this.canvas.width / this.backgroundImage.width - 1.0);
+        let backgroundBox = {top: -1, left: -1, bottom: 1, right: 1};
+
+        let cn = this.sitePrefs.canvasBox;
+        let bg = this.sitePrefs.backgroundBox;
+
+        let bgPlacement = {
+            top: (cn.top - bg.top) / bg.height,
+            left: (cn.left - bg.left) / bg.width,
+            bottom: (cn.top + cn.height - bg.top) / bg.height,
+            right: (cn.left + cn.width - bg.left) / bg.width,
+        };
+
         var bgTexCoord = [
-            -hMarginBackground, 1.0 + vMarginBackground,
-            -hMarginBackground, -vMarginBackground,
-            1.0 + hMarginBackground, 1.0 + vMarginBackground,
-            -hMarginBackground, -vMarginBackground,
-            1.0 + hMarginBackground, -vMarginBackground,
-            1.0 + hMarginBackground, 1.0 + vMarginBackground,
+            bgPlacement.left, bgPlacement.bottom,
+            bgPlacement.left, bgPlacement.top,
+            bgPlacement.right, bgPlacement.bottom,
+            bgPlacement.left, bgPlacement.top,
+            bgPlacement.right, bgPlacement.top,
+            bgPlacement.right, bgPlacement.bottom ,
         ];
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.bgTexCoordBuffer);
@@ -532,8 +342,8 @@ export class Weathertank {
         ];
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoord), this.gl.STATIC_DRAW);
 
-        this.solverToCanvasPixelScale[0] = this.canvas.width / (this.simParams.resolution * (1.0 + 2.0 * this.hMarginSolver));
-        this.solverToCanvasPixelScale[1] = this.canvas.height / (this.simParams.resolution * (1.0 + this.marginTopSolver + this.marginBottomSolver));
+        this.solverToCanvasPixelScale[0] = this.sitePrefs.canvasBox.width / (this.simParams.resolution * (1.0 + 2.0 * this.hMarginSolver));
+        this.solverToCanvasPixelScale[1] = this.sitePrefs.canvasBox.height / (this.simParams.resolution * (1.0 + this.marginTopSolver + this.marginBottomSolver));
     }
 
     private getSolverToCanvasRatio() {
@@ -549,130 +359,6 @@ export class Weathertank {
     }
 
 
-    private initRendererProgram() {
-        this.renderer.program = this.createProgram(this.renderer.vertexShader, this.renderer.fragmentShader);
-
-        this.renderer.positionAttributeLocation = this.gl.getAttribLocation(this.renderer.program, 'a_position');
-        this.renderer.positionBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.positionBuffer);
-        var positions = [
-         -1, -1,
-         -1,  1,
-          1, -1,
-         -1,  1,
-          1,  1,
-          1, -1,
-        ];
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
-
-
-        // Solver texture coordinates
-        this.renderer.texCoordAttributeLocation = this.gl.getAttribLocation(this.renderer.program, 'a_texCoord');
-        this.renderer.texCoordBuffer = this.gl.createBuffer();
-        this.setupSolverGridReadCoords();
-
-        // Background texture coordinates
-        this.renderer.bgTexCoordAttributeLocation = this.gl.getAttribLocation(this.renderer.program, 'a_bgTexCoord');
-        this.renderer.bgTexCoordBuffer = this.gl.createBuffer();
-        this.setupBackgroundCoords();
-
-        // Uniform variables locations   
-        this.renderer.resolutionUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_resolution');
-
-        // Display uniforms
-        this.renderer.backgroundImageTintUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_backgroundImageTint');
-        this.renderer.backgroundImageBrightnessUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_backgroundImageBrightness');
-
-        this.renderer.pressureColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_pressureColor');
-        this.renderer.pressureOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_pressureOpacity');
-        this.renderer.pressureCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_pressureCutoff');
-        this.renderer.pressureIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_pressureIOR');
-        this.renderer.updraftColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftColor');
-        this.renderer.updraftOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftOpacity');
-        this.renderer.updraftCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftCutoff');
-        this.renderer.updraftIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftIOR');
-        this.renderer.cloudColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_cloudColor');
-        this.renderer.cloudOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_cloudOpacity');
-        this.renderer.cloudCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_cloudCutoff');
-        this.renderer.cloudIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_cloudIOR');
-        this.renderer.rainColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_rainColor');
-        this.renderer.rainOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_rainOpacity');
-        this.renderer.rainCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_rainCutoff');
-        this.renderer.rainIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_rainIOR');
-        this.renderer.humidityColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityColor');
-        this.renderer.humidityOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityOpacity');
-        this.renderer.humidityCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityCutoff');
-        this.renderer.humidityIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityIOR');
-        this.renderer.temperatureColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_temperatureColor');
-        this.renderer.temperatureOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_temperatureOpacity');
-        this.renderer.temperatureCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_temperatureCutoff');
-        this.renderer.temperatureIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_temperatureIOR');
-        this.renderer.humidityTemperatureColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityTemperatureColor');
-        this.renderer.humidityTemperatureOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityTemperatureOpacity');
-        this.renderer.humidityTemperatureCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityTemperatureCutoff');
-        this.renderer.humidityTemperatureIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_humidityTemperatureIOR');
-        this.renderer.relativeTemperatureColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_relativeTemperatureColor');
-        this.renderer.relativeTemperatureOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_relativeTemperatureOpacity');
-        this.renderer.relativeTemperatureCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_relativeTemperatureCutoff');
-        this.renderer.relativeTemperatureIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_relativeTemperatureIOR');
-        this.renderer.updraftTemperatureColorUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftTemperatureColor');
-        this.renderer.updraftTemperatureOpacityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftTemperatureOpacity');
-        this.renderer.updraftTemperatureCutoffUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftTemperatureCutoff');
-        this.renderer.updraftTemperatureIORUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_updraftTemperatureIOR');
-
-        // Stability uniforms
-        this.renderer.globalStabilityUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_globalStability');
-        this.renderer.inversionAltitudeUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_inversionAltitude');
-        this.renderer.inversionTemperatureUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_inversionTemperature');
-        this.renderer.groundInversionDepthUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_groundInversionDepth');
-        this.renderer.groundInversionTemperatureUniformLocation = this.gl.getUniformLocation(this.renderer.program, 'u_groundInversionTemperature');
-
-        // Samplers locations.
-        this.renderer.u_basefluidLocation = this.gl.getUniformLocation(this.renderer.program, 'u_basefluid');
-        this.renderer.u_solutesLocation = this.gl.getUniformLocation(this.renderer.program, 'u_solutes');
-        this.renderer.u_backgroundLocation = this.gl.getUniformLocation(this.renderer.program, 'u_background');
-
-
-        // Setup background image texture and first time initialize
-        if (this.renderer.backgroundImageTexture)
-         this.gl.deleteTexture(this.renderer.backgroundImageTexture);
-        this.renderer.backgroundImageTexture = this.setupTexture();
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
-
-        // Upload the backgroundImage into the texture.
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.backgroundImage);
-
-
-        // Make transfer texture and framebuffer (uses linear interpolation)
-        if (this.renderer.transferBasefluidTexture)
-         this.gl.deleteTexture(this.renderer.transferBasefluidTexture);
-        this.renderer.transferBasefluidTexture = this.setupTexture();
-        if (this.useLinear)
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA32F, this.simParams.resolution, this.simParams.resolution, 0, this.gl.RGBA, this.gl.FLOAT, null);
-
-        if (this.renderer.transferBasefluidFramebuffer)
-         this.gl.deleteFramebuffer(this.renderer.transferBasefluidFramebuffer);
-        this.renderer.transferBasefluidFramebuffer = this.gl.createFramebuffer();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.renderer.transferBasefluidFramebuffer);
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.renderer.transferBasefluidTexture, 0);
-
-        if (this.renderer.transferSolutesTexture)
-         this.gl.deleteTexture(this.renderer.transferSolutesTexture);
-        this.renderer.transferSolutesTexture = this.setupTexture();
-        if (this.useLinear)
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA32F, this.simParams.resolution, this.simParams.resolution, 0, this.gl.RGBA, this.gl.FLOAT, null);
-
-        if (this.renderer.transferSolutesFramebuffer)
-         this.gl.deleteFramebuffer(this.renderer.transferSolutesFramebuffer);
-        this.renderer.transferSolutesFramebuffer = this.gl.createFramebuffer();
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.renderer.transferSolutesFramebuffer);
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.renderer.transferSolutesTexture, 0);
-
-    }
 
 
 
@@ -693,122 +379,6 @@ export class Weathertank {
 
         // Tell webgl the viewport setting needed for framebuffer.
         this.gl.viewport(0, 0, parseFloat(width), parseFloat(height));
-    }
-
-    private swapSolutes() { this.solutesSrc = (this.solutesSrc == 0) ? 1 : 0; this.solutesDst = (this.solutesDst == 0) ? 1 : 0; }
-    private swapBase() { this.baseSrc = (this.baseSrc == 0) ? 1 : 0; this.baseDst = (this.baseDst == 0) ? 1 : 0; }
-
-    private doCalcFunction(framebuffer, calcFunction) {
-        /*
-        0 - COPY
-        1 - DISPLAY
-        2 - DIFFUSE
-        3 - ADVECT
-        4 - PROJECT div
-        5 - PROJECT pressure
-        6 - PROJECT velocity
-        ...
-        */
-
-        // Tell it to use our solver program (pair of shaders)
-        this.gl.useProgram(this.solver.program);
-
-        // set which texture units to render with.
-        this.gl.uniform1i(this.solver.u_basefluidLocation, 0);  // texture unit 0
-        this.gl.uniform1i(this.solver.u_solutesLocation, 1);  // texture unit 1
-        this.gl.uniform1i(this.solver.u_groundLocation, 2);  // texture unit 2
-
-        // bind the input basefluidTexture
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.solver.basefluidTextures[this.baseSrc]);
-
-        // bind the input solutesTexture
-        this.gl.activeTexture(this.gl.TEXTURE1);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.solver.solutesTextures[this.solutesSrc]);
-
-        this.gl.activeTexture(this.gl.TEXTURE2);
-        this.groundDataToTexture();
-
-        // set the framebuffer (null for rendering to canvas)
-        this.setFramebuffer(framebuffer);
-
-        // Tell the shader the resolution of the framebuffer.
-        this.gl.uniform1f(this.solver.resolutionUniformLocation, this.simParams.resolution);
-
-        /*      if (framebuffer==null) {
-         // Clear the canvas
-         this.gl.clearColor(
-            this.simParams.backgroundColor[0] / 256.0, 
-            this.simParams.backgroundColor[1] / 256.0, 
-            this.simParams.backgroundColor[2] / 256.0, 
-            this.simParams.backgroundColor[3]);
-         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-        }
-        */
-        // VERTEX
-        // Turn on the attribute
-        this.gl.enableVertexAttribArray(this.solver.positionAttributeLocation);
-
-        // Bind the position buffer.
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.solver.positionBuffer);
-
-        // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-        var size = 2;          // 2 components per iteration
-        var type = this.gl.FLOAT;   // the data is 32bit floats
-        var normalize = false; // don't normalize the data
-        var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-        var offset = 0;        // start at the beginning of the buffer
-        this.gl.vertexAttribPointer(this.solver.positionAttributeLocation, size, type, normalize, stride, offset)
-
-        // TEXTURE COORDINATE
-        // Turn on the attribute
-        this.gl.enableVertexAttribArray(this.solver.texCoordAttributeLocation);
-
-        // Bind the position buffer.
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.solver.texCoordBuffer);
-
-        // Tell the attribute how to get data out of texCoordBuffer (ARRAY_BUFFER)
-        var size = 2;          // 2 components per iteration
-        var type = this.gl.FLOAT;   // the data is 32bit floats
-        var normalize = false; // don't normalize the data
-        var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-        var offset = 0;        // start at the beginning of the buffer
-        this.gl.vertexAttribPointer(this.solver.texCoordAttributeLocation, size, type, normalize, stride, offset)
-
-
-        this.gl.uniform1i(this.solver.calcFunctionUniformLocation, calcFunction);
-        this.gl.uniform1f(this.solver.diffusionUniformLocation, this.simParams.diffusion);
-
-        // Buoyancy
-        this.gl.uniform1f(this.solver.buoyancyFactorUniformLocation, this.simParams.buoyancyFactor);
-        this.gl.uniform1f(this.solver.rainFallingFactorUniformLocation, this.simParams.rainFallingFactor);
-
-        // Stability uniforms
-        this.gl.uniform1f(this.solver.globalWindUniformLocation, this.simParams.globalWind);
-        this.gl.uniform1f(this.solver.globalStabilityUniformLocation, this.simParams.globalStability);
-        this.gl.uniform1f(this.solver.inversionAltitudeUniformLocation, this.simParams.inversionAltitude);
-        this.gl.uniform1f(this.solver.inversionTemperatureUniformLocation, this.simParams.inversionTemperature);
-        this.gl.uniform1f(this.solver.groundInversionDepthUniformLocation, this.simParams.groundInversionDepth);
-        this.gl.uniform1f(this.solver.groundInversionTemperatureUniformLocation, this.simParams.groundInversionTemperature);
-        this.gl.uniform1f(this.solver.heatDisipationRateUniformLocation, this.simParams.heatDisipationRate);
-
-        // Atmosphere uniforms
-        this.gl.uniform1f(this.solver.temperatureDiffusionUniformLocation, this.simParams.temperatureDiffusion);
-        this.gl.uniform1f(this.solver.humidityDiffusionUniformLocation, this.simParams.humidityDiffusion);
-        this.gl.uniform1f(this.solver.condensationFactorUniformLocation, this.simParams.condensationFactor);
-        this.gl.uniform1f(this.solver.mistDiffusionUniformLocation, this.simParams.mistDiffusion);
-        this.gl.uniform1f(this.solver.mistToRainFactorUniformLocation, this.simParams.mistToRainFactor);
-        this.gl.uniform1f(this.solver.rainFallDiffusionUniformLocation, this.simParams.rainFallDiffusion);
-        this.gl.uniform1f(this.solver.rainEvaporationUniformLocation, this.simParams.rainEvaporation);
-        this.gl.uniform1f(this.solver.initialHumidityUniformLocation, this.simParams.initialHumidity);
-        this.gl.uniform1f(this.solver.condensationLevelUniformLocation, this.simParams.condensationLevel);
-        this.gl.uniform1f(this.solver.latentHeatUniformLocation, this.simParams.latentHeat);
-
-        // draw
-        var primitiveType = this.gl.TRIANGLES;
-        var offset = 0;
-        var count = 6;
-        this.gl.drawArrays(primitiveType, offset, count);
     }
 
 
@@ -837,12 +407,12 @@ export class Weathertank {
         var sloverGridReadCoords = this.getPointOnSolverGrid(this.readCoords),
             solverGridGliderCoords = this.getPointOnSolverGrid(this.glider.location);
 
-        this.doCalcFunction(this.renderer.transferBasefluidFramebuffer, 0); // 0 - COPY basefluid
+        this.solver.doCalcFunction(this.renderer.transferBasefluidFramebuffer, 0); // 0 - COPY basefluid
         this.gl.readPixels(sloverGridReadCoords[0], sloverGridReadCoords[1], 1, 1, this.gl.RGBA, this.gl.FLOAT, this.readBasefluid);
         this.gl.readPixels(solverGridGliderCoords[0], solverGridGliderCoords[1], 1, 1, this.gl.RGBA, this.gl.FLOAT, this.glider.basefluid);
         this.correctLinearScale();
 
-        this.doCalcFunction(this.renderer.transferSolutesFramebuffer, 1); // 1 - COPY solutes
+        this.solver.doCalcFunction(this.renderer.transferSolutesFramebuffer, 1); // 1 - COPY solutes
         this.gl.readPixels(sloverGridReadCoords[0], sloverGridReadCoords[1], 1, 1, this.gl.RGBA, this.gl.FLOAT, this.readSolutes);
         this.gl.readPixels(solverGridGliderCoords[0], solverGridGliderCoords[1], 1, 1, this.gl.RGBA, this.gl.FLOAT, this.glider.solutes);
 
@@ -854,7 +424,8 @@ export class Weathertank {
         // set which texture units to render with.
         this.gl.uniform1i(this.renderer.u_basefluidLocation, 0);  // texture unit 0
         this.gl.uniform1i(this.renderer.u_solutesLocation, 1);  // texture unit 1
-        this.gl.uniform1i(this.renderer.u_backgroundLocation, 2);  // texture unit 1
+        this.gl.uniform1i(this.renderer.u_backgroundLocation, 2);  // texture unit 2
+        this.gl.uniform1i(this.renderer.u_groundLocation, 3);  // texture unit 3
 
         // bind the input basefluidTexture
         this.gl.activeTexture(this.gl.TEXTURE0);
@@ -864,15 +435,22 @@ export class Weathertank {
         this.gl.activeTexture(this.gl.TEXTURE1);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.renderer.transferSolutesTexture);
 
-        // bind the input backgro
+        // bind the input backgroundImageTexture
         this.gl.activeTexture(this.gl.TEXTURE2);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.renderer.backgroundImageTexture);
+
+        // bind the input backgroundImageTexture
+        this.gl.activeTexture(this.gl.TEXTURE3);
+        this.solver.groundDataToTexture();
 
         // set the framebuffer (null for rendering to canvas)
         this.setFramebuffer(null);
 
         // Tell the shader the resolution of the framebuffer.
         this.gl.uniform2f(this.renderer.resolutionUniformLocation, this.simParams.resolution, this.simParams.resolution);
+        this.gl.uniform2f(this.renderer.textureRatioUniformLocation,
+            this.simParams.resolution / this.sitePrefs.canvasBox.width,
+            this.simParams.resolution / this.sitePrefs.canvasBox.height);
 
         // VERTEX
         // Turn on the attribute
@@ -901,6 +479,9 @@ export class Weathertank {
         // Display uniforms
         this.gl.uniform3f(this.renderer.backgroundImageTintUniformLocation, this.simParams.backgroundImageTint[0] / 256.0, this.simParams.backgroundImageTint[1] / 256.0, this.simParams.backgroundImageTint[2] / 256.0);
         this.gl.uniform1f(this.renderer.backgroundImageBrightnessUniformLocation, this.simParams.backgroundImageBrightness);
+
+        this.gl.uniform3f(this.renderer.backgroundTintColorUniformLocation, this.simParams.backgroundTintColor[0] / 256.0, this.simParams.backgroundTintColor[1] / 256.0, this.simParams.backgroundTintColor[2] / 256.0);
+        this.gl.uniform1f(this.renderer.backgroundTintOpacityUniformLocation, this.simParams.backgroundTintOpacity);
 
         this.gl.uniform3f(this.renderer.pressureColorUniformLocation, this.simParams.pressureColor[0] / 256.0, this.simParams.pressureColor[1] / 256.0, this.simParams.pressureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.pressureOpacityUniformLocation, this.simParams.pressureOpacity);
@@ -966,17 +547,9 @@ export class Weathertank {
     }
 
 
-    private project(srcIndex?:number) {
-        this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 4); this.swapBase();
-        for (var i=1; i<this.simParams.pressureSolveSteps; i+=1) {
-         this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 5); this.swapBase();
-        }
-        this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 6); this.swapBase();
-    }
-
     private setGroundData(x, temp, humidity) {
-        this.groundData[x * 4 + 0] = temp;
-        this.groundData[x * 4 + 2] = humidity;
+        this.solver.groundData[x * 4 + 0] = temp;
+        this.solver.groundData[x * 4 + 2] = humidity;
     }
 
     private stepSimulation() {
@@ -989,15 +562,7 @@ export class Weathertank {
         this.setGroundData(12, 0, 50);
         this.setGroundData(13, 0, 50);
 
-        this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 9); this.swapBase(); // 9 - add forces
-        this.doCalcFunction(this.solver.solutesFramebuffers[this.solutesDst], 10); this.swapSolutes(); // 10 - atmospherics
-        this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 2); this.swapBase(); // 2 - diffuse
-        this.doCalcFunction(this.solver.solutesFramebuffers[this.solutesDst], 7); this.swapSolutes(); // 7 - diffuse solutes
-        this.project();
-        this.doCalcFunction(this.solver.basefluidFramebuffers[this.baseDst], 3); this.swapBase(); // 3 - advect
-        this.doCalcFunction(this.solver.solutesFramebuffers[this.solutesDst], 8); this.swapSolutes(); // 8 - advect solutes
-        this.project();
-
+        this.solver.stepSimulation();
         this.glider.stepSimulation(this.readCoords);
 
         this.doRender(); // RENDER

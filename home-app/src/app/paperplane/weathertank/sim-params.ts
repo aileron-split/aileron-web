@@ -98,6 +98,9 @@ export class WeathertankParams {
     public updraftTemperatureCutoff: number;
     public updraftTemperatureIOR: number;
 
+    public backgroundTintColor: number[];
+    public backgroundTintOpacity: number;
+
     constructor() {
         // Default values
         
@@ -175,7 +178,18 @@ export class WeathertankParams {
         this.updraftTemperatureOpacity = 0.0;
         this.updraftTemperatureCutoff = 0.0;
         this.updraftTemperatureIOR = 0.0;
+
+        // New for paperplane site integration
+        this.backgroundTintColor = [0, 0, 0];
+        this.backgroundTintOpacity = 0.0;
     }
 
+
+    public update(params: any) {
+        for (let k in params) {
+            if(k in this) 
+                this[k] = params[k];
+        }
+    }
 
 }

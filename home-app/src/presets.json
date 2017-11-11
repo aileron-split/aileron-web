@@ -318,11 +318,11 @@
         "displayOutline": false,
         "backgroundImage": "3",
         "backgroundImageTint": [
-          120.2354563148789,
-          125.00000000000001,
-          119.60018382352942
+          255,
+          255,
+          255
         ],
-        "backgroundImageBrightness": 0.11,
+        "backgroundImageBrightness": 0.0,
         "cloudColor": [
           255,
           255,

@@ -8,11 +8,15 @@ import { NewsArticle } from '../news-article';
   styleUrls: ['./news-article-preview.component.css']
 })
 export class NewsArticlePreviewComponent implements OnInit {
-  @Input() article: NewsArticle;
+    @Input() article: NewsArticle;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    openArticle() {
+        
+    }
 
 }

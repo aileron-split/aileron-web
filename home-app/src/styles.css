@@ -48,11 +48,7 @@
 
 
 body {
-  background: url('/images/004.png');
-  background-position: center -300px;
-  background-origin: content-box;
-  background-repeat: no-repeat;
-  background-color: #281e34;
+  background-color: #231a2d;
   color: whitesmoke;
   padding: 0px;
   margin: 0px;
@@ -60,67 +56,81 @@ body {
   overflow-y: scroll;
 }
 
+body > img#bg-image {
+    content: url('/images/004.png');
+    bottom: -500px;
+    /*
+    background-position: center -300px;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    */
+    position: fixed;
+    z-index: -2;
+}
+
 @media screen and (max-width: 480px) {
-  body {
-    background-image: url('/images/004-480.png');
-    background-position: center -70px;
+  body > img#bg-image {
+    content: url('/images/004-480.png');
+    bottom: -130px;
   }
 }
 
 @media screen and (min-width: 480px) and (max-width: 600px) {
-  body {
-    background-image: url('/images/004-600.png');
-    background-position: center -90px;
+  body > img#bg-image {
+    content: url('/images/004-600.png');
+    bottom: -160px;
   }
 }
 
 @media screen and (min-width: 600px) and (max-width: 800px) {
-  body {
-    background-image: url('/images/004-800.png');
-    background-position: center -120px;
+  body > img#bg-image {
+    content: url('/images/004-800.png');
+    bottom: -210px;
   }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1024px) {
-  body {
-    background-image: url('/images/004-1024.png');
-    background-position: center -160px;
+  body > img#bg-image {
+    content: url('/images/004-1024.png');
+    bottom: -270px;
   }
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1200px) {
-  body {
-    background-image: url('/images/004-1200.png');
-    background-position: center -180px;
+  body > img#bg-image {
+    content: url('/images/004-1200.png');
+    bottom: -310px;
   }
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1600px) {
-  body {
-    background-image: url('/images/004-1600.png');
-    background-position: center -240px;
+  body > img#bg-image {
+    content: url('/images/004-1600.png');
+    bottom: -420px;
   }
 }
 
-body div.bg-overlay {
-  background: url('/images/bg-overlay-001.png');
-  opacity: 0.5;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+body > div#bg-overlay {
+    /*background: url('/images/bg-overlay-001.png');*/
+    background: #74a2fd;
+    opacity: 0.3;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .content-width {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1024px;
-  overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1024px;
+    overflow-x: hidden;
 }
 
 .whiteline {
-  width: 100%;
-  height: 1px;
-  background-color: white;
-  opacity: 0.75;
+    width: 100%;
+    height: 1px;
+    background-color: white;
+    opacity: 0.75;
 }
+

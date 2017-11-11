@@ -1,5 +1,5 @@
 <div class="logo content-width">
-  <img src="/images/white-logo-horizontal.png">
+  <a [routerLink]="['/news']"><img src="/images/white-logo-horizontal.png"></a>
 </div>
 <div class="whiteline"></div>
 <div id="mainmenu">
@@ -7,8 +7,8 @@
     <nav mat-tab-nav-bar>
       <a mat-tab-link [routerLink]="['/news']" [active]="this.router.url === '/news'"> News </a>
       <a mat-tab-link [routerLink]="['/about']" [active]="this.router.url === '/about'"> About </a>
-      <a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>
-      <a mat-tab-link [routerLink]="['/blog']" [active]="this.router.url === '/blog'"> DevBlog </a>
+      <!--<a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>-->
+      <a mat-tab-link [routerLink]="['/blog']" [active]="this.router.url === '/blog'"> &lt; Dev-Blog &gt; </a>
     </nav>
   </div>
 </div>

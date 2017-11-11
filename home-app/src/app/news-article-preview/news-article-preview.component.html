@@ -1,11 +1,12 @@
-<mat-card>
-  <mat-card-title>{{article.title}}</mat-card-title>
-  <mat-card-subtitle>{{article.subtitle}}</mat-card-subtitle>
-  <mat-card-content>
-    {{article.content}}
-  </mat-card-content>
+<mat-card (click)="openArticle()">
+    <img mat-card-image src="{{article.card_mat_image}}">
+    <mat-card-title>{{article.title}}</mat-card-title>
+    <mat-card-subtitle>{{article.subtitle}}</mat-card-subtitle>
+    <mat-card-content>
+        {{article.summary}}
+    </mat-card-content>
 
-  <mat-card-subtitle>(Last update on 2017-11-04)</mat-card-subtitle>
-  <mat-card-actions></mat-card-actions>
-  <mat-card-footer></mat-card-footer>
+    <mat-card-subtitle>(Published on {{article.published_date | date}})</mat-card-subtitle>
+    <mat-card-actions></mat-card-actions>
+    <mat-card-footer></mat-card-footer>
 </mat-card>

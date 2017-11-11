@@ -10,6 +10,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             'published',
             'title',
             'subtitle',
+            'summary',
             'content',
             'card_sm_image',
             'card_mat_image',

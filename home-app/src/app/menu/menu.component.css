@@ -1,6 +1,9 @@
 div#mainmenu {
-    background: url('/images/darkorange-40.png');
+    /*background: url('/images/darkorange-40.png');*/
+    background: #fbb300;
     /*padding: 0px 20px;*/
+    text-transform: uppercase;
+    font-size: large;
 }
 
 @media screen and (max-width: 700px) {
@@ -15,5 +18,5 @@ div.logo {
 }
 
 div#mainmenu .mat-tab-link {
-    height: 42px;
+    height: 28px;
 }

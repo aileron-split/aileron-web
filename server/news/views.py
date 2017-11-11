@@ -13,3 +13,7 @@ class ArticlesViewSet (viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects
 
+    def list(self, request):
+        response = super(__class__, self).list(request)
+        response['Access-Control-Allow-Origin'] = 'http://192.168.18.107:4200' # TODO: REMOVE, TESTING ONLY
+        return response

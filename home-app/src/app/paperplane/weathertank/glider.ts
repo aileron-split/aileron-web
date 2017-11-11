@@ -146,9 +146,9 @@ export class PaperplaneGlider {
         this.modelRotationMat = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
         // Simulation
-        this.location = new Float32Array([0.5, 0.5, 0.0]);
+        this.location = new Float32Array([0.7, 0.8, 0.0]);
         this.direction = new Float32Array(3);
-        this.heading = 0.0;
+        this.heading = DEG_180;
 
         this.funFactor = 5.0;
 
@@ -388,7 +388,7 @@ export class PaperplaneGlider {
            }
         }
 
-        var linearScale = [1.0 / this.canvas.width, 1.0 / this.canvas.height];
+        var linearScale = [0.15 / this.simParams.resolution, 0.25 / this.simParams.resolution]; // [1.0 / this.canvas.width, 1.0 / this.canvas.height];
 
         this.heading = (this.heading + this.turnRate) % DEG_360;
         if (this.heading < 0.0) this.heading += DEG_360;
@@ -404,12 +404,12 @@ export class PaperplaneGlider {
 
         this.vario = newVario;
 
-        this.wetness += 0.05 * this.solutes[1];
+        this.wetness += 0.1 * this.solutes[1];
         if (this.wetness > 0.0) this.wetness -= this.dryingRate;
         if (this.wetness < 0.0) this.wetness = 0.0;
 
         this.bankAngle += 0.03 * (-15.0 * this.turnRate - this.bankAngle);
-        this.pitchAngle += 0.15 * (-400.0 * this.vario - this.pitchAngle);
+        this.pitchAngle += 0.15 * (-400.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
 
         this.wobblePhase += this.wobbleRate;
 
