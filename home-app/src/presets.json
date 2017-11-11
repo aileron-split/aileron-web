@@ -329,7 +329,7 @@
           255
         ],
         "cloudOpacity": 70,
-        "cloudCutoff": 0,
+        "cloudCutoff": 0.3,
         "cloudIOR": 0,
         "rainColor": [
           26.544117647058826,

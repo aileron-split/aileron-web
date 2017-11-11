@@ -82,7 +82,7 @@ uniform sampler2D u_ground;		// [temperature, rain, humidity, mist]
 uniform vec2 u_resolution;
 uniform vec2 u_textureRatio;
 
-vec2 linearUnScale = 256.0 / u_resolution;
+vec2 linearUnScale;
  
 // the texCoords passed in from the vertex shader.
 varying vec2 v_texCoord;
@@ -112,6 +112,8 @@ void main() {
 	vec2 onePixel_x = vec2(1.0, 0.0) * onePixel;
 	vec2 onePixel_y = vec2(0.0, 1.0) * onePixel;
 	vec2 deltaScale = vec2(1.0, 1.0) / onePixel;
+
+	linearUnScale = 256.0 / u_resolution;
 
     // Magic out of solver bounds factor
     float depth = 0.06;
@@ -206,22 +208,24 @@ void main() {
 
 
     // Sun rays localizer factor
-    float raysDepth = 0.35;
+    vec2 raysArea = vec2(0.75, 0.35);
+    vec2 raysAreaCenter = vec2(0.35, 0.4);
+    vec2 rx = groundCoord - raysAreaCenter;
     groundCoord = v_texCoord;
     groundCoord.x /= (1.0 - v_texCoord.y * 0.8);
-    gx = -0.4 + groundCoord.y;
-    gfactor = max(1.0 - (1.0 - (raysDepth + gx) / raysDepth) * (1.0 - (raysDepth + gx) / raysDepth), 0.0);
+    vec2 raysFactor = max(vec2(1.0) - (vec2(1.0) - (raysArea + rx) / raysArea) * (vec2(1.0) - (raysArea + rx) / raysArea), vec2(0.0));
 
     // Sun rays properties
-	ground = texture2D(u_ground, groundCoord) * gfactor;
+	ground = texture2D(u_ground, groundCoord) * raysFactor.x * raysFactor.y;
 
     // Sun rays blend
-    blendFactor = ground.r * 0.1;
+    blendFactor = ground.r * 0.2;
     background = (1.0 - blendFactor) * background + blendFactor * vec4(1.0, 1.0, 0.9, 1.0);
 
 
 
 	gl_FragColor = clamp((1.0 - color.a) * vec4(background.rgb, 1.0) + color.a * color, vec4(0.0), vec4(1.0));
+//	gl_FragColor = vec4(raysFactor.x * raysFactor.y);
 //	gl_FragColor = vec4(blendFactor);
 	gl_FragColor.a = 1.0;
 }
