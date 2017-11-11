@@ -5,6 +5,7 @@
 <div id="mainmenu">
   <div class="content-width">
     <nav mat-tab-nav-bar>
+      <a mat-tab-link [routerLink]="['/']" [active]="this.router.url === '/'"> Home </a>
       <a mat-tab-link [routerLink]="['/news']" [active]="this.router.url === '/news'"> News </a>
       <a mat-tab-link [routerLink]="['/about']" [active]="this.router.url === '/about'"> About </a>
       <!--<a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>-->

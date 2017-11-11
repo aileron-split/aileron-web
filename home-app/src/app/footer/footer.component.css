@@ -1,5 +1,25 @@
-#footer {
-    color: whitesmoke;
-    text-transform: uppercase;
-    font-size: small;
+#footer, #footer .mat-button {
+  color: whitesmoke;
+  text-transform: uppercase;
+  font-size: small;
+}
+
+#footer span {
+	margin-top: auto;
+	margin-bottom: auto;
+	padding-bottom: 3px;
+}
+
+.flex-container {
+	display: flex;
+}
+
+@media screen and (max-width: 800px) {
+  .flex-container {
+		display: grid;
+  }
+}
+
+.filler {
+  flex: 1 1 auto;
 }

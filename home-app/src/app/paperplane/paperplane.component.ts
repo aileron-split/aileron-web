@@ -23,12 +23,38 @@ function parseRgbColorArray(rgbColor: string): number[] {
 })
 export class PaperplaneComponent implements OnInit {
     private weathertank: Weathertank;
+    public canvasPrefs: any;
 
     constructor(private location: Location, private router: Router, private animate: AnimateService) {
+        this.updateCanvasPrefs();
+    }
+
+    private updateCanvasPrefs() {
+        let preferredCanvasWidth = $('div#bg-overlay').width();
+        let preferredOffset = preferredCanvasWidth / 16;
+        let preferredCanvasHeight = $('div#bg-overlay').height() - $('div.content').position().top - preferredOffset - 4;
+
+        let minCanvasRatio = 4.0 / 2.0;
+        if (preferredCanvasWidth / preferredCanvasHeight < minCanvasRatio) {
+            preferredCanvasHeight = preferredCanvasWidth / minCanvasRatio;
+        }
+
+        this.canvasPrefs = {
+            width: preferredCanvasWidth,
+            height: preferredCanvasHeight,
+            offset: preferredOffset
+        };
     }
 
     launchPaperplane() {
+        this.updateCanvasPrefs();
         let canvas = $('canvas#paperplane-canvas');
+
+        // Align canvas to bottom
+        canvas.css('top', ($('div#bg-overlay').height() - this.canvasPrefs.height - this.canvasPrefs.offset) + 'px');
+        canvas.css('width', this.canvasPrefs.width + 'px');
+        canvas.css('height', this.canvasPrefs.height + 'px');
+
         let canvasPos = canvas.position();
 
         let bgImage = $('body > img#bg-image');
@@ -43,8 +69,8 @@ export class PaperplaneComponent implements OnInit {
 
         this.weathertank.load(canvas[0], {
             backgroundImageUrl: extractImageUrl($('body > img#bg-image').css('content')),
-            backgroundTintColor: parseRgbColorArray($('body div#bg-overlay').css('background-color')),
-            backgroundTintOpacity: parseFloat($('body div#bg-overlay').css('opacity')),
+            backgroundTintColor: parseRgbColorArray($('div#bg-overlay').css('background-color')),
+            backgroundTintOpacity: parseFloat($('div#bg-overlay').css('opacity')),
             backgroundBox: { top: bgImagePos.top, left: bgImagePos.left, width: bgImage.width(), height: bgImage.height() },
             canvasBox: { top: canvasPos.top, left: canvasPos.left, width: canvas.width(), height: canvas.height() }
         });

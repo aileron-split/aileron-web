@@ -537,10 +537,11 @@ export class Weathertank {
     }
 
     private updateCanvas() {
-        if (this.simParams.displayOutline)
+/*        if (this.simParams.displayOutline)
             this.canvas.style.border = '1px  solid red';
         else
             this.canvas.style.border = 'none';
+        */
         if (!this.isRunning) {
             this.doRender(); // RENDER
         }

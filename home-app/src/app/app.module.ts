@@ -25,6 +25,7 @@ import { NewsArticlePreviewComponent } from './news-article-preview/news-article
 import { AnimateService } from './animate.service';
 import { NewsService } from './news.service';
 import { BlogService } from './blog.service';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { BlogService } from './blog.service';
     NewsArticleComponent,
     BlogPostComponent,
     BlogPostPreviewComponent,
-    NewsArticlePreviewComponent
+    NewsArticlePreviewComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,22 +1,23 @@
 div#mainmenu {
-    /*background: url('/images/darkorange-40.png');*/
-    background: #fbb300;
-    /*padding: 0px 20px;*/
-    text-transform: uppercase;
-    font-size: large;
-}
-
-@media screen and (max-width: 700px) {
-    .mat-tab-link {
-        min-width: 0px;
-    }
+  /*background: url('/images/darkorange-40.png');*/
+  background: #fbb300;
+  /*padding: 0px 20px;*/
+  text-transform: uppercase;
+  font-size: large;
 }
 
 div.logo {
-    padding-top: 10px;
-    padding-left: 4px;
+  padding-top: 20px;
+  padding-left: 4px;
+  padding-bottom: 7px;
 }
 
 div#mainmenu .mat-tab-link {
-    height: 28px;
+  height: 28px;
+}
+
+@media screen and (max-width: 700px) {
+  div#mainmenu .mat-tab-link {
+    min-width: 0px;
+  }
 }
