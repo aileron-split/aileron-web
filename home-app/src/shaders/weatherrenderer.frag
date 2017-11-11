@@ -217,7 +217,7 @@ void main() {
 
     // Sun rays blend
     blendFactor = ground.r * 0.1;
-    background = (1.0 - blendFactor) * background + blendFactor * vec4(0.95, 0.95, 1.0, 1.0);
+    background = (1.0 - blendFactor) * background + blendFactor * vec4(1.0, 1.0, 0.9, 1.0);
 
 
 

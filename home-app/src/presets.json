@@ -386,7 +386,7 @@
         ],
         "updraftTemperatureOpacity": 0,
         "updraftTemperatureCutoff": 0,
-        "updraftTemperatureIOR": 0.02
+        "updraftTemperatureIOR": 0.015
       }
     },
     "ClearSky1024": {

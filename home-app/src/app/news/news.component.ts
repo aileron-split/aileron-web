@@ -1,5 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
+import { AnimateService } from '../animate.service';
+
 import { NewsService } from '../news.service';
 import { NewsArticle } from '../news-article';
 
@@ -32,7 +34,7 @@ export class NewsComponent implements OnInit {
   private columns: NewsArticle[][];
   private articles: NewsArticle[];
 
-  constructor(private newsService: NewsService) { }
+  constructor(private newsService: NewsService, private animate: AnimateService) { }
 
   ngOnInit() {
     this.newsService.getNewsArticles()

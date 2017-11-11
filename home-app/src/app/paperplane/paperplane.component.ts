@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -54,8 +54,11 @@ export class PaperplaneComponent implements OnInit {
         this.animate.hideNav(this.launchPaperplane.bind(this));
     }
 
-    goBack() {
+    ngOnDestroy() {
         this.animate.restoreNav();
+    }
+
+    goBack() {
         this.location.back();
     }
 
