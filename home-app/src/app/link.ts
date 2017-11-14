@@ -4,6 +4,7 @@ export class Link {
 		public url?: string,
 		public icon?: string,
 		public tag?: string,
-		public tooltip?: string
+		public tooltip?: string,
+		public iconScale?: number
 	) {}
 }

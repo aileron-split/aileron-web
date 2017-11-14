@@ -8,7 +8,7 @@ import { BlogPost } from '../blog-post';
   styleUrls: ['./blog-post-preview.component.css']
 })
 export class BlogPostPreviewComponent implements OnInit {
-  @Input() article: BlogPost;
+  @Input() post: BlogPost;
 
   constructor() { }
 

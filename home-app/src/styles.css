@@ -55,7 +55,11 @@ body {
   font-family: 'Roboto', sans-serif;
   overflow-y: scroll;
 }
-
+/*
+body * {
+  overflow-y: visible;
+}
+*/
 body > img#bg-image {
   content: url('/images/004.png');
   bottom: -500px;
@@ -106,8 +110,9 @@ body > img#bg-image {
 }
 
 body > div#bg-overlay {
-  /*background: url('/images/bg-overlay-001.png');*/
-  background: #74a2fd;
+  /*background: url('/images/bg-overlay-001.png');
+  background: #74a2fd;*/
+  background: #487de4;
   opacity: 0.3;
   position: fixed;
   width: 100%;
@@ -127,7 +132,11 @@ body > div#bg-overlay {
 .whiteline {
   width: 100%;
   height: 1px;
-  background-color: #fbb300;
+/*  background-color: #fbb300;*/
+  background-color: whitesmoke;
   opacity: 0.75;
 }
 
+.mat-button.selected-color {
+  color: #fbb300;
+}

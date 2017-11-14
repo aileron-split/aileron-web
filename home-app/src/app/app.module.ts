@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule, MatTooltipModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -56,7 +56,8 @@ import { HomeComponent } from './home/home.component';
     MatMenuModule,
     MatTabsModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTooltipModule
   ],
   providers: [AnimateService, NewsService, BlogService],
   bootstrap: [AppComponent]

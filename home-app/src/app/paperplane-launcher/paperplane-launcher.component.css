@@ -5,7 +5,25 @@ div#container {
 
 div#container div#alignment-box {
     position: relative;
-    width: 70px;
+    width: 64px;
     margin-left: auto;
-    top: -56px;
+    top: -70px;
+}
+
+div#launcher {
+	position: absolute;
+	cursor: pointer;
+	margin-top: 5px;
+	margin-left: 0px;
+	background: url('/images/paperplane-256.png');
+	background-size: 48px 48px;
+	width: 48px;
+	height: 48px;
+}
+
+
+@media screen and (max-width: 700px) {
+	div#launcher {
+		margin-top: -45px;
+	}
 }

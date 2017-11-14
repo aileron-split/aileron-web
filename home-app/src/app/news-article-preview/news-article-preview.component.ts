@@ -16,7 +16,7 @@ export class NewsArticlePreviewComponent implements OnInit {
     }
 
     openArticle() {
-        
+        console.log('openArticle')
     }
 
 }

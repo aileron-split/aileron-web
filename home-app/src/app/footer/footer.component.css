@@ -1,25 +1,75 @@
-#footer, #footer .mat-button {
+#footer {
   color: whitesmoke;
+  background: url('/images/black-20.png');
+  height: 80em;
+
   text-transform: uppercase;
+  font-size: small;
+  margin-top: 1em;
+}
+
+.mat-button {
   font-size: small;
 }
 
-#footer span {
+p {
+  text-transform: none;
+}
+
+span {
 	margin-top: auto;
 	margin-bottom: auto;
-	padding-bottom: 3px;
+	padding-bottom: 1px;
 }
 
 .flex-container {
 	display: flex;
 }
 
+div.menu-cell.spacer {
+  width: 84px;
+}
+
 @media screen and (max-width: 800px) {
   .flex-container {
-		display: grid;
+    display: grid;
+  }
+
+  .flex-container span:first-child, .flex-container span:last-child {
+    padding-left: 16px;
+    margin-top: 1.5em;
+  }
+
+  .menu-cell:first-child {
+    padding-left: 15px;
+  }
+
+  .menu-cell a.mat-button {
+    display: block;
+  }
+
+  div.menu-cell.spacer {
+    width: 10px;
   }
 }
 
 .filler {
   flex: 1 1 auto;
+}
+
+/* menu table */ 
+
+div.menu-table {
+  display: table;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+div.menu-row {
+  display: table-row;
+}
+
+div.menu-cell {
+  display: table-cell;
+  vertical-align: top;
 }

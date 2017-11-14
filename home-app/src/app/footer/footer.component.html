@@ -1,16 +1,38 @@
-<br>
-<div class="whiteline"></div>
-<div id="footer" class="content-width">
-	<div class="flex-container">
-		<span style="padding-right: 20px;">Find us on:</span>
-		<span style="padding-bottom: 0px;">
-			<a mat-button *ngFor="let link of social" [href]="link.url">{{link.name}}</a>
-		</span>
-		<span class="filler"></span>
-		<span>Copyright &copy; Aileron d.o.o., Split, Croatia, 2017</span>
+<div id="footer">
+	<div class="whiteline"></div>
+	<div class="content-width">
+		<div class="flex-container">
+			<span style="padding-right: 20px;">Follow us on</span>
+			<span style="padding-bottom: 0px;">
+				<a mat-button *ngFor="let link of social" [href]="link.url">{{link.name}}</a>
+			</span>
+			<span class="filler"></span>
+			<span>Copyright &copy; 2017 Aileron d.o.o., Split, Croatia</span>
+		</div>
 	</div>
-	<br>
-	<br>
-	<br>
-	<br>
+
+	<div class="content-width">
+		<div class="menu-table">
+			<div class="menu-row">
+				<div class="menu-cell">
+					<a [routerLink]="['/']"><img style="opacity: 0.7;" src="/images/white-logo-horizontal.svg"></a>
+					<p>
+						Skradinska 7<br>
+						21000 Split, Croatia<br>
+					</p>
+					<p>
+						tel: +385 98 650 470<br>
+					</p>
+					<p>
+						info@aileron.hr
+					</p>
+				</div>
+				<div class="menu-cell spacer"></div>				
+				<div class="menu-cell" style="padding-top: 20px">
+					<a mat-button *ngFor="let link of menu" [routerLink]="link.url">{{link.name}}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>

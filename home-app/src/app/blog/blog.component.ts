@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AnimateService } from '../animate.service';
+
+import { BlogService } from '../blog.service';
 import { BlogPost } from '../blog-post';
 
-
-const ARTICLES: BlogPost[] = [
-  { title: 'Test One', subtitle: 'Sub test one', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-  { title: 'Test Two', subtitle: 'Sub test two', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' },
-  { title: 'Test Three', subtitle: 'Sub test one', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-  { title: 'Test Four', subtitle: 'Sub test two', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-];
 
 @Component({
   selector: 'app-blog',
@@ -17,11 +12,13 @@ const ARTICLES: BlogPost[] = [
   styleUrls: ['./blog.component.css']
 })
 export class BlogComponent implements OnInit {
-  articles = ARTICLES;
+  posts: BlogPost[];
 
-  constructor(private animate: AnimateService) { }
+  constructor(private blogService: BlogService, private animate: AnimateService) { }
 
   ngOnInit() {
+    this.blogService.getBlogPosts()
+      .then(posts => this.posts = posts);
   }
 
 }

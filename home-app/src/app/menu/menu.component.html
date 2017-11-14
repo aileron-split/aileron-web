@@ -1,16 +1,21 @@
-<div class="logo content-width">
-  <a [routerLink]="['/news']"><img src="/images/white-logo-horizontal.png"></a>
-</div>
-<div class="whiteline"></div>
+
 <div id="mainmenu">
+
   <div class="content-width">
-    <nav mat-tab-nav-bar>
-      <a mat-tab-link [routerLink]="['/']" [active]="this.router.url === '/'"> Home </a>
-      <a mat-tab-link [routerLink]="['/news']" [active]="this.router.url === '/news'"> News </a>
-      <a mat-tab-link [routerLink]="['/about']" [active]="this.router.url === '/about'"> About </a>
-      <!--<a mat-tab-link [routerLink]="['/showcase']" [active]="this.router.url === '/showcase'"> Showcase </a>-->
-      <a mat-tab-link [routerLink]="['/blog']" [active]="this.router.url === '/blog'"> &lt; Dev-Blog &gt; </a>
-    </nav>
+    <div class="menu-table">
+      <div class="menu-row">
+        <div class="menu-cell">
+          <a [routerLink]="['/']"><div class="logo"></div></a>
+        </div>
+        <div class="menu-cell menu-spacer"></div>        
+        <div class="menu-cell menu-buttons" style="padding-top: 21px">
+          <a mat-button *ngFor="let link of menu" [routerLink]="link.url" [class.selected-color]="this.router.url===link.url">{{link.name}}</a>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <app-paperplane-launcher></app-paperplane-launcher>
+
+  <div class="whiteline"></div>
 </div>
-<app-paperplane-launcher></app-paperplane-launcher>

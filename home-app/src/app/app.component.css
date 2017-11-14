@@ -10,3 +10,21 @@ div.container7 div.content {
 div.container7 div.content:last-child {
     
 }
+
+button.bottom-right {
+	top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    position: fixed;
+}
+
+button.doc-scroll {
+    background-color: #fbb300;
+	transform: scale(0);
+	transition: transform 0.2s, -webkit-transform 0.2s;
+}
+
+button.doc-scroll.scrolling {
+	transform: scale(1);
+}

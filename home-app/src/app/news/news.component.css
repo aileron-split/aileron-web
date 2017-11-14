@@ -1,17 +1,18 @@
 div.table {
     display: table;
-    overflow: hidden;
+    height: fit-content;
 }
 
 div.row {
     display: table-row;
+    height: fit-content;
 }
 
 div.cell {
     display: table-cell;
     vertical-align: top;
     width: 30%;
-    padding-right: 10px;
+    padding-right: 4px;
 }
 
 div.cell:last-child {

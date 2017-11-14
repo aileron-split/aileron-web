@@ -1,23 +1,63 @@
 div#mainmenu {
-  /*background: url('/images/darkorange-40.png');*/
+  /*background: url('/images/darkorange-40.png');
   background: #fbb300;
-  /*padding: 0px 20px;*/
+  padding: 0px 20px;
+  background: #00000022;*/
+  background: url('/images/black-20.png');
   text-transform: uppercase;
   font-size: large;
+  margin-bottom: 1em;
+}
+
+
+/* menu table */ 
+
+.mat-button {
+  font-size: small;
+}
+
+div#mainmenu a.mat-button > div.mat-button-focus-overlay {
+  display: none;
+}
+
+div.menu-table {
+  display: table;
+  margin-top: 2em;
+  margin-bottom: 1ex;
+}
+
+div.menu-row {
+  display: table-row;
+}
+
+div.menu-cell {
+  display: table-cell;
+  vertical-align: top;
+}
+
+div.menu-spacer {
+  width: 60px;
 }
 
 div.logo {
-  padding-top: 20px;
-  padding-left: 4px;
-  padding-bottom: 7px;
+  background: url("/images/white-orange-logo-horizontal.svg");
+  margin-left: 2px;
+  width: 210px;
+  height: 50px;
+  opacity: 0.8;
+  transition: opacity 0.2;
 }
 
-div#mainmenu .mat-tab-link {
-  height: 28px;
+div.logo:hover {
+  opacity: 0.95;
 }
 
 @media screen and (max-width: 700px) {
-  div#mainmenu .mat-tab-link {
-    min-width: 0px;
+  div.logo {
+    margin-left: 26px;
+  }
+
+  div.menu-row, div.menu-row > div {
+    display: block;
   }
 }

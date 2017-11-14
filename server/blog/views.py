@@ -9,12 +9,22 @@ from .serializers import PostSerializer
 
 # Blog app views.
 
-class PostsViewSet (viewsets.ModelViewSet):
+class PostsViewSet (viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects
 
     def list(self, request):
         response = super(__class__, self).list(request)
-        response['TEST'] = str(dir(request))
         response['Access-Control-Allow-Origin'] = 'http://192.168.18.107:4200' # TODO: REMOVE, TESTING ONLY
         return response
+
+
+class PublishedPostsViewSet (viewsets.ReadOnlyModelViewSet):
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(published=True).order_by('-published_date')
+
+    def list(self, request):
+        response = super(__class__, self).list(request)
+        response['Access-Control-Allow-Origin'] = 'http://192.168.18.107:4200' # TODO: REMOVE, TESTING ONLY
+        return response
+

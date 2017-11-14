@@ -1,8 +1,7 @@
 <div class="content-width">
-<br>
 <mat-list>
-  <mat-list-item *ngFor="let article of articles">
-    <app-blog-post-preview [article]="article"></app-blog-post-preview>
+  <mat-list-item *ngFor="let post of posts">
+    <app-blog-post-preview [post]="post"></app-blog-post-preview>
   </mat-list-item>
 </mat-list>
 </div>
