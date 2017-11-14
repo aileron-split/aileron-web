@@ -135,6 +135,9 @@ export class Weathertank {
         this.readCoords[0] = canvasX / this.sitePrefs.canvasBox.width;
         this.readCoords[1] = 1.0 - canvasY / this.sitePrefs.canvasBox.height;
 
+        this.sitePrefs.targetPointer.top.css('left', canvasX);
+        this.sitePrefs.targetPointer.bottom.css('left', canvasX);
+
         if (!this.isRunning) {
            this.updateReaderGUI();
         }
@@ -267,7 +270,7 @@ export class Weathertank {
         xhrFragPaperplane.send(null);
 
         {
-            var xhrPresets:any = new XMLHttpRequest();
+            var xhrPresets: any = new XMLHttpRequest();
             var checkIndexPresets = checkpoints.push(false);
             xhrPresets.open('GET', 'presets.json', true);
             xhrPresets.onload = function(e) {
@@ -276,6 +279,8 @@ export class Weathertank {
                     let clearSky = presets.remembered.ClearSky[0];
                     tank.simParams.update(clearSky);
                     tank.simParams.update(sitePrefs);
+                    tank.solverResolution = sitePrefs.solverResolution;
+                    tank.simParams.resolution = sitePrefs.solverResolution;
                     sync(checkIndexPresets);
                 }
             };
@@ -285,9 +290,6 @@ export class Weathertank {
 
 
     private initPrograms(skipStep?:boolean) {
-//        this.canvas.width = this.canvas.clientWidth;
-//        this.canvas.height = this.canvas.clientHeight;
-
         this.solver.initProgram(this.gl, this.simParams);
         this.renderer.initProgram(this.gl, this.simParams, { backgroundImage: this.backgroundImage, useLinear: this.useLinear});
         this.glider.initPaperplaneProgram(this.gl, this.canvas, this.simParams, this.marginBottomSolver - 0.015);
@@ -572,12 +574,13 @@ export class Weathertank {
             requestAnimationFrame(this.stepSimulation.bind(this));
     }
 
-
+/*
     public resolutionChanged(value) {
         if (value != this.solverResolution) {
             this.initPrograms(true);
             this.solverResolution = value;
         }
     }
+*/
 
 }

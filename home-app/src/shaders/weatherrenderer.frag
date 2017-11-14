@@ -165,7 +165,7 @@ void main() {
     bgRefraction += vec2(solutesR.r - solutesL.r, solutesU.r - solutesD.r - dambientTemp_dy) * u_relativeTemperatureIOR;
 
     float updraftTemperature = valueCutoff(solutes.r * base.y * linearUnScale.y, u_updraftTemperatureOpacity, u_updraftTemperatureCutoff);
-    bgRefraction += vec2(solutesR.r * baseR.y - solutesL.r * baseL.y, solutesU.r * baseU.y - solutesD.r * baseD.y) * deltaScale * u_updraftTemperatureIOR;
+    bgRefraction += vec2(solutesR.r * baseR.y - solutesL.r * baseL.y, solutesU.r * baseU.y - solutesD.r * baseD.y) * linearUnScale.y * deltaScale * u_updraftTemperatureIOR;
 
     float sum = pressure + updraft + cloud + rain + humidity + temperature + humidityTemperature + relativeTemperature + updraftTemperature;
     if (sum > 0.0 && v_texCoord.y > 0.0 && v_texCoord.y < 1.0) {

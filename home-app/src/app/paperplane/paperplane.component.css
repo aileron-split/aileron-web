@@ -1,7 +1,30 @@
-canvas {
+canvas#paperplane-canvas {
     background: none;
 /*    width: 100%;
 /*    height: 100%;*/
-    z-index:1;
+    z-index: -1;
     position: fixed;
+    cursor: crosshair;
 }
+
+div.paperplane-target {
+	background: url('/images/orange-arrow.svg');
+	width: 12px;
+	height: 15px;
+	vertical-align: bottom;
+	position: absolute;
+	opacity: 0.2;
+}
+
+#target-top {
+	transform: rotate(180deg);
+}
+
+#target-left {
+	transform: rotate(90deg);
+}
+
+#target-right {
+	transform: rotate(270deg);
+}
+

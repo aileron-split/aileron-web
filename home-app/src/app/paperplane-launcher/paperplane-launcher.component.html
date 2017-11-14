@@ -1,5 +1,11 @@
 <div id="container" class="content-width">
 <div id="alignment-box">
-    <div id="launcher" (click)="launchPaperplane()" aria-label="Launch paperplane!"></div>
+    <div id="launcher" 
+    	[class.no-webgl]="!isWebGLAvailable"
+    	(click)="launchPaperplane()"
+    	matTooltip="{{tooltip}}"
+    	aria-label="Launch paperplane!"
+    	>
+	</div>
 </div>
 </div>

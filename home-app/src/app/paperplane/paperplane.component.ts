@@ -25,6 +25,7 @@ export class PaperplaneComponent implements OnInit {
     private weathertank: Weathertank;
     public canvasPrefs: any;
 
+
     constructor(private location: Location, private router: Router, private animate: AnimateService) {
         this.updateCanvasPrefs();
     }
@@ -32,9 +33,9 @@ export class PaperplaneComponent implements OnInit {
     private updateCanvasPrefs() {
         let preferredCanvasWidth = $('div#bg-overlay').width();
         let preferredOffset = preferredCanvasWidth / 16;
-        let preferredCanvasHeight = $('div#bg-overlay').height() - $('div.content').position().top - preferredOffset - 4;
+        let preferredCanvasHeight = $('div#bg-overlay').height() /*- $('div.content').position().top*/ - preferredOffset;
 
-        let minCanvasRatio = 4.0 / 2.0;
+        let minCanvasRatio = 2.0;
         if (preferredCanvasWidth / preferredCanvasHeight < minCanvasRatio) {
             preferredCanvasHeight = preferredCanvasWidth / minCanvasRatio;
         }
@@ -51,7 +52,7 @@ export class PaperplaneComponent implements OnInit {
         let canvas = $('canvas#paperplane-canvas');
 
         // Align canvas to bottom
-        canvas.css('top', ($('div#bg-overlay').height() - this.canvasPrefs.height - this.canvasPrefs.offset) + 'px');
+        canvas.css('top', (0.5 * $('div#bg-overlay').height() - this.canvasPrefs.height - this.canvasPrefs.offset) + 'px');
         canvas.css('width', this.canvasPrefs.width + 'px');
         canvas.css('height', this.canvasPrefs.height + 'px');
 
@@ -59,6 +60,16 @@ export class PaperplaneComponent implements OnInit {
 
         let bgImage = $('body > img#bg-image');
         let bgImagePos = bgImage.position();
+
+        // setup target pointers
+        let targetTop = $('div#target-top');
+        let targetBottom = $('div#target-bottom');
+
+        targetBottom.css('top', canvasPos.top + canvas.height());
+
+        this.animate.blink([targetTop, targetBottom], 0.75, 0.7);
+
+
 
         if (this.weathertank) {
             this.weathertank.pause();
@@ -72,7 +83,9 @@ export class PaperplaneComponent implements OnInit {
             backgroundTintColor: parseRgbColorArray($('div#bg-overlay').css('background-color')),
             backgroundTintOpacity: parseFloat($('div#bg-overlay').css('opacity')),
             backgroundBox: { top: bgImagePos.top, left: bgImagePos.left, width: bgImage.width(), height: bgImage.height() },
-            canvasBox: { top: canvasPos.top, left: canvasPos.left, width: canvas.width(), height: canvas.height() }
+            canvasBox: { top: canvasPos.top, left: canvasPos.left, width: canvas.width(), height: canvas.height() },
+            solverResolution: Math.pow(2.0, Math.round(Math.log2(canvas.width()/ 4.0))),
+            targetPointer: { top: targetTop, bottom: targetBottom }
         });
     }
 

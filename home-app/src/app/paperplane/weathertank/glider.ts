@@ -152,7 +152,7 @@ export class PaperplaneGlider {
 
         this.funFactor = 5.0;
 
-        this.sinkRate = 0.07 * this.funFactor;
+        this.sinkRate = 0.06 * this.funFactor;
         this.turnRate = 0.0;
         this.bankAngle = 0.0;
         this.pitchAngle = 0.0;
@@ -168,10 +168,10 @@ export class PaperplaneGlider {
 
         //this.isPaused = true;
 
-        this.turnRateMax = 0.01 * this.funFactor;
+        this.turnRateMax = 0.007 * this.funFactor;
         this.dryingRate = 0.0001;
         this.speed = 0.5 * this.funFactor;
-        this.wobbleRate = 0.2;
+        this.wobbleRate = 0.15;
 
 
         this.turnRight = function() { this.turnRate = this.turnRateMax; }
@@ -388,7 +388,7 @@ export class PaperplaneGlider {
            }
         }
 
-        var linearScale = [0.15 / this.simParams.resolution, 0.25 / this.simParams.resolution]; // [1.0 / this.canvas.width, 1.0 / this.canvas.height];
+        var linearScale = [0.15 / 256.0 /*this.simParams.resolution*/, 0.25 / 256.0 /*this.simParams.resolution*/]; // [1.0 / this.canvas.width, 1.0 / this.canvas.height];
 
         this.heading = (this.heading + this.turnRate) % DEG_360;
         if (this.heading < 0.0) this.heading += DEG_360;
@@ -408,7 +408,7 @@ export class PaperplaneGlider {
         if (this.wetness > 0.0) this.wetness -= this.dryingRate;
         if (this.wetness < 0.0) this.wetness = 0.0;
 
-        this.bankAngle += 0.03 * (-15.0 * this.turnRate - this.bankAngle);
+        this.bankAngle += 0.03 * (-25.0 * this.turnRate - this.bankAngle);
         this.pitchAngle += 0.15 * (-400.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
 
         this.wobblePhase += this.wobbleRate;

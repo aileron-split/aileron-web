@@ -21,6 +21,10 @@ div#launcher {
 	height: 48px;
 }
 
+div#launcher.no-webgl {
+	opacity: 0.2;
+	/* background: url('/images/paperplane-256.png'); TODO: no webgl2 image; */
+}
 
 @media screen and (max-width: 700px) {
 	div#launcher {

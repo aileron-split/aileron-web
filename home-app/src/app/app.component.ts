@@ -16,7 +16,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   updateIsScrolling(e) {
-  	this.isScrolling = e.target.scrollingElement.scrollTop > 100;
+    if (e.target.scrollingElement) {
+  	  this.isScrolling = e.target.scrollingElement.scrollTop > 100;
+    }
   }
 
   ngOnInit() {

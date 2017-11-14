@@ -12,4 +12,6 @@ export class PaperplaneSitePrefs {
     backgroundTintOpacity: number;
     backgroundBox: Box;
     canvasBox: Box;
+    solverResolution: number;
+    targetPointer: any;
 }
