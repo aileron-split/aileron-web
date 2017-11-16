@@ -1,5 +1,15 @@
 
-mat-card {
-    height: 100%;
-    background-color: #ffffffbb;
+p, h1, h2, h3, h4 {
+	color: white;
+	font-weight: 100;
+/*	margin-left: auto;
+	margin-right: auto;
+*/	width: fit-content;
+	text-align: left;
+	/*opacity: 0.95;*/
+}
+
+h1, h2, h3, h4 {
+	text-transform: uppercase;
+	margin-bottom: 1.5em;
 }

@@ -16,7 +16,7 @@ h1, h2, h3, h4 {
 .punchline {
 	background: url('/images/black-10.png');
     padding: 1.5em 4em;
-    color: #fbb407;
+    color: #fbb300;
 
     border-radius: 10em;
 	
@@ -24,7 +24,8 @@ h1, h2, h3, h4 {
     word-spacing: 0.03em;
     line-height: 1.7em;
 
-    font-size: 1.5em;
+    font-weight: 400;
+    font-size: 1.3em;
 	max-width: 70%;
 	margin: 3em auto 4em auto;
 
