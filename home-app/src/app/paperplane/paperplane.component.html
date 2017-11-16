@@ -1,5 +1,5 @@
 <div>
 	<canvas id="paperplane-canvas" [width]="canvasPrefs.width" [height]="canvasPrefs.height" [style]="canvasPrefs.style"></canvas>
-	<div id="target-bottom" class="paperplane-target"></div>
-	<div id="target-top" class="paperplane-target"></div>
+	<div id="target-bottom" class="paperplane-target" [class.hidden]="!weathertank?.isRunning"></div>
+	<div id="target-top" class="paperplane-target" [class.hidden]="!weathertank?.isRunning"></div>
 </div>

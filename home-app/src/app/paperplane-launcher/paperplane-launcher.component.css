@@ -5,20 +5,22 @@ div#container {
 
 div#container div#alignment-box {
     position: relative;
-    width: 64px;
+    width: 84px;
     margin-left: auto;
     top: -70px;
 }
 
 div#launcher {
 	position: absolute;
+	float: right;
 	cursor: pointer;
-	margin-top: 5px;
-	margin-left: 0px;
+	top: 8px;
+	left: 0px;
 	background: url('/images/paperplane-256.png');
-	background-size: 48px 48px;
-	width: 48px;
-	height: 48px;
+	background-size: 40px 40px;
+	width: 40px;
+	height: 40px;
+	z-index: 100;
 }
 
 div#launcher.no-webgl {
@@ -26,8 +28,75 @@ div#launcher.no-webgl {
 	/* background: url('/images/paperplane-256.png'); TODO: no webgl2 image; */
 }
 
-@media screen and (max-width: 700px) {
+div.arrows-marker {
+	position: absolute;
+	/* background: #0f03;*/
+	transform: scale(1.0);
+	margin: 0px;
+    top: 3px;
+    left: -4px;
+	width: 40px;
+	height: 40px;
+	opacity: 0.2;
+	transition: opacity 0.2s;
+}
+
+div.arrows-marker.hover {
+	opacity: 1;
+}
+
+
+div.arrows-marker div {
+	background: url('/images/orange-arrow.svg');
+	width: 12px;
+	height: 15px;
+	position: absolute;
+	z-index: 10;
+	opacity: 1;
+}
+
+#marker-left {
+	transform: rotate(90deg) scale(1.0);
+	margin-top: -7.5px;
+	left: -20px;
+	top: 50%;
+}
+
+#marker-right {
+	transform: rotate(270deg) scale(1.0);
+	margin-top: -7.5px;
+	right: -20px;
+	top: 50%;
+}
+
+
+
+@media screen and (min-width: 400px) and (max-width: 700px) {
 	div#launcher {
-		margin-top: -45px;
+		top: -42px;
 	}
+
+	div.arrows-marker {
+	    top: -47px;
+	}
+}
+
+div.arrows-marker.hidden {
+	opacity: 0;
+}
+
+@media screen and (max-width: 400px) {
+	div#launcher {
+		top: -65px;
+		left: 10px;
+	}
+
+	div.arrows-marker {
+	    top: -70px;
+		left: 10px;
+	}
+}
+
+div.arrows-marker.hidden {
+	opacity: 0;
 }

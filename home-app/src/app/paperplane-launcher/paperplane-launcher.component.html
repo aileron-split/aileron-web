@@ -2,10 +2,19 @@
 <div id="alignment-box">
     <div id="launcher" 
     	[class.no-webgl]="!isWebGLAvailable"
-    	(click)="launchPaperplane()"
+    	(click)="onClick()"
+    	(mouseover)="onMouseOver()"
+    	(mouseout)="onMouseOut()"
     	matTooltip="{{tooltip}}"
     	aria-label="Launch paperplane!"
     	>
+	</div>
+	<div class="arrows-marker"
+		[class.hover]="isHovering"
+    	[class.hidden]="!isWebGLAvailable"
+		>
+		<div id="marker-left"></div>
+		<div id="marker-right"></div>
 	</div>
 </div>
 </div>

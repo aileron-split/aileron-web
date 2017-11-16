@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { AnimateService } from '../animate.service';
+import { Power2 } from 'gsap';
 import $ from 'jquery';
 
 import { Weathertank } from './weathertank/weathertank';
@@ -25,6 +26,9 @@ export class PaperplaneComponent implements OnInit {
     private weathertank: Weathertank;
     public canvasPrefs: any;
 
+    private hidenavTimeline: any;
+    private launchTimeline: any;
+    private blinkloopTimeline: any;
 
     constructor(private location: Location, private router: Router, private animate: AnimateService) {
         this.updateCanvasPrefs();
@@ -47,7 +51,8 @@ export class PaperplaneComponent implements OnInit {
         };
     }
 
-    launchPaperplane() {
+
+    startTheGame() {
         this.updateCanvasPrefs();
         let canvas = $('canvas#paperplane-canvas');
 
@@ -67,8 +72,10 @@ export class PaperplaneComponent implements OnInit {
 
         targetBottom.css('top', canvasPos.top + canvas.height());
 
-        this.animate.blink([targetTop, targetBottom], 0.75, 0.7);
 
+        // target arrows animation
+        this.blinkloopTimeline = this.animate.blinkLoop([targetTop, targetBottom], 0.75, 0.7)
+            .play();
 
 
         if (this.weathertank) {
@@ -89,16 +96,34 @@ export class PaperplaneComponent implements OnInit {
         });
     }
 
+
+    restoreLauncher() {
+        $('div#launcher').removeAttr('style');
+    }
+
     ngOnInit() {
-        this.animate.hideNav(this.launchPaperplane.bind(this));
+        if(!this.launchTimeline) this.launchTimeline = this.animate.paperplaneTakeOff($('div#launcher'))
+            .eventCallback('onComplete', this.startTheGame.bind(this))
+            ;
+        
+        if(!this.hidenavTimeline) this.hidenavTimeline = this.animate.hideNav()
+            .eventCallback('onComplete', this.launchTimeline.play.bind(this.launchTimeline))
+            .eventCallback('onReverseComplete', this.restoreLauncher, null, this);
+            ;
+
+        $('div.arrows-marker').addClass('hidden');
+        this.hidenavTimeline.play();
     }
 
     ngOnDestroy() {
-        this.animate.restoreNav();
+        if(this.blinkloopTimeline)
+            this.blinkloopTimeline.kill();
+        $('div.arrows-marker').removeClass('hidden');
+        this.hidenavTimeline.reverse(null, true);
     }
 
-    goBack() {
+/*    goBack() {
         this.location.back();
     }
-
+*/
 }

@@ -28,3 +28,6 @@ div.paperplane-target {
 	transform: rotate(270deg);
 }
 
+.hidden {
+	display: none;
+}
