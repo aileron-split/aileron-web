@@ -66,14 +66,8 @@ export class PaperplaneLauncherComponent implements OnInit {
 		if (!this.isHovering) {
 			this.isHovering = true;
 			this.hoveringTimeline.resume();
-/*				.repeat(-1)
-				.eventCallback('onComplete', null)
-				;
-*/			this.rotatingMarkersTimeline.pause();
-/*				.repeat(0)
-				.eventCallback('onComplete', this.hoveringTimeline.restart.bind(this.hoveringTimeline))
-				;
-*/		}
+			this.rotatingMarkersTimeline.pause();
+		}
 	}
 
 	onMouseOut() {
@@ -81,16 +75,8 @@ export class PaperplaneLauncherComponent implements OnInit {
 		if (this.isHovering) {
 			this.isHovering = false;
 			this.rotatingMarkersTimeline.resume();
-//				.repeat(-1)
-//				.eventCallback('onComplete', null)
-//				;
 			this.hoveringTimeline.pause();
-//				.repeat(0)
-//				.eventCallback('onComplete', this.rotatingMarkersTimeline.restart.bind(this.rotatingMarkersTimeline))
-//				;
-/*			if(!this.rotatingMarkersTimeline.isActive())
-				this.rotatingMarkersTimeline.play();
-*/		}
+		}
 	}
 
 }

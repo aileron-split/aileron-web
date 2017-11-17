@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
 		{ name: 'Linux', icon: '/images/techs/linux.png', tooltip: 'Linux' },
 		{ name: 'Windows', icon: '/images/techs/windows_logo.png', tooltip: 'Windows' },
 		{ name: 'Android', icon: '/images/techs/android-logo-white.png', tooltip: 'Android' },
+		{ name: 'Internet', icon: '/images/techs/internet-icon-white.png', tooltip: 'Internet', iconScale: 0.8 },
 	];
 
 	public languages: Link[] = [

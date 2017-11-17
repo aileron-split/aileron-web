@@ -7,7 +7,8 @@ from .models import Post
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
-    readonly_fields = ('published', 'published_date')
+    readonly_fields = ('published',)
+    prepopulated_fields = {'slug': ('title',)}
 
     list_display = ('published', 'title', 'author', 'created_date', 'modified_date', 'published_date', 'subtitle')
     list_filter = ('author',)

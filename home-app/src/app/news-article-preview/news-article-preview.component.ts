@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { NewsArticle } from '../news-article';
+
 
 @Component({
   selector: 'app-news-article-preview',
@@ -10,13 +12,13 @@ import { NewsArticle } from '../news-article';
 export class NewsArticlePreviewComponent implements OnInit {
     @Input() article: NewsArticle;
 
-    constructor() { }
+    constructor(private router: Router) { }
 
     ngOnInit() {
     }
 
     openArticle() {
-        console.log('openArticle')
+        this.router.navigate(['/news', this.article.id, this.article.slug]);
     }
 
 }

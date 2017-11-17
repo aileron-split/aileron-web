@@ -1,5 +1,36 @@
 mat-card {
-    height: 100%;
-    background-color: #ffffffbb;
-    margin-bottom: 1px;
+    color: #aaa;
+    background: url('/images/black-30.png');
+
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 0px;
+
+    transition: color 0.3s;
+}
+
+mat-card-title {
+	color: white;
+	font-size: medium;
+	text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+mat-card-subtitle {
+	color: #ccc;
+    transition: color 0.3s;
+}
+
+mat-card-footer {
+	color: #ccc;
+	font-size: small;
+	margin: 0 -24px -12px -1px;
+    transition: color 0.3s;
+}
+
+
+
+mat-card:hover {
+   /* color: #666;*/
+    background: url('/images/black-20.png');
 }

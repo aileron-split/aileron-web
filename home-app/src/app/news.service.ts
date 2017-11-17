@@ -23,6 +23,13 @@ export class NewsService {
             .catch(this.handleError);
     }
 
+    getNewsArticle(id: number): Promise<NewsArticle> {
+        return this.http.get(this.newsArticlesUrl + id + '/')
+            .toPromise()
+            .then(response => response.json() as NewsArticle)
+            .catch(this.handleError);
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occured', error);
         return Promise.reject(error.message || error);

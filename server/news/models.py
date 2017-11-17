@@ -1,13 +1,11 @@
-import datetime
-
 from django.db import models
-from django.utils import timezone
+
 
 # News app models.
-
 class Article(models.Model):
     published = models.BooleanField(default=False)
     published_date = models.DateTimeField(null=True, blank=True)
+    slug = models.SlugField(max_length=80)
     title = models.CharField(max_length=80, default='Test Article')
     subtitle = models.CharField(max_length=200, null=True, blank=True)
     summary = models.TextField(default='Test summary.')
@@ -22,7 +20,3 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-
-
-    
-

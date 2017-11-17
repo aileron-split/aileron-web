@@ -46,18 +46,19 @@ export class AnimateService {
         let right = '70deg';
         return new TimelineMax({ repeatDelay: 0, repeat: -1, yoyo: false, paused: true })
             .fromTo(elem, period, { rotation: left}, { rotation: right, ease: Sine.easeInOut })
-            .fromTo(elem, period, { rotation: right}, { rotation: left, ease: Sine.easeInOut })
+            .to(elem, period, { rotation: left, ease: Sine.easeInOut })
             ;
     }
 
     // Pulsating for paperplane icon marker arrows while hovering
     pulsateLoop(arrowL: any, arrowR: any, period: number, fromOffset: number, toOffset: number, ease?: any): TimelineMax {
         return new TimelineMax({ repeatDelay: 0, repeat: -1, yoyo: false, paused: true })
+            .add('start', 0)
+            .fromTo(arrowL, period, { left: fromOffset }, { left: toOffset, ease: (ease) ? ease : Sine.easeInOut }, 'start')
+            .fromTo(arrowR, period, { right: fromOffset }, { right: toOffset, ease: (ease) ? ease : Sine.easeInOut }, 'start')
             .add('midpoint', period)
-            .fromTo(arrowL, period, { left: fromOffset }, { left: toOffset, ease: (ease) ? ease : Sine.easeInOut }, 0)
-            .fromTo(arrowR, period, { right: fromOffset }, { right: toOffset, ease: (ease) ? ease : Sine.easeInOut }, 0)
-            .fromTo(arrowL, period, { left: toOffset }, { left: fromOffset, ease: (ease) ? ease : Sine.easeInOut }, 'midpoint')
-            .fromTo(arrowR, period, { right: toOffset }, { right: fromOffset, ease: (ease) ? ease : Sine.easeInOut }, 'midpoint')
+            .to(arrowL, period, { left: fromOffset, ease: (ease) ? ease : Sine.easeInOut }, 'midpoint')
+            .to(arrowR, period, { right: fromOffset, ease: (ease) ? ease : Sine.easeInOut }, 'midpoint')
             ;
     }
 

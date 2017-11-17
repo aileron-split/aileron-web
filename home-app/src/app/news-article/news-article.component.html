@@ -1,3 +1,16 @@
-<p>
-  news-article works!
-</p>
+<div class="content-width">
+	<h2>{{article?.title}}</h2>
+	<div *ngIf="article?.card_mat_image" [style.background]="article?.card_mat_image"></div>
+	<h3>{{article?.summary}}</h3>
+	<p>
+		{{article?.author}}{{ (article?.author && article?.published_date) ? ' | ' : ''}}{{article?.published_date|date}}<br>
+		<br>
+		{{article?.subtitle}}<br>
+<!--		{{article?.card_sm_image}}<br>
+		{{article?.card_mat_image}}<br>
+		{{article?.card_lg_image}}<br> -->
+		{{article?.card_avatar}}<br>
+	</p>
+
+	<p>{{article?.content}}</p>
+</div>

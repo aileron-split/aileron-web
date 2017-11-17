@@ -98,6 +98,8 @@ export class PaperplaneComponent implements OnInit {
 
 
     restoreLauncher() {
+        if(this.launchTimeline)
+            this.launchTimeline.kill();
         $('div#launcher').removeAttr('style');
     }
 
@@ -116,6 +118,8 @@ export class PaperplaneComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        if(this.weathertank)
+            this.weathertank.pause();
         if(this.blinkloopTimeline)
             this.blinkloopTimeline.kill();
         $('div.arrows-marker').removeClass('hidden');

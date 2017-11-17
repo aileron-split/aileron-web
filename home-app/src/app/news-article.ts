@@ -1,6 +1,8 @@
 export class NewsArticle {
+    id: number;
     published: string;
     published_date: string;
+    slug: string;
     title: string;
     subtitle: string;
     summary: string;

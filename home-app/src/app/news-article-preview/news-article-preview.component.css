@@ -31,10 +31,10 @@ mat-card-footer {
 
 
 mat-card:hover {
-    color: #666;
-    background: url('/images/white-90.png');
+   /* color: #666;*/
+    background: url('/images/black-20.png');
 }
-
+/*
 mat-card:hover mat-card-title {
     color: #111;
 }
@@ -46,3 +46,4 @@ mat-card:hover mat-card-subtitle {
 mat-card:hover mat-card-footer {
 	color: #333;
 }
+*/

@@ -150,7 +150,7 @@ export class PaperplaneGlider {
         this.direction = new Float32Array(3);
         this.heading = DEG_180;
 
-        this.funFactor = 5.0;
+        this.funFactor = 5.5;
 
         this.sinkRate = 0.06 * this.funFactor;
         this.turnRate = 0.0;
@@ -404,12 +404,12 @@ export class PaperplaneGlider {
 
         this.vario = newVario;
 
-        this.wetness += 0.1 * this.solutes[1];
+        this.wetness += 0.07 * this.solutes[1];
         if (this.wetness > 0.0) this.wetness -= this.dryingRate;
         if (this.wetness < 0.0) this.wetness = 0.0;
 
         this.bankAngle += 0.03 * (-25.0 * this.turnRate - this.bankAngle);
-        this.pitchAngle += 0.15 * (-400.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
+        this.pitchAngle += 0.15 * (-350.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
 
         this.wobblePhase += this.wobbleRate;
 

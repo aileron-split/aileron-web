@@ -22,6 +22,18 @@ span {
 	padding-bottom: 1px;
 }
 
+a.email {
+  color: whitesmoke;
+  text-decoration: none;
+  transition: font-size 0.1s;
+}
+
+a.email:hover {
+  color: white;
+  font-size: 1.05em;
+  text-decoration: none;
+}
+
 .flex-container {
 	display: flex;
 }

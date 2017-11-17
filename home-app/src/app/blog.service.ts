@@ -23,6 +23,13 @@ export class BlogService {
             .catch(this.handleError);
     }
 
+    getBlogPost(id: number): Promise<BlogPost> {
+        return this.http.get(this.blogPostsUrl + id + '/')
+            .toPromise()
+            .then(response => response.json() as BlogPost)
+            .catch(this.handleError);
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occured', error);
         return Promise.reject(error.message || error);

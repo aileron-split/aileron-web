@@ -15,7 +15,10 @@ export class NewsComponent implements OnInit {
   private columns: NewsArticle[][];
   private articles: NewsArticle[];
 
-  constructor(private newsService: NewsService, private animate: AnimateService) { }
+  constructor(
+    private newsService: NewsService,
+    private animate: AnimateService
+  ) { }
 
   ngOnInit() {
     this.newsService.getNewsArticles()
