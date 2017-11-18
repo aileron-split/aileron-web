@@ -25,6 +25,7 @@ import { NewsArticlePreviewComponent } from './news-article-preview/news-article
 import { AnimateService } from './animate.service';
 import { NewsService } from './news.service';
 import { BlogService } from './blog.service';
+import { TeamService } from './team.service';
 import { HomeComponent } from './home/home.component';
 
 
@@ -59,7 +60,7 @@ import { HomeComponent } from './home/home.component';
     MatGridListModule,
     MatTooltipModule
   ],
-  providers: [AnimateService, NewsService, BlogService],
+  providers: [AnimateService, NewsService, BlogService, TeamService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

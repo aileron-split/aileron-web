@@ -53,6 +53,7 @@ body {
   padding: 0px;
   margin: 0px;
   font-family: 'Roboto', sans-serif;
+  font-weight: 100;
   overflow-y: scroll;
 }
 /*

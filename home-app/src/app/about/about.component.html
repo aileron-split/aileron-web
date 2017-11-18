@@ -1,31 +1,74 @@
-<div class="content-width">
-    <h3>The Company</h3>
+<div class="section">
+  <div class="content-width">
 
-    <p><strong>Aileron d.o.o.</strong> (LLC) is a company based in Split, Croatia...</p>
-    <p>We enjoy in breaking new grounds in software applications connecting various technology fields in new ways. Our work is based on great experience in simulation software, games development, open technologies, 3d software, virtual reality and AI, with hands-on experience in robotics, cnc, 
-    motion capture, and a lot <a [routerLink]="['/news']">more...</a></p>
+      <h2>The Company</h2>
 
-    <div>Company data...</div>
-<!--
-    <ul>
-      <li>github</li>
-      <li>linkedin</li>
-      <li>facebook</li>
-      <li>youtube</li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
--->
-    <h3>The Team</h3>
-    
-    <p><strong>Davor Bokun</strong> is a senior software development engineer with engineer's degree in Computer Science and notable experience in full life cycle of the software design process including requirements definition, prototyping, proof of concept, software architecture design, interface implementation, testing, and maintenance. Certified hang gliding flight instructor, a father, dungeon master, gamer, computerphile, and science enthusiast. </p>
+      <p><strong>Aileron d.o.o.</strong> (LLC) is a small software engineering company based in Split, Croatia.</p>
 
-    <h3>Location</h3>
+      <p>Founded in 2016 by at the time senior software engineer and Compute Science graduate Davor Bokun. The company started by offering software development services to companies from around the globe mostly in domain of web based business applications and product customization interfaces.</p>
 
-    <div>The map...</div>
+      <p>Aileron also actively supports and participates in science and technical education events on national level, showing off experimental software products and equipment developed in house, and sharing knowledge and experience.</p>
 
-    <h3></h3>
+      <p>We enjoy in breaking new grounds in software applications connecting various technology fields in new ways. Our work is based on great experience in simulation software, games development, open technologies, 3d software, virtual reality and AI, with hands-on experience in robotics, cnc, 
+      motion capture, and a lot <a class="more" [routerLink]="['/news']">more...</a></p>
+
+      <div class="company-data">
+        <div><span class="bold">Aileron d.o.o.</span></div>
+        <div><span>Skradinska 7, 21000 Split</span></div>
+        <div><span>Croatia</span></div>
+        <div><span>Tax ID</span> <span class="bold">HR 48392578732</span></div>
+        <div><span>IBAN</span> <span class="bold">HR97 2340 0091 1107 7312 8</span></div>
+        <div><span>SWIFT CODE</span> <span class="bold">PBZGHR2X</span></div>
+      </div>
+  <!--
+      <ul>
+        <li>github</li>
+        <li>linkedin</li>
+        <li>facebook</li>
+        <li>youtube</li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+  -->
+  </div>
+</div>
+
+<div class="section black-10">
+  <div class="content-width">
+
+      <h2>The Team</h2>
+
+      <h4>Employees</h4>
+
+      <p>The company currently has one full-time employee...</p>
+
+      <div *ngFor="let employee of employees" class="team-card">
+        <div class="avatar" [style.background-image]="avatarUrlString(employee)"></div>  
+        <p><strong>{{employee.name}} {{employee.last_name}}</strong> {{employee.summary}}</p>
+      </div>
+
+      <h4>Associates</h4>
+
+      <p>A non-zero number of people contribute occasionaly in one way or the other on varius projects. Be it by suggestions, reviews, volunteering on public presentations, software testing, or just playing games. This list is in no way complete, but here they are to name a few... </p>
+      
+      <div *ngFor="let associate of associates" class="team-card">
+        <div class="avatar" [style.background-image]="avatarUrlString(associate)"></div>  
+        <p><strong>{{associate.name}} {{associate.last_name}}</strong> {{associate.summary}}</p>
+      </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="content-width">
+
+      <h2>Where To Find Us</h2>
+
+      <div>The map...</div>
+
+      <h3></h3>
 
 
+  </div>
 </div>

@@ -23,13 +23,13 @@ span {
 }
 
 a.email {
-  color: whitesmoke;
+  color: darkorange;
   text-decoration: none;
   transition: font-size 0.1s;
 }
 
 a.email:hover {
-  color: white;
+  color: darkorange;
   font-size: 1.05em;
   text-decoration: none;
 }
