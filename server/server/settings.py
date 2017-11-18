@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'news.apps.NewsConfig',
     'blog.apps.BlogConfig',
+    'team.apps.TeamConfig',
 ]
 
 MIDDLEWARE = [
