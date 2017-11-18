@@ -48,12 +48,13 @@ a.more {
 }
 
 div.avatar {
-	background-color: #ffffff11;
+	background-image: url(/images/white-10.png);
 	background-size: 100px 100px;
 	width: 100px;
 	height: 100px;
 	float: left;
 	margin-right: 1em;
+	margin-left: 5px;
 	border-radius: 100px;
 }
 
@@ -79,10 +80,9 @@ span.bold {
 }
 
 @media screen and (max-width: 1024px) {
-
-	p {
-		padding-left: 1em;
-		padding-right: 1em;
+	p, h1, h2, h3, h4 {
+		padding-left: 12px;
+		padding-right: 12px;
 	}
 }
 

@@ -87,12 +87,12 @@ div.arrows-marker.hidden {
 
 @media screen and (max-width: 400px) {
 	div#launcher {
-		top: -65px;
+		top: -50px;
 		left: 10px;
 	}
 
 	div.arrows-marker {
-	    top: -70px;
+	    top: -55px;
 		left: 10px;
 	}
 }
