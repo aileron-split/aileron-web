@@ -1,9 +1,15 @@
+from server import settings
 from rest_framework import serializers
 
 from .models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
+    card_sm_image = serializers.SerializerMethodField()
+    card_mat_image = serializers.SerializerMethodField()
+    card_lg_image = serializers.SerializerMethodField()
+    card_avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = Post
         fields = (
@@ -23,8 +29,25 @@ class PostSerializer(serializers.ModelSerializer):
             'modified_date',
         )
 
+    def get_card_sm_image(self, obj):
+        return settings.MEDIA_URL + obj.card_sm_image.name if obj.card_sm_image.name else None
+
+    def get_card_mat_image(self, obj):
+        return settings.MEDIA_URL + obj.card_mat_image.name if obj.card_mat_image.name else None
+
+    def get_card_lg_image(self, obj):
+        return settings.MEDIA_URL + obj.card_lg_image.name if obj.card_lg_image.name else None
+
+    def get_card_avatar(self, obj):
+        return settings.MEDIA_URL + obj.card_avatar.name if obj.card_avatar.name else None
+
 
 class PostDetailSerializer(serializers.ModelSerializer):
+    card_sm_image = serializers.SerializerMethodField()
+    card_mat_image = serializers.SerializerMethodField()
+    card_lg_image = serializers.SerializerMethodField()
+    card_avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = Post
         fields = (
@@ -44,4 +67,16 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'created_date',
             'modified_date',
         )
+
+    def get_card_sm_image(self, obj):
+        return settings.MEDIA_URL + obj.card_sm_image.name if obj.card_sm_image.name else None
+
+    def get_card_mat_image(self, obj):
+        return settings.MEDIA_URL + obj.card_mat_image.name if obj.card_mat_image.name else None
+
+    def get_card_lg_image(self, obj):
+        return settings.MEDIA_URL + obj.card_lg_image.name if obj.card_lg_image.name else None
+
+    def get_card_avatar(self, obj):
+        return settings.MEDIA_URL + obj.card_avatar.name if obj.card_avatar.name else None
 

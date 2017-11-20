@@ -1,9 +1,12 @@
+from server import settings
 from rest_framework import serializers
 
 from .models import Member
 
 
 class MemberSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = Member
         fields = (
@@ -21,8 +24,13 @@ class MemberSerializer(serializers.ModelSerializer):
             'modified_date',
         )
 
+    def get_avatar(self, obj):
+        return settings.MEDIA_URL + obj.avatar.name if obj.avatar.name else None
+
 
 class MemberDetailSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = Member
         fields = (
@@ -40,4 +48,7 @@ class MemberDetailSerializer(serializers.ModelSerializer):
             'created_date',
             'modified_date',
         )
+
+    def get_avatar(self, obj):
+        return settings.MEDIA_URL + obj.avatar.name if obj.avatar.name else None
 
