@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
+import { environment } from '../environments/environment';
+
 import 'rxjs/add/operator/toPromise';
 
 import { BlogPost } from './blog-post';
@@ -8,10 +10,9 @@ import { BlogPost } from './blog-post';
 
 @Injectable()
 export class BlogService {
-	private blogPostsUrl = 'http://192.168.18.107:4242/api/blog/posts/';
+	private blogPostsUrl = environment.apiUrl + 'blog/posts/';
 	private headers = new Headers({
 	    'Content-Type': 'application/json',
-	    'Access-Control-Allow-Origin': 'http://192.168.18.107:4242'
 	});
 
 	constructor(private http: Http) { }

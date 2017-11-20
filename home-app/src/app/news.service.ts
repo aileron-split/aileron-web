@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
+import { environment } from '../environments/environment';
+
 import 'rxjs/add/operator/toPromise';
 
 import { NewsArticle } from './news-article';
@@ -8,10 +10,9 @@ import { NewsArticle } from './news-article';
 
 @Injectable()
 export class NewsService {
-    private newsArticlesUrl = 'http://192.168.18.107:4242/api/news/articles/';
+    private newsArticlesUrl = environment.apiUrl + 'news/articles/';
     private headers = new Headers({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://192.168.18.107:4242'
     });
 
     constructor(private http: Http) { }

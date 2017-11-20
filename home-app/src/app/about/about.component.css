@@ -47,6 +47,11 @@ a.more {
   text-decoration: none;
 }
 
+:host ::ng-deep div.team-card a {
+  color: darkorange;
+  text-decoration: none;
+}
+
 div.avatar {
 	background-image: url(/images/white-10.png);
 	background-size: 100px 100px;

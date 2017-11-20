@@ -12,8 +12,8 @@ import { TeamService } from '../team.service';
   	styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-	private employees: TeamMember[];
-	private associates: TeamMember[];
+	employees: TeamMember[];
+	associates: TeamMember[];
 
   	constructor(
   		private animate: AnimateService,

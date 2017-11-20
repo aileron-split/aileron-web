@@ -5,7 +5,7 @@
 
       <p><strong>Aileron d.o.o.</strong> (LLC) is a small software engineering company based in Split, Croatia.</p>
 
-      <p>Founded in 2016 by, at the time, a senior software engineer and Compute Science graduate Davor Bokun. The company started by offering software development services to clients all around the globe mostly in domain of web based business applications and advanced product customization interfaces.</p>
+      <p>Founded in 2016 by, at the time, a senior software engineer and Compute Science graduate Davor Bokun. The company started by offering software development services to clients all around the globe mostly in the domain of web based business applications and advanced product customization interfaces.</p>
 
       <p>Aileron also actively supports and participates in science and technical education events on national level, showing off experimental software products and equipment developed in house, whilst sharing knowledge and experience as well.</p>
 
@@ -44,7 +44,7 @@
 
       <div *ngFor="let employee of employees" class="team-card">
         <div class="avatar" [style.background-image]="avatarUrlString(employee)"></div>  
-        <p><strong>{{employee.name}} {{employee.last_name}}</strong> {{employee.summary}}</p>
+        <p><strong>{{employee.name}} {{employee.last_name}}</strong> <span [innerHtml]='employee.summary'></span></p>
       </div>
 
       <h4>Associates</h4>
@@ -53,7 +53,7 @@
       
       <div *ngFor="let associate of associates" class="team-card">
         <div class="avatar" [style.background-image]="avatarUrlString(associate)"></div>  
-        <p><strong>{{associate.name}} {{associate.last_name}}</strong> {{associate.summary}}</p>
+        <p><strong>{{associate.name}} {{associate.last_name}}</strong>  <span [innerHtml]='associate.summary'></span></p>
       </div>
 
   </div>

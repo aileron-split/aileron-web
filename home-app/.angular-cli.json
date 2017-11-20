@@ -14,7 +14,9 @@
         "images",
         "shaders",
         "3rd",
-        "presets.json"
+        "presets.json",
+        ".htaccess",
+        "media"
       ],
       "index": "index.html",
       "main": "main.ts",

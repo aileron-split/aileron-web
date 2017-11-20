@@ -46,7 +46,7 @@ export class Weathertank {
     private readSolutes: Float32Array;
     private solverToCanvasPixelScale: number[];
 
-    private isRunning: boolean;
+    public isRunning: boolean;
     private requestId: any;
 
     // Solver's grid position on canvas

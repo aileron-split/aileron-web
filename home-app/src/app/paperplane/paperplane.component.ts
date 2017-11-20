@@ -23,7 +23,7 @@ function parseRgbColorArray(rgbColor: string): number[] {
     styleUrls: ['./paperplane.component.css']
 })
 export class PaperplaneComponent implements OnInit {
-    private weathertank: Weathertank;
+    public weathertank: Weathertank;
     public canvasPrefs: any;
 
     private hidenavTimeline: any;

@@ -12,7 +12,7 @@ import { NewsArticle } from '../news-article';
   styleUrls: ['./news.component.css']
 })
 export class NewsComponent implements OnInit {
-  private columns: NewsArticle[][];
+  columns: NewsArticle[][];
   private articles: NewsArticle[];
 
   constructor(

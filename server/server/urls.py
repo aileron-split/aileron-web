@@ -21,7 +21,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/news/', include('news.urls')),
-    url(r'^api/blog/', include('blog.urls')),
-    url(r'^api/team/', include('team.urls')),
+    url(r'^news/', include('news.urls')),
+    url(r'^blog/', include('blog.urls')),
+    url(r'^team/', include('team.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

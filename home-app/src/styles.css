@@ -48,7 +48,9 @@
 
 
 body {
-  background-color: #231a2d;
+  background-color: #281e34;
+  background-image: url('/images/bg-color.png');
+  background-repeat: repeat;
   color: whitesmoke;
   padding: 0px;
   margin: 0px;
@@ -63,6 +65,9 @@ body * {
 */
 body > img#bg-image {
   content: url('/images/004.png');
+  background-image: url('/images/004.png');
+  width: 1920px;
+  height: 1920px;
   bottom: -500px;
   position: fixed;
   z-index: -2;
@@ -72,6 +77,9 @@ body > img#bg-image {
 @media screen and (max-width: 480px) {
   body > img#bg-image {
     content: url('/images/004-480.png');
+    background-image: url('/images/004-480.png');
+    width: 480px;
+    height: 480px;
     bottom: -130px;
   }
 }
@@ -79,6 +87,9 @@ body > img#bg-image {
 @media screen and (min-width: 480px) and (max-width: 600px) {
   body > img#bg-image {
     content: url('/images/004-600.png');
+    background-image: url('/images/004-600.png');
+    width: 600px;
+    height: 600px;
     bottom: -160px;
   }
 }
@@ -86,6 +97,9 @@ body > img#bg-image {
 @media screen and (min-width: 600px) and (max-width: 800px) {
   body > img#bg-image {
     content: url('/images/004-800.png');
+    background-image: url('/images/004-800.png');
+    width: 800px;
+    height: 800px;
     bottom: -210px;
   }
 }
@@ -93,6 +107,9 @@ body > img#bg-image {
 @media screen and (min-width: 800px) and (max-width: 1024px) {
   body > img#bg-image {
     content: url('/images/004-1024.png');
+    background-image: url('/images/004-1024.png');
+    width: 1024px;
+    height: 1024px;
     bottom: -270px;
   }
 }
@@ -100,6 +117,9 @@ body > img#bg-image {
 @media screen and (min-width: 1024px) and (max-width: 1200px) {
   body > img#bg-image {
     content: url('/images/004-1200.png');
+    background-image: url('/images/004-1200.png');
+    width: 1200px;
+    height: 1200px;
     bottom: -310px;
   }
 }
@@ -107,6 +127,9 @@ body > img#bg-image {
 @media screen and (min-width: 1200px) and (max-width: 1600px) {
   body > img#bg-image {
     content: url('/images/004-1600.png');
+    background-image: url('/images/004-1600.png');
+    width: 1600px;
+    height: 1600px;
     bottom: -420px;
   }
 }
