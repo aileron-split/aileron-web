@@ -28,6 +28,21 @@ class MemberSerializer(serializers.ModelSerializer):
         return settings.MEDIA_URL + obj.avatar.name if obj.avatar.name else None
 
 
+class MemberShortSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Member
+        fields = (
+            'name',
+            'avatar',
+            'status',
+        )
+
+    def get_avatar(self, obj):
+        return settings.MEDIA_URL + obj.avatar.name if obj.avatar.name else None
+
+
 class MemberDetailSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
 

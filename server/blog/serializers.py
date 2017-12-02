@@ -1,14 +1,19 @@
-from server import settings
 from rest_framework import serializers
 
+from server import settings
 from .models import Post
+
+from team.serializers import MemberShortSerializer
+from gallery.serializers import AlbumSerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
     card_sm_image = serializers.SerializerMethodField()
     card_mat_image = serializers.SerializerMethodField()
     card_lg_image = serializers.SerializerMethodField()
-    card_avatar = serializers.SerializerMethodField()
+
+    author = MemberShortSerializer(many=False, read_only=True)
+    album = AlbumSerializer(many=False, read_only=True)
 
     class Meta:
         model = Post
@@ -23,8 +28,8 @@ class PostSerializer(serializers.ModelSerializer):
             'card_sm_image',
             'card_mat_image',
             'card_lg_image',
+            'album',
             'author',
-            'card_avatar',
             'created_date',
             'modified_date',
         )
@@ -38,15 +43,14 @@ class PostSerializer(serializers.ModelSerializer):
     def get_card_lg_image(self, obj):
         return settings.MEDIA_URL + obj.card_lg_image.name if obj.card_lg_image.name else None
 
-    def get_card_avatar(self, obj):
-        return settings.MEDIA_URL + obj.card_avatar.name if obj.card_avatar.name else None
-
 
 class PostDetailSerializer(serializers.ModelSerializer):
     card_sm_image = serializers.SerializerMethodField()
     card_mat_image = serializers.SerializerMethodField()
     card_lg_image = serializers.SerializerMethodField()
-    card_avatar = serializers.SerializerMethodField()
+
+    author = MemberShortSerializer(many=False, read_only=True)
+    album = AlbumSerializer(many=False, read_only=True)
 
     class Meta:
         model = Post
@@ -62,8 +66,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'card_sm_image',
             'card_mat_image',
             'card_lg_image',
+            'album',
             'author',
-            'card_avatar',
             'created_date',
             'modified_date',
         )
@@ -76,7 +80,4 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_card_lg_image(self, obj):
         return settings.MEDIA_URL + obj.card_lg_image.name if obj.card_lg_image.name else None
-
-    def get_card_avatar(self, obj):
-        return settings.MEDIA_URL + obj.card_avatar.name if obj.card_avatar.name else None
 

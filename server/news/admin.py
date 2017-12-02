@@ -12,7 +12,7 @@ class ArticleAdmin(admin.ModelAdmin):
     
     list_display = ('published', 'title', 'author', 'created_date', 'modified_date', 'published_date', 'subtitle')
     list_filter = ('author',)
-    search_fields = ('title', 'subtitle', 'author', 'summary', 'content')
+    search_fields = ('title', 'subtitle', 'author__name', 'author__last_name', 'author__middle_name', 'summary', 'content')
     list_display_links = ('title',)
 
     actions = ('make_published', 'make_not_published')
@@ -24,3 +24,4 @@ class ArticleAdmin(admin.ModelAdmin):
     def make_not_published(modeladmin, request, queryset):
         queryset.update(published=False, published_date=None)
     make_not_published.short_description = 'Unpublish selected news articles'
+
