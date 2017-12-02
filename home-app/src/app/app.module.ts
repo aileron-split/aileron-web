@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule, MatTooltipModule } from '@angular/material';
+import { LightboxModule } from 'angular2-lightbox';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
@@ -27,6 +28,10 @@ import { NewsService } from './news.service';
 import { BlogService } from './blog.service';
 import { TeamService } from './team.service';
 import { HomeComponent } from './home/home.component';
+import { SafePipe } from './safe.pipe';
+import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { FilterComponent } from './filter/filter.component';
+import { ResolveTagsPipe } from './resolve-tags.pipe';
 
 
 @NgModule({
@@ -45,7 +50,11 @@ import { HomeComponent } from './home/home.component';
     BlogPostComponent,
     BlogPostPreviewComponent,
     NewsArticlePreviewComponent,
-    HomeComponent
+    HomeComponent,
+    SafePipe,
+    BreadcrumbsComponent,
+    FilterComponent,
+    ResolveTagsPipe,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +67,8 @@ import { HomeComponent } from './home/home.component';
     MatTabsModule,
     MatCardModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    LightboxModule,
   ],
   providers: [AnimateService, NewsService, BlogService, TeamService],
   bootstrap: [AppComponent]

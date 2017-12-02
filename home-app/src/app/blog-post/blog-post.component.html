@@ -1,16 +1,34 @@
-<div class="content-width">
-	<h2>{{post?.title}}</h2>
-	<img *ngIf="post?.card_mat_image" [src]="post?.card_mat_image">
-	<h3>{{post?.summary}}</h3>
-	<p>
-		{{post?.author}}{{ (post?.author && post?.published_date) ? ' | ' : ''}}{{post?.published_date|date}}<br>
-		<br>
-		{{post?.subtitle}}<br>
-<!--		{{post?.card_sm_image}}<br>
-		{{post?.card_mat_image}}<br>
-		{{post?.card_lg_image}}<br> -->
-		{{post?.card_avatar}}<br>
-	</p>
+<div>
+	<app-breadcrumbs
+		upTarget="/blog"
+		upTooltip="Back to Blog"
+		[prevTarget]="(post?.prevTarget) ? '/blog|' + post?.prevTarget : null"
+		[prevTooltip]="'Jump to post: ' + post?.prevCaption"
+		[nextTarget]="(post?.nextTarget) ? '/blog|' + post?.nextTarget : null"
+		[nextTooltip]="'Jump to post: ' + post?.nextCaption"
+	></app-breadcrumbs>
 
-	<p>{{post?.content}}</p>
-</div>
+	<div class="content-width">
+		<h2>{{post?.title}}</h2>
+		<div class="headline">
+			<img *ngIf="post?.card_mat_image" [src]="post?.card_mat_image | safe" class="headline">
+		</div>
+		<h3>{{post?.summary}}</h3>
+		<p>
+			<img *ngIf="post?.author?.avatar" [src]="post?.author?.avatar | safe" class="card-avatar"> {{post?.author.name}}{{ (post?.author && post?.published_date) ? ' | ' : ''}}{{post?.published_date|date}}<br>
+			<br>
+			{{post?.subtitle}}<br>
+		</p>
+	</div>
+
+	<div class="section black-10">
+		<div class="content-width">
+			<div class="post-content" [innerHtml]="post?.content | resolveTags:post?.albumDict"></div>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="content-width">
+			<iframe *ngIf="post?.video" [src]="post?.video | safe" class="video" frameborder="0" allowfullscreen></iframe>
+		</div>
+	</div>

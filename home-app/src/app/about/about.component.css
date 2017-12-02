@@ -46,7 +46,13 @@ a.more {
   color: darkorange;
   text-decoration: none;
 }
-
+/*
+div.thankyou {
+	width: 100%;
+	text-align: center;
+	line-height: 1.6em;
+}
+*/
 :host ::ng-deep div.team-card a {
   color: darkorange;
   text-decoration: none;
@@ -60,7 +66,7 @@ div.avatar {
 	float: left;
 	margin-right: 1em;
 	margin-left: 5px;
-	border-radius: 100px;
+	border-radius: 50%;
 }
 
 div.team-card {

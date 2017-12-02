@@ -1,5 +1,9 @@
 export class NewsArticle {
     id: number;
+    prevTarget: string;
+    prevCaption: string;
+    nextTarget: string;
+    nextCaption: string;
     published: string;
     published_date: string;
     slug: string;
@@ -10,8 +14,11 @@ export class NewsArticle {
     card_sm_image: string;
     card_mat_image: string;
     card_lg_image: string;
-    author: string;
-    card_avatar: string;
+    video: string;
+    album: any;
+    albumDict: any;
+    albumList: any[];
+    author: any;
     created_date: string;
     modified_date: string;
 }

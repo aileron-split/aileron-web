@@ -1,0 +1,27 @@
+
+:host > div:first-child {
+	margin-top: 5px;
+}
+
+div.breadcrumb-nav {
+	display: inline;
+	fill: white;
+}
+
+div.breadcrumb-nav.disabled {
+	fill: #ffffff33;
+	cursor: default;
+}
+
+div.up-button {
+	cursor: pointer;
+}
+
+div.prev-button {
+	cursor: pointer;
+}
+
+div.next-button {
+	cursor: pointer;
+	float: right;
+}

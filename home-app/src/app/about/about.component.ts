@@ -14,6 +14,9 @@ import { TeamService } from '../team.service';
 export class AboutComponent implements OnInit {
 	employees: TeamMember[];
 	associates: TeamMember[];
+	thanks: string[];
+
+	thankyou: string;
 
   	constructor(
   		private animate: AnimateService,
@@ -23,6 +26,7 @@ export class AboutComponent implements OnInit {
   	ngOnInit() {
 		this.team.getEmployees().then(employees => this.employees = employees);
 		this.team.getAssociates().then(associates => this.associates = associates);
+		this.team.getThanks().then(thanks => this.thankyou = thanks.join(', '));
   	}
 
 	avatarUrlString(member): string {

@@ -1,16 +1,38 @@
-<div class="content-width">
-	<h2>{{article?.title}}</h2>
-	<div *ngIf="article?.card_mat_image" [style.background]="article?.card_mat_image"></div>
-	<h3>{{article?.summary}}</h3>
-	<p>
-		{{article?.author}}{{ (article?.author && article?.published_date) ? ' | ' : ''}}{{article?.published_date|date}}<br>
-		<br>
-		{{article?.subtitle}}<br>
-<!--		{{article?.card_sm_image}}<br>
-		{{article?.card_mat_image}}<br>
-		{{article?.card_lg_image}}<br> -->
-		{{article?.card_avatar}}<br>
-	</p>
+<div id="pan-target" [style.left.px]="panX">
+	<div>
+		<app-breadcrumbs
+			upTarget="/news"
+			upTooltip="Back to News"
+			[prevTarget]="(article?.prevTarget) ? '/news|' + article?.prevTarget : null"
+			[prevTooltip]="'Jump to article: ' + article?.prevCaption"
+			[nextTarget]="(article?.nextTarget) ? '/news|' + article?.nextTarget : null"
+			[nextTooltip]="'Jump to article: ' + article?.nextCaption"
+		></app-breadcrumbs>
 
-	<p>{{article?.content}}</p>
+		<div class="content-width">
+			<h2>{{article?.title}}</h2>
+			<div class="headline">
+				<img *ngIf="article?.card_lg_image" [src]="article?.card_lg_image | safe" (click)="openGallery(0)" class="headline">
+			</div>
+			<h3>{{article?.summary}}</h3>
+			<p>
+				<img *ngIf="article?.author?.avatar" [src]="article?.author?.avatar | safe" class="card-avatar"> {{article?.author?.name}}{{ (article?.author && article?.published_date) ? ' | ' : ''}}{{article?.published_date|date}}<br>
+				<br>
+				{{article?.subtitle}}
+			</p>
+
+	  	</div>
+	</div>
+
+	<div class="section black-10">
+	  	<div class="content-width">
+			<div class="article-content" [innerHtml]="article?.content | resolveTags:article?.albumDict"></div>
+	  	</div>
+	</div>
+
+	<div class="section">
+		<div class="content-width">
+			<iframe *ngIf="article?.video" [src]="article?.video | safe" class="video" frameborder="0" allowfullscreen></iframe>
+	  	</div>
+	</div>
 </div>

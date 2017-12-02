@@ -6,7 +6,7 @@
         {{article.summary}}
     </mat-card-content>
 
-    <mat-card-footer>{{article.author}} <span *ngIf="article.author">|</span> {{article.published_date | date}}</mat-card-footer>
+    <mat-card-footer><span *ngIf="article.author">{{article.author.name}} |</span> {{article.published_date | date}}</mat-card-footer>
  <!--   <mat-card-actions></mat-card-actions>
     <mat-card-footer></mat-card-footer>
 -->

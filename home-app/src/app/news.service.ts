@@ -15,19 +15,63 @@ export class NewsService {
         'Content-Type': 'application/json',
     });
 
+    private articlesCache: NewsArticle[];
+
     constructor(private http: Http) { }
 
     getNewsArticles(): Promise<NewsArticle[]> {
+        let theService = this;
         return this.http.get(this.newsArticlesUrl)
             .toPromise()
-            .then(response => response.json() as NewsArticle[])
+            .then(function(response): NewsArticle[] {
+                theService.articlesCache = response.json() as NewsArticle[];
+                return theService.articlesCache;
+            })
             .catch(this.handleError);
     }
 
     getNewsArticle(id: number): Promise<NewsArticle> {
+        let articlesCache = this.articlesCache;
         return this.http.get(this.newsArticlesUrl + id + '/')
             .toPromise()
-            .then(response => response.json() as NewsArticle)
+            .then(function(response): NewsArticle {
+                let article: NewsArticle = response.json() as NewsArticle;
+
+                // Process article's album and add list and dictionary forms
+                article.albumList = [];
+                article.albumDict = [];
+                if (article.album) {
+                    for (let image of article.album.images) {
+                        article.albumDict[image.slug] = {
+                            index: article.albumList.length,
+                            src: image.image,
+                            caption: image.summary,
+                        };
+                        article.albumList.push({
+                            src: image.image,
+                            caption: image.summary,
+                            // thumb: ''
+                        });
+                    }
+                }
+                // Derive previous and next article from articlesCache
+                if (articlesCache) {
+                    let cacheIndex = articlesCache.findIndex(a => a.id === id);
+                    if (cacheIndex !== -1) {
+                        if (cacheIndex > 0) {
+                            let prevArticle = articlesCache[cacheIndex - 1];
+                            article.prevTarget = prevArticle.id + '|' + prevArticle.slug;
+                            article.prevCaption = prevArticle.title;
+                        }
+                        if (cacheIndex < articlesCache.length - 1) {
+                            let nextArticle = articlesCache[cacheIndex + 1];
+                            article.nextTarget = nextArticle.id + '|' + nextArticle.slug;
+                            article.nextCaption = nextArticle.title;
+                        }
+                    }
+                }
+                return article;
+            })
             .catch(this.handleError);
     }
 

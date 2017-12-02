@@ -5,3 +5,56 @@
 		padding-right: 12px;
 	}
 }
+
+div.headline {
+	overflow: hidden;
+	height: fit-content;
+	max-height: 400px;
+}
+
+img.headline {
+	width:100%;
+	max-width:1024px;
+}
+
+
+div.black-10 {
+	background: url(/images/black-10.png); 
+
+}
+
+div.section {
+	padding-top: 1em;
+	padding-bottom: 2em;
+}
+
+img.card-avatar {
+	width:28px;
+	border-radius: 14px;
+}
+
+iframe.video {
+	width:100%;
+	max-width:1024px;
+	height: 400px;
+}
+
+:host ::ng-deep div.post-content img {
+	width: 306px;
+	cursor: pointer;
+}
+
+:host ::ng-deep div.post-content img.left {
+	float: left;
+	margin-right: 1em;
+}
+
+:host ::ng-deep div.post-content img.right {
+	float: right;
+	margin-left: 1em;
+}
+
+:host ::ng-deep div.post-content img.wide {
+	width: 100%;
+	max-width: 1024px;
+}
