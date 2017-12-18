@@ -1,41 +1,20 @@
 <div class="content-width">
 
-	<div class="prev-button breadcrumb-nav" [class.disabled]="!prevTarget" (click)="goPrev()" [attr.aria-label]="prevTooltip" [matTooltip]="prevTooltip">
+	<div class="prev-button breadcrumb-nav" [class.disabled]="!prevTarget" (click)="goPrev()" [attr.aria-label]="prevTooltip" [matTooltip]="prevTarget ? prevTooltip : ''">
 		<svg height="42" width="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false">
-		    <filter id="shadow" x="0" y="0" width="200%" height="200%">
-			    <feOffset result="offOut" in="SourceGraphic" dx="2" dy="2" />
-			    <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" />
-			    <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="5" />
-			    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-		    </filter>
-		    <!-- <path d="M10 21 l16 16 v-32 z" fill="white"></path> -->
-		    <polygon points="2 21, 18 37, 18 5" filter="url(#shadow)"/>
+		    <polygon points="2 21, 18 37, 18 5"/>
 		</svg>
 	</div>
 
 	<div class="up-button breadcrumb-nav" [class.disabled]="!upTarget" (click)="goUp()" [attr.aria-label]="upTooltip" [matTooltip]="upTooltip">
 		<svg height="42" width="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false">
-		    <filter id="shadow" x="0" y="0" width="200%" height="200%">
-			    <feOffset result="offOut" in="SourceGraphic" dx="2" dy="2" />
-			    <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" />
-			    <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="5" />
-			    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-		    </filter>
-		    <!-- <path d="M10 21 l16 16 v-32 z" fill="white"></path> -->
-		    <polygon points="21 8, 37 24, 5 24" filter="url(#shadow)"/>
+		    <polygon points="21 8, 37 24, 5 24"/>
 		</svg>
 	</div>
 
-	<div class="next-button breadcrumb-nav" [class.disabled]="!nextTarget" (click)="goNext()" [attr.aria-label]="nextTooltip" [matTooltip]="nextTooltip">
+	<div class="next-button breadcrumb-nav" [class.disabled]="!nextTarget" (click)="goNext()" [attr.aria-label]="nextTooltip" [matTooltip]="nextTarget ? nextTooltip : ''">
 		<svg height="42" width="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false">
-		    <filter id="shadow" x="0" y="0" width="200%" height="200%">
-			    <feOffset result="offOut" in="SourceGraphic" dx="2" dy="2" />
-			    <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" />
-			    <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="5" />
-			    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-		    </filter>
-		    <!-- <path d="M10 21 l16 16 v-32 z" fill="white"></path> -->
-		    <polygon points="40 21, 24 37, 24 5" filter="url(#shadow)"/>
+		    <polygon points="40 21, 24 37, 24 5"/>
 		</svg>
 	</div>
 

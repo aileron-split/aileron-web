@@ -9,7 +9,7 @@
         </div>
         <div class="menu-cell menu-spacer"></div>        
         <div class="menu-cell menu-buttons" style="padding-top: 21px">
-          <a mat-button *ngFor="let link of menu" [routerLink]="link.url" [class.selected-color]="this.router.url===link.url">{{link.name}}</a>
+          <a mat-button *ngFor="let link of menu" [routerLink]="link.url" [class.selected-color]="this.router.url.startsWith(link.url)">{{link.name}}</a>
         </div>
       </div>
     </div>

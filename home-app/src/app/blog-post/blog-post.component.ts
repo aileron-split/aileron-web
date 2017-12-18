@@ -42,7 +42,7 @@ export class BlogPostComponent implements OnInit {
 	}
 
 	openGallery(index: number) {
-		this.lightbox.open(this.post.albumList, index, { positionFromTop: 10 });
+		this.lightbox.open(this.post.albumList, index, { positionFromTop: 10, wrapAround: true });
 	}
 
 }

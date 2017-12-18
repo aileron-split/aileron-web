@@ -9,7 +9,8 @@ div.breadcrumb-nav {
 }
 
 div.breadcrumb-nav.disabled {
-	fill: #ffffff33;
+	fill: #ffffff;
+	fill-opacity: 0.3;
 	cursor: default;
 }
 

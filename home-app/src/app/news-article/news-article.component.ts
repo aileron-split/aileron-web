@@ -25,7 +25,7 @@ export class NewsArticleComponent implements OnInit {
     	private newsService: NewsService,
     	private lightbox: Lightbox,
 	) { }
-
+/*
 	@HostListener('swipeleft', ['$event'])
 	protected onSwipeLeft(event) {
 		event.preventDefault();
@@ -37,7 +37,7 @@ export class NewsArticleComponent implements OnInit {
 		event.preventDefault();
 		console.log('swiperight -> previus article');
 	}
-/*
+
 	@HostListener('panend')
 	protected onPanEnd() {
 		event.preventDefault();
@@ -73,6 +73,6 @@ export class NewsArticleComponent implements OnInit {
 	}
 
 	openGallery(index: number) {
-		this.lightbox.open(this.article.albumList, index, { positionFromTop: 10 });
+		this.lightbox.open(this.article.albumList, index, { positionFromTop: 10, wrapAround: true });
 	}
 }

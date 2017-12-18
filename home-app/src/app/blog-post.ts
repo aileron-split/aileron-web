@@ -18,7 +18,7 @@ export class BlogPost {
     album: any;
     albumDict: any;
     albumList: any[];
-    author: string;
+    author: any;
     card_avatar: string;
     created_date: string;
     modified_date: string;

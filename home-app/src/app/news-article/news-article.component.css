@@ -19,6 +19,9 @@ div.headline {
 img.headline {
 	width:100%;
 	max-width:1024px;
+}
+
+img.clickable {
 	cursor: pointer;
 }
 
@@ -53,8 +56,21 @@ iframe.video {
 }
 
 :host ::ng-deep div.article-content img {
-	width: 306px;
 	cursor: pointer;
+	clear: both;
+}
+
+@media screen and (max-width: 460px) {
+	:host ::ng-deep div.article-content img {
+		max-width: 100%;
+		margin-bottom: 1em;
+	}
+}
+
+@media screen and (min-width: 460px) {
+	:host ::ng-deep div.article-content img {
+		max-width: 340px;
+	}
 }
 
 :host ::ng-deep div.article-content img.left {
@@ -70,4 +86,9 @@ iframe.video {
 :host ::ng-deep div.article-content img.wide {
 	width: 100%;
 	max-width: 1024px;
+}
+
+:host ::ng-deep div.article-content a {
+  color: darkorange;
+  text-decoration: none;
 }

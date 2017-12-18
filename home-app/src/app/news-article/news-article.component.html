@@ -12,20 +12,20 @@
 		<div class="content-width">
 			<h2>{{article?.title}}</h2>
 			<div class="headline">
-				<img *ngIf="article?.card_lg_image" [src]="article?.card_lg_image | safe" (click)="openGallery(0)" class="headline">
+				<img *ngIf="article?.card_lg_image" [src]="article?.card_lg_image | safe" [class.clickable]="article?.album" (click)="openGallery(0)" class="headline">
 			</div>
-			<h3>{{article?.summary}}</h3>
 			<p>
 				<img *ngIf="article?.author?.avatar" [src]="article?.author?.avatar | safe" class="card-avatar"> {{article?.author?.name}}{{ (article?.author && article?.published_date) ? ' | ' : ''}}{{article?.published_date|date}}<br>
 				<br>
 				{{article?.subtitle}}
 			</p>
-
 	  	</div>
 	</div>
 
 	<div class="section black-10">
+
 	  	<div class="content-width">
+			<h3>{{article?.summary}}</h3>
 			<div class="article-content" [innerHtml]="article?.content | resolveTags:article?.albumDict"></div>
 	  	</div>
 	</div>

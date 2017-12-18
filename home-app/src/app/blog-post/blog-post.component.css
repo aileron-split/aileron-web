@@ -42,6 +42,7 @@ iframe.video {
 :host ::ng-deep div.post-content img {
 	width: 306px;
 	cursor: pointer;
+	clear: both;
 }
 
 :host ::ng-deep div.post-content img.left {
@@ -57,4 +58,9 @@ iframe.video {
 :host ::ng-deep div.post-content img.wide {
 	width: 100%;
 	max-width: 1024px;
+}
+
+:host ::ng-deep div.post-content a {
+  color: darkorange;
+  text-decoration: none;
 }
