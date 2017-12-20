@@ -13,21 +13,43 @@ h1, h2, h3, h4 {
 	margin-bottom: 1.5em;
 }
 
+div.section {
+	padding-top: 3em;
+	padding-bottom: 2em;
+}
+
+div.black-10 {
+	background: url(/images/black-10.png); 
+}
+
+div.darkorange-10 {
+	background: url(/images/darkorange-10.png); 
+}
+
+div.white-10 {
+	background: url(/images/white-10.png); 
+}
+
+div.punchline-section {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
 .punchline {
-	background: url('/images/black-10.png');
+	background: url('/images/black-20.png');
     padding: 1.5em 4em;
-    color: #fbb300;
+    color: #00c005; /* #fbb300; */
 
     border-radius: 10em;
 	
-	letter-spacing: .05em;
+	letter-spacing: .07em;
     word-spacing: 0.03em;
     line-height: 1.7em;
 
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 1.25em;
 	max-width: 70%;
-	margin: 3em auto 4em auto;
+	margin: 2em auto 1em auto;
 
 	transition: font-size 0.5s, margin 0.5s, padding 0.5s;
 }

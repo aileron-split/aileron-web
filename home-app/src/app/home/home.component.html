@@ -1,54 +1,59 @@
-<div class="content-width">
-	<p class="punchline">We are a young software engineering company focused on developing high-end graphics and simulation software combining it with practical hardware design concepts.</p>
-
-	<div class="separator"></div>
-
-	<h3>Things we do</h3>
-	<p>High-end graphics software</p>
-	<p>Hardware concepts for gaming and training simulators</p>
-	<p>Virtual and augmented reality experience</p>
-	<p>Dynamic web solutions</p>
-	<p>Computational fluid dynamics simulations</p>
-	
-	<div class="separator"></div>
-
-	<h3>We are Proud of</h3>
-	<p>Being highly involved in local community activities</p>
-	<p>Using open source software</p>
-	<p>Giving back to open source software community</p>
-	
-	<div class="separator"></div>
-
-	<h3>Our products use cutting edge technologies</h3>
-	<div class="tech-grid">
-		<img *ngFor="let tech of techs" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+<div class="section punchline-section">
+	<div class="content-width">
+		<p class="punchline">We are young software engineering company focused on developing high-end graphics and simulation software combined with practical hardware design concepts.</p>
 	</div>
+</div>
 
-	<div class="separator"></div>
 
-	<h3>Platforms we deploy on</h3>
-	<div class="tech-grid">
-		<img *ngFor="let tech of oses" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+<div class="section black-10">
+	<div class="content-width">
+		<h3>Things we do</h3>
+		<p>High-end graphics software</p>
+		<p>Hardware concepts for gaming and training simulators</p>
+		<p>Virtual and augmented reality experience</p>
+		<p>Dynamic web solutions</p>
+		<p>Computational fluid dynamics simulations</p>
+		
+		<div class="separator"></div>
+
+		<h3>We are Proud of</h3>
+		<p>Being highly involved in local community activities</p>
+		<p>Using open source software</p>
+		<p>Giving back to open source software community</p>
+		
+		<div class="separator"></div>
+
+		<h3>Our products use cutting edge technologies</h3>
+		<div class="tech-grid">
+			<img *ngFor="let tech of techs" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+		</div>
+
+		<div class="separator"></div>
+
+		<h3>Platforms we deploy on</h3>
+		<div class="tech-grid">
+			<img *ngFor="let tech of oses" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+		</div>
+
+		<div class="separator"></div>
+
+		<h3>Tools we use</h3>
+		<div class="tech-grid">
+			<img *ngFor="let tech of tools" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+		</div>
+
+		<div class="separator"></div>
+
+		<h3>Computer languages we speak</h3>
+		<div class="tech-grid">
+			<img *ngFor="let tech of languages" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
+		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+
 	</div>
-
-	<div class="separator"></div>
-
-	<h3>Tools we use</h3>
-	<div class="tech-grid">
-		<img *ngFor="let tech of tools" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
-	</div>
-
-	<div class="separator"></div>
-
-	<h3>Computer languages we speak</h3>
-	<div class="tech-grid">
-		<img *ngFor="let tech of languages" [src]="tech.icon" [alt]="tech.name" matTooltip="{{tech.tooltip}}" [style.transform]="'scale('+tech.iconScale+')'">
-	</div>
-
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
 </div>
