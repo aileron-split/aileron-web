@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'team.apps.TeamConfig',
     'gallery.apps.GalleryConfig',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
