@@ -6,37 +6,37 @@ import { DomSanitizer} from '@angular/platform-browser';
   name: 'resolveTags'
 })
 export class ResolveTagsPipe implements PipeTransform {
-	
-	constructor(private sanitizer: DomSanitizer) { }
 
-  	transform(raw: string, args?: any): any {
-  		if (raw == null || raw.length == 0) return;
+    constructor(private sanitizer: DomSanitizer) { }
 
-  		let paragraphed: string = '<p>' + raw.replace(/\n/g, '</p><p>') + '</p>';
-  		let html: string;
+    transform(raw: string, args?: any): any {
+        if (raw === null || raw.length === 0) { return; }
 
-  		if (args) {
-			let chunks: string[] = paragraphed.split('[');
+        const paragraphed: string = '<p>' + raw.replace(/\n/g, '</p><p>') + '</p>';
+        let html: string;
 
-	  		html = chunks[0];
-	  		for (let chunk of chunks.slice(1)) {
-	  			let parts: string[] = chunk.split(']');
-	  			if (parts.length == 2) {
-	  				let cmd: string[] = parts[0].split('|');
-	  				let image: any = args[cmd[0]];
-	  				let alignment: string = (cmd.length > 1) ? cmd[1] : 'left';
+        if (args) {
+            const chunks: string[] = paragraphed.split('[');
 
-	  				html += '<img src="' + image.src + '" index="' + image.index + '" class="' + alignment + '">';
-	  				html += parts[1];
-	  			} else {
-	  				console.log('WARNING: missing matching ]');
-	  			}
-	  		}
-	  	} else {
-	  		html = paragraphed;
-	  	}
+            html = chunks[0];
+            for (const chunk of chunks.slice(1)) {
+                const parts: string[] = chunk.split(']');
+                if (parts.length === 2) {
+                    const cmd: string[] = parts[0].split('|');
+                    const image: any = args[cmd[0]];
+                    const alignment: string = (cmd.length > 1) ? cmd[1] : 'left';
 
-    	return this.sanitizer.bypassSecurityTrustHtml(html);
-  	}
+                    html += '<img src="' + image.src + '" index="' + image.index + '" class="' + alignment + '">';
+                    html += parts[1];
+                } else {
+                    console.log('WARNING: missing matching ]');
+                }
+            }
+        } else {
+            html = paragraphed;
+        }
+
+        return this.sanitizer.bypassSecurityTrustHtml(html);
+    }
 
 }

@@ -20,7 +20,7 @@ export class NewsService {
     constructor(private http: Http) { }
 
     getNewsArticles(): Promise<NewsArticle[]> {
-        let theService = this;
+        const theService = this;
         return this.http.get(this.newsArticlesUrl)
             .toPromise()
             .then(function(response): NewsArticle[] {
@@ -31,17 +31,17 @@ export class NewsService {
     }
 
     getNewsArticle(id: number): Promise<NewsArticle> {
-        let articlesCache = this.articlesCache;
+        const articlesCache = this.articlesCache;
         return this.http.get(this.newsArticlesUrl + id + '/')
             .toPromise()
             .then(function(response): NewsArticle {
-                let article: NewsArticle = response.json() as NewsArticle;
+                const article: NewsArticle = response.json() as NewsArticle;
 
                 // Process article's album and add list and dictionary forms
                 article.albumList = [];
                 article.albumDict = [];
                 if (article.album) {
-                    for (let image of article.album.images) {
+                    for (const image of article.album.images) {
                         article.albumDict[image.slug] = {
                             index: article.albumList.length,
                             src: image.image,
@@ -56,15 +56,15 @@ export class NewsService {
                 }
                 // Derive previous and next article from articlesCache
                 if (articlesCache) {
-                    let cacheIndex = articlesCache.findIndex(a => a.id === id);
+                    const cacheIndex = articlesCache.findIndex(a => a.id === id);
                     if (cacheIndex !== -1) {
                         if (cacheIndex > 0) {
-                            let prevArticle = articlesCache[cacheIndex - 1];
+                            const prevArticle = articlesCache[cacheIndex - 1];
                             article.prevTarget = prevArticle.id + '|' + prevArticle.slug;
                             article.prevCaption = prevArticle.title;
                         }
                         if (cacheIndex < articlesCache.length - 1) {
-                            let nextArticle = articlesCache[cacheIndex + 1];
+                            const nextArticle = articlesCache[cacheIndex + 1];
                             article.nextTarget = nextArticle.id + '|' + nextArticle.slug;
                             article.nextCaption = nextArticle.title;
                         }

@@ -5,7 +5,7 @@ import { NewsService } from './news.service';
 describe('NewsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NewsService]
+        providers: [NewsService]
     });
   });
 

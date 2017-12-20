@@ -10,17 +10,17 @@ import { BlogPost } from './blog-post';
 
 @Injectable()
 export class BlogService {
-	private blogPostsUrl = environment.apiUrl + 'blog/posts/';
-	private headers = new Headers({
-	    'Content-Type': 'application/json',
-	});
+    private blogPostsUrl = environment.apiUrl + 'blog/posts/';
+    private headers = new Headers({
+        'Content-Type': 'application/json',
+    });
 
     private postsCache: BlogPost[];
 
-	constructor(private http: Http) { }
+    constructor(private http: Http) { }
 
     getBlogPosts(): Promise<BlogPost[]> {
-        let theService = this;
+        const theService = this;
         return this.http.get(this.blogPostsUrl)
             .toPromise()
             .then(function(response): BlogPost[] {
@@ -31,17 +31,17 @@ export class BlogService {
     }
 
     getBlogPost(id: number): Promise<BlogPost> {
-        let postsCache = this.postsCache;
+        const postsCache = this.postsCache;
         return this.http.get(this.blogPostsUrl + id + '/')
             .toPromise()
             .then(function(response): BlogPost {
-                let post: BlogPost = response.json() as BlogPost;
+                const post: BlogPost = response.json() as BlogPost;
 
                 // Process post's album and add list and dictionary forms
                 post.albumList = [];
                 post.albumDict = [];
                 if (post.album) {
-                    for (let image of post.album.images) {
+                    for (const image of post.album.images) {
                         post.albumDict[image.slug] = {
                             index: post.albumList.length,
                             src: image.image,
@@ -52,20 +52,20 @@ export class BlogService {
                             caption: image.summary,
                             // thumb: ''
                         });
-                        //console.log(image);
                     }
                 }
+
                 // Derive previous and next post from postsCache
                 if (postsCache) {
-                    let cacheIndex = postsCache.findIndex(a => a.id === id);
+                    const cacheIndex = postsCache.findIndex(a => a.id === id);
                     if (cacheIndex !== -1) {
                         if (cacheIndex > 0) {
-                            let prevArticle = postsCache[cacheIndex - 1];
+                            const prevArticle = postsCache[cacheIndex - 1];
                             post.prevTarget = prevArticle.id + '|' + prevArticle.slug;
                             post.prevCaption = prevArticle.title;
                         }
                         if (cacheIndex < postsCache.length - 1) {
-                            let nextArticle = postsCache[cacheIndex + 1];
+                            const nextArticle = postsCache[cacheIndex + 1];
                             post.nextTarget = nextArticle.id + '|' + nextArticle.slug;
                             post.nextCaption = nextArticle.title;
                         }

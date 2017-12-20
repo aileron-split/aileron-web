@@ -26,7 +26,7 @@ export class TeamService {
     private teamEmployeesUrl = environment.apiUrl + 'team/employees/';
     private teamAssociatesUrl = environment.apiUrl + 'team/associates/';
 
-	constructor(private http: Http) { }
+    constructor(private http: Http) { }
 
     getEmployees(): Promise<TeamMember[]> {
         return this.http.get(this.teamEmployeesUrl)

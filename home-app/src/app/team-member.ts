@@ -1,4 +1,3 @@
 export class TeamMember {
-	avatar: string;
-
+    avatar: string;
 }

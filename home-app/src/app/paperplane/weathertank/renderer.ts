@@ -26,7 +26,7 @@ import { WeathertankSolver } from './solver';
 // FLUID RENDERER
 export class WeathertankRenderer {
     gl: any;
-    solver: WeathertankSolver;    
+    solver: WeathertankSolver;
     simParams: any;
     program: any;
     vertexShader: any;
@@ -109,7 +109,7 @@ export class WeathertankRenderer {
 
     constructor(solver: WeathertankSolver) {
         this.solver = solver;
-        
+
         this.program = null;
         this.vertexShader = null;
         this.fragmentShader = null;
@@ -192,11 +192,11 @@ export class WeathertankRenderer {
 
 
     private createProgram(vertexShader: string, fragmentShader: string): any {
-        var program = this.gl.createProgram();
+        const program = this.gl.createProgram();
         this.gl.attachShader(program, vertexShader);
         this.gl.attachShader(program, fragmentShader);
         this.gl.linkProgram(program);
-        var success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
+        const success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
         if (success) {
             return program;
         }
@@ -207,7 +207,7 @@ export class WeathertankRenderer {
 
     private setupTexture(): any {
         // Create a texture.
-        var texture = this.gl.createTexture();
+        const texture = this.gl.createTexture();
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
         // Set the parameters so we can render any size image.
@@ -228,7 +228,7 @@ export class WeathertankRenderer {
         this.positionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
 
-        var positions = [
+        const positions = [
          -1, -1,
          -1,  1,
           1, -1,
@@ -247,7 +247,7 @@ export class WeathertankRenderer {
         this.bgTexCoordAttributeLocation = this.gl.getAttribLocation(this.program, 'a_bgTexCoord');
         this.bgTexCoordBuffer = this.gl.createBuffer();
 
-        // Uniform variables locations   
+        // Uniform variables locations
         this.resolutionUniformLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
         this.textureRatioUniformLocation = this.gl.getUniformLocation(this.program, 'u_textureRatio');
 
@@ -310,8 +310,9 @@ export class WeathertankRenderer {
 
 
         // Setup background image texture and first time initialize
-        if (this.backgroundImageTexture)
+        if (this.backgroundImageTexture) {
             this.gl.deleteTexture(this.backgroundImageTexture);
+        }
         this.backgroundImageTexture = this.setupTexture();
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.MIRRORED_REPEAT);
@@ -322,28 +323,41 @@ export class WeathertankRenderer {
 
 
         // Make transfer texture and framebuffer (uses linear interpolation)
-        if (this.transferBasefluidTexture)
+        if (this.transferBasefluidTexture) {
             this.gl.deleteTexture(this.transferBasefluidTexture);
+        }
         this.transferBasefluidTexture = this.setupTexture();
-        if (siteParams.useLinear)
+        if (siteParams.useLinear) {
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA32F, this.simParams.resolution, this.simParams.resolution, 0, this.gl.RGBA, this.gl.FLOAT, null);
+        }
+        this.gl.texImage2D(
+            this.gl.TEXTURE_2D, 0, this.gl.RGBA32F,
+            this.simParams.resolution, this.simParams.resolution,
+            0, this.gl.RGBA, this.gl.FLOAT, null);
 
-        if (this.transferBasefluidFramebuffer)
+        if (this.transferBasefluidFramebuffer) {
             this.gl.deleteFramebuffer(this.transferBasefluidFramebuffer);
+        }
         this.transferBasefluidFramebuffer = this.gl.createFramebuffer();
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.transferBasefluidFramebuffer);
-        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.transferBasefluidTexture, 0);
+        this.gl.framebufferTexture2D(
+            this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.transferBasefluidTexture, 0);
 
-        if (this.transferSolutesTexture)
+        if (this.transferSolutesTexture) {
          this.gl.deleteTexture(this.transferSolutesTexture);
+        }
         this.transferSolutesTexture = this.setupTexture();
-        if (siteParams.useLinear)
+        if (siteParams.useLinear) {
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA32F, this.simParams.resolution, this.simParams.resolution, 0, this.gl.RGBA, this.gl.FLOAT, null);
+        }
+        this.gl.texImage2D(
+            this.gl.TEXTURE_2D, 0, this.gl.RGBA32F,
+            this.simParams.resolution, this.simParams.resolution,
+            0, this.gl.RGBA, this.gl.FLOAT, null);
 
-        if (this.transferSolutesFramebuffer)
+        if (this.transferSolutesFramebuffer) {
             this.gl.deleteFramebuffer(this.transferSolutesFramebuffer);
+        }
         this.transferSolutesFramebuffer = this.gl.createFramebuffer();
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.transferSolutesFramebuffer);
         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.transferSolutesTexture, 0);

@@ -30,12 +30,13 @@ const DEG_360 = 2.0 * Math.PI,
 
 declare var MDN: any;
 
+
 // PAPER PLANE GLIDER
 export class PaperplaneGlider {
     // Rendering
     private gl; any;
     private canvas: any;
-    private simParams: WeathertankParams; 
+    private simParams: WeathertankParams;
 
     private program: any;
     public vertexShader: any;
@@ -94,19 +95,17 @@ export class PaperplaneGlider {
     public basefluid: Float32Array;
     public solutes: Float32Array;
 
-    //private isPaused: boolean;
-
     public turnRateMax: number;
     public dryingRate: number;
     public speed: number;
     public wobbleRate: number;
 
+    private isFlying: boolean;
+
     private resetLocation(x, y) {
         this.location[0] = x;
         this.location[1] = y;
     }
-
-    private isFlying: boolean;
 
 
     constructor() {
@@ -166,22 +165,20 @@ export class PaperplaneGlider {
         this.basefluid = new Float32Array(4);
         this.solutes = new Float32Array(4);
 
-        //this.isPaused = true;
-
         this.turnRateMax = 0.007 * this.funFactor;
         this.dryingRate = 0.0001;
         this.speed = 0.5 * this.funFactor;
         this.wobbleRate = 0.15;
 
 
-        this.turnRight = function() { this.turnRate = this.turnRateMax; }
-        this.turnLeft = function() { this.turnRate = -this.turnRateMax; }
-        this.turnStop = function() { this.turnRate = 0.0; }
+        this.turnRight = function() { this.turnRate = this.turnRateMax; };
+        this.turnLeft = function() { this.turnRate = -this.turnRateMax; };
+        this.turnStop = function() { this.turnRate = 0.0; };
 
         this.resetLocation = function(x, y) {
          this.location[0] = x;
          this.location[1] = y;
-        }
+        };
 
         this.isFlying = true;
     }
@@ -213,11 +210,11 @@ export class PaperplaneGlider {
     }
 
     private createProgram(vertexShader, fragmentShader) {
-        var program = this.gl.createProgram();
+        const program = this.gl.createProgram();
         this.gl.attachShader(program, vertexShader);
         this.gl.attachShader(program, fragmentShader);
         this.gl.linkProgram(program);
-        var success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
+        const success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
         if (success) {
             return program;
         }
@@ -247,7 +244,7 @@ export class PaperplaneGlider {
 
         this.paperplaneVerticesBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.paperplaneVerticesBuffer);
-        var paperplaneVertices = [
+        const paperplaneVertices = [
 -0.09996557235717773, 0.19790717959403992, -0.09055982530117035, 0.02121148072183132, 0.5361764430999756, 0.8438394069671631,
 1.2999999523162842, -5.68248026411311e-08, -9.814726809054264e-08, 0.02121148072183132, 0.5361764430999756, 0.8438394069671631,
 0.8995165228843689, 0.17341434955596924, -0.1001209020614624, 0.02121148072183132, 0.5361764430999756, 0.8438394069671631,
@@ -351,80 +348,83 @@ export class PaperplaneGlider {
 
 
     public stepSimulation(readCoords: Float32Array) {
-     if (this.isFlying) { // If glider is in air
+        if (this.isFlying) { // If glider is in air
 
-        var mouseVector = readCoords[0] - this.location[0];
-        if (this.solutes[3] > 0.01) mouseVector = 1.0;
+            let mouseVector = readCoords[0] - this.location[0];
+            if (this.solutes[3] > 0.01) {
+                mouseVector = 1.0;
+            }
 
-        if (mouseVector > 0.0) {
-           if (this.heading < this.turnRateMax || this.heading > DEG_360 - this.turnRateMax)
-              this.turnStop();
-           else {
-              if (this.turnRate == 0.0) {
-                 if (this.bankAngle < -5.0 * this.turnRateMax)
-                    this.turnRight();
-                 else
-                    this.turnLeft();
-              }
-              else {
-                 if (this.heading > 0.0 && this.heading < DEG_90) this.turnLeft();
-                 if (this.heading > DEG_270 && this.heading < DEG_360) this.turnRight();
-              }
-           }
-        } else {
-           if (this.heading > DEG_180 - this.turnRateMax && this.heading < DEG_180 + this.turnRateMax)
-              this.turnStop();
-           else {
-              if (this.turnRate == 0.0) {
-                 if (this.bankAngle > 5.0 * this.turnRateMax)
-                    this.turnLeft();
-                 else
-                    this.turnRight();
-              }
-              else {
-                 if (this.heading > DEG_90 && this.heading < DEG_180) this.turnRight();
-                 if (this.heading > DEG_180 && this.heading < DEG_270) this.turnLeft();
-              }
-           }
+            if (mouseVector > 0.0) {
+                if (this.heading < this.turnRateMax || this.heading > DEG_360 - this.turnRateMax) {
+                    this.turnStop();
+                } else {
+                    if (this.turnRate === 0.0) {
+                        if (this.bankAngle < -5.0 * this.turnRateMax) {
+                            this.turnRight();
+                        } else {
+                            this.turnLeft();
+                        }
+                    } else {
+                        if (this.heading > 0.0 && this.heading < DEG_90) { this.turnLeft(); }
+                        if (this.heading > DEG_270 && this.heading < DEG_360) { this.turnRight(); }
+                    }
+                }
+            } else {
+                if (this.heading > DEG_180 - this.turnRateMax && this.heading < DEG_180 + this.turnRateMax) {
+                    this.turnStop();
+                } else {
+                    if (this.turnRate === 0.0) {
+                        if (this.bankAngle > 5.0 * this.turnRateMax) {
+                            this.turnLeft();
+                        } else {
+                            this.turnRight();
+                        }
+                    } else {
+                        if (this.heading > DEG_90 && this.heading < DEG_180) { this.turnRight(); }
+                        if (this.heading > DEG_180 && this.heading < DEG_270) { this.turnLeft(); }
+                    }
+                }
+            }
+
+            const linearScale = [0.15 / 256.0, 0.25 / 256.0];
+
+            this.heading = (this.heading + this.turnRate) % DEG_360;
+            if (this.heading < 0.0) { this.heading += DEG_360; }
+
+            const newVario = (-this.sinkRate - this.wetness + this.basefluid[1] * this.funFactor) * linearScale[1];
+
+            this.direction[0] = Math.cos(this.heading);
+            this.direction[1] = newVario - this.vario;
+            this.direction[2] = Math.sin(this.heading);
+
+            this.location[0] += (this.speed * this.direction[0] + this.basefluid[0] * this.funFactor) * linearScale[0];
+            this.location[1] += newVario;
+
+            this.vario = newVario;
+
+            this.wetness += 0.07 * this.solutes[1];
+            if (this.wetness > 0.0) { this.wetness -= this.dryingRate; }
+            if (this.wetness < 0.0) { this.wetness = 0.0; }
+
+            this.bankAngle += 0.03 * (-25.0 * this.turnRate - this.bankAngle);
+            this.pitchAngle += 0.15 * (-350.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
+
+            this.wobblePhase += this.wobbleRate;
+
+            this.modelTranslationMat = MDN.translateMatrix(0.0, 0.0, -10.0 - 0.1 * this.direction[2]);
+            this.modelRotationMat = MDN.multiplyArrayOfMatrices([
+                MDN.rotateYMatrix(this.heading),
+                MDN.rotateZMatrix(this.pitchAngle),
+                MDN.rotateXMatrix(this.bankAngle + 0.15 * Math.sin(this.wobblePhase) / (1.0 + Math.abs(this.bankAngle))),
+                ]);
+
+
+            if (this.location[1] < this.groundHeight) {
+                this.isFlying = false;
+            }
+
         }
-
-        var linearScale = [0.15 / 256.0 /*this.simParams.resolution*/, 0.25 / 256.0 /*this.simParams.resolution*/]; // [1.0 / this.canvas.width, 1.0 / this.canvas.height];
-
-        this.heading = (this.heading + this.turnRate) % DEG_360;
-        if (this.heading < 0.0) this.heading += DEG_360;
-
-        var newVario = (-this.sinkRate - this.wetness + this.basefluid[1] * this.funFactor) * linearScale[1];
-
-        this.direction[0] = Math.cos(this.heading);
-        this.direction[1] = newVario - this.vario;
-        this.direction[2] = Math.sin(this.heading);
-
-        this.location[0] += (this.speed * this.direction[0] + this.basefluid[0] * this.funFactor) * linearScale[0];
-        this.location[1] += newVario;
-
-        this.vario = newVario;
-
-        this.wetness += 0.07 * this.solutes[1];
-        if (this.wetness > 0.0) this.wetness -= this.dryingRate;
-        if (this.wetness < 0.0) this.wetness = 0.0;
-
-        this.bankAngle += 0.03 * (-25.0 * this.turnRate - this.bankAngle);
-        this.pitchAngle += 0.15 * (-350.0 * this.vario - this.pitchAngle); // TODO: fix target vario multiplier for small screens
-
-        this.wobblePhase += this.wobbleRate;
-
-        this.modelTranslationMat = MDN.translateMatrix(0.0, 0.0, -10.0 - 0.1 * this.direction[2]);
-        this.modelRotationMat = MDN.multiplyArrayOfMatrices([
-           MDN.rotateYMatrix(this.heading),
-           MDN.rotateZMatrix(this.pitchAngle),
-           MDN.rotateXMatrix(this.bankAngle + 0.15 * Math.sin(this.wobblePhase) / (1.0 + Math.abs(this.bankAngle))),
-           ]);
-
-
-        if (this.location[1] < this.groundHeight) 
-           this.isFlying = false;
-
-     }
     }
 
 
@@ -456,23 +456,32 @@ export class PaperplaneGlider {
         this.gl.uniform1f(this.wetnessUniformLocation, this.wetness * 7.0);
 
         // Display uniforms
-        this.gl.uniform3f(this.cloudColorUniformLocation, this.simParams.cloudColor[0] / 256.0, this.simParams.cloudColor[1] / 256.0, this.simParams.cloudColor[2] / 256.0);
+        this.gl.uniform3f(this.cloudColorUniformLocation,
+            this.simParams.cloudColor[0] / 256.0,
+            this.simParams.cloudColor[1] / 256.0,
+            this.simParams.cloudColor[2] / 256.0);
         this.gl.uniform1f(this.cloudOpacityUniformLocation, this.simParams.cloudOpacity);
         this.gl.uniform1f(this.cloudCutoffUniformLocation, this.simParams.cloudCutoff);
         this.gl.uniform1f(this.cloudIORUniformLocation, this.simParams.cloudIOR);
-        this.gl.uniform3f(this.rainColorUniformLocation, this.simParams.rainColor[0] / 256.0, this.simParams.rainColor[1] / 256.0, this.simParams.rainColor[2] / 256.0);
+        this.gl.uniform3f(this.rainColorUniformLocation,
+            this.simParams.rainColor[0] / 256.0,
+            this.simParams.rainColor[1] / 256.0,
+            this.simParams.rainColor[2] / 256.0);
         this.gl.uniform1f(this.rainOpacityUniformLocation, this.simParams.rainOpacity);
         this.gl.uniform1f(this.rainCutoffUniformLocation, this.simParams.rainCutoff);
         this.gl.uniform1f(this.rainIORUniformLocation, this.simParams.rainIOR);
-        this.gl.uniform3f(this.humidityColorUniformLocation, this.simParams.humidityColor[0] / 256.0, this.simParams.humidityColor[1] / 256.0, this.simParams.humidityColor[2] / 256.0);
+        this.gl.uniform3f(this.humidityColorUniformLocation,
+            this.simParams.humidityColor[0] / 256.0,
+            this.simParams.humidityColor[1] / 256.0,
+            this.simParams.humidityColor[2] / 256.0);
         this.gl.uniform1f(this.humidityOpacityUniformLocation, this.simParams.humidityOpacity);
         this.gl.uniform1f(this.humidityCutoffUniformLocation, this.simParams.humidityCutoff);
         this.gl.uniform1f(this.humidityIORUniformLocation, this.simParams.humidityIOR);
 
         // draw
-        var primitiveType = this.gl.TRIANGLES,
-            offset = 0,
-            count = 72;
+        const primitiveType = this.gl.TRIANGLES;
+        const offset = 0;
+        const count = 72;
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.SRC_ALPHA, this.gl.ONE);

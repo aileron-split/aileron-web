@@ -7,32 +7,33 @@ import { TeamService } from '../team.service';
 
 
 @Component({
-  	selector: 'app-about',
-  	templateUrl: './about.component.html',
-  	styleUrls: ['./about.component.css']
+    selector: 'app-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.css']
 })
 export class AboutComponent implements OnInit {
-	employees: TeamMember[];
-	associates: TeamMember[];
-	thanks: string[];
+    employees: TeamMember[];
+    associates: TeamMember[];
+    thanks: string[];
 
-	thankyou: string;
+    thankyou: string;
 
-  	constructor(
-  		private animate: AnimateService,
-  		private team: TeamService,
-  	) { }
+    constructor(
+        private animate: AnimateService,
+        private team: TeamService,
+    ) { }
 
-  	ngOnInit() {
-		this.team.getEmployees().then(employees => this.employees = employees);
-		this.team.getAssociates().then(associates => this.associates = associates);
-		this.team.getThanks().then(thanks => this.thankyou = thanks.join(', '));
-  	}
+    ngOnInit() {
+        this.team.getEmployees().then(employees => this.employees = employees);
+        this.team.getAssociates().then(associates => this.associates = associates);
+        this.team.getThanks().then(thanks => this.thankyou = thanks.join(', '));
+    }
 
-	avatarUrlString(member): string {
-		if (member.avatar)
-			return 'url(' + member.avatar + ')';
-		return '';
-	}
+    avatarUrlString(member): string {
+        if (member.avatar) {
+            return 'url(' + member.avatar + ')';
+        }
+        return '';
+    }
 
 }

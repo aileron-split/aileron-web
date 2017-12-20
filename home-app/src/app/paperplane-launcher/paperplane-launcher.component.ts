@@ -12,71 +12,78 @@ import $ from 'jquery';
   styleUrls: ['./paperplane-launcher.component.css']
 })
 export class PaperplaneLauncherComponent implements OnInit {
-	public isWebGLAvailable: boolean;
-	public isHovering: boolean;
+    public isWebGLAvailable: boolean;
+    public isHovering: boolean;
 
-	public tooltip: string;
+    public tooltip: string;
 
-	// animations
-	private hoveringTimeline: any;
-	private rotatingMarkersTimeline: any;
+    // animations
+    private hoveringTimeline: any;
+    private rotatingMarkersTimeline: any;
 
-	constructor(private router: Router, private animate: AnimateService) {
-		this.isWebGLAvailable = false;
-	}
-
-
-	// Check for WebGL an set tooltips accordingly
-	private checkWebGL() {
-		let canvas = document.createElement('canvas');
-		let gl: any = canvas.getContext('webgl2', { premultipliedAlpha: false });
-
-		this.tooltip = ''
-		this.isWebGLAvailable = false;
-		if (gl) {
-	        if (gl.getExtension('EXT_color_buffer_float')) {
-				this.isWebGLAvailable = true;
-	        } else {
-				this.tooltip = 'Floating point color buffer is not available'
-	        }
-		} else {
-			this.tooltip = 'WebGL 2 is not supported by your device';
-		}
-	}
-
-	ngOnInit() {
-		this.checkWebGL();
-
-		if (!this.hoveringTimeline) this.hoveringTimeline = this.animate.pulsateLoop($('div.arrows-marker div#marker-left'), $('div.arrows-marker div#marker-right'), 0.4, -20, -27, Sine.easeInOut);
-		if (!this.rotatingMarkersTimeline) this.rotatingMarkersTimeline = this.animate.pendulumLoop($('div.arrows-marker'), 0.6);
-
-		this.rotatingMarkersTimeline.play();
-	}
+    constructor(private router: Router, private animate: AnimateService) {
+        this.isWebGLAvailable = false;
+    }
 
 
-	/* EVENT HANDLERS */
+    // Check for WebGL an set tooltips accordingly
+    private checkWebGL() {
+        const canvas = document.createElement('canvas');
+        const gl: any = canvas.getContext('webgl2', { premultipliedAlpha: false });
 
-	onClick() {
-		if (!this.isWebGLAvailable) return;
-		this.router.navigate(['/paperplane']);
-	}
+        this.tooltip = '';
+        this.isWebGLAvailable = false;
+        if (gl) {
+            if (gl.getExtension('EXT_color_buffer_float')) {
+                this.isWebGLAvailable = true;
+            } else {
+                this.tooltip = 'Floating point color buffer is not available';
+            }
+        } else {
+            this.tooltip = 'WebGL 2 is not supported by your device';
+        }
+    }
 
-	onMouseOver() {
-		if (!this.isWebGLAvailable) return;
-		if (!this.isHovering) {
-			this.isHovering = true;
-			this.hoveringTimeline.resume();
-			this.rotatingMarkersTimeline.pause();
-		}
-	}
+    ngOnInit() {
+        this.checkWebGL();
 
-	onMouseOut() {
-		if (!this.isWebGLAvailable) return;
-		if (this.isHovering) {
-			this.isHovering = false;
-			this.rotatingMarkersTimeline.resume();
-			this.hoveringTimeline.pause();
-		}
-	}
+        if (!this.hoveringTimeline) {
+            this.hoveringTimeline = this.animate.pulsateLoop(
+                $('div.arrows-marker div#marker-left'),
+                $('div.arrows-marker div#marker-right'),
+                0.4, -20, -27, Sine.easeInOut);
+        }
+        if (!this.rotatingMarkersTimeline) {
+            this.rotatingMarkersTimeline = this.animate.pendulumLoop($('div.arrows-marker'), 0.6);
+        }
+
+        this.rotatingMarkersTimeline.play();
+    }
+
+
+    /* EVENT HANDLERS */
+
+    onClick() {
+        if (!this.isWebGLAvailable) { return; }
+        this.router.navigate(['/paperplane']);
+    }
+
+    onMouseOver() {
+        if (!this.isWebGLAvailable) { return; }
+        if (!this.isHovering) {
+            this.isHovering = true;
+            this.hoveringTimeline.resume();
+            this.rotatingMarkersTimeline.pause();
+        }
+    }
+
+    onMouseOut() {
+        if (!this.isWebGLAvailable) { return; }
+        if (this.isHovering) {
+            this.isHovering = false;
+            this.rotatingMarkersTimeline.resume();
+            this.hoveringTimeline.pause();
+        }
+    }
 
 }

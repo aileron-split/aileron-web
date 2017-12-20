@@ -9,7 +9,7 @@ import $ from 'jquery';
 import { Weathertank } from './weathertank/weathertank';
 
 function extractImageUrl(imageUrl: string): string {
-    return imageUrl.slice(4, -1).replace(/['"]/g,'');
+    return imageUrl.slice(4, -1).replace(/['"]/g, '');
 }
 
 function parseRgbColorArray(rgbColor: string): number[] {
@@ -22,7 +22,7 @@ function parseRgbColorArray(rgbColor: string): number[] {
     templateUrl: './paperplane.component.html',
     styleUrls: ['./paperplane.component.css']
 })
-export class PaperplaneComponent implements OnInit {
+export class PaperplaneComponent implements OnInit, OnDestroy {
     public weathertank: Weathertank;
     public canvasPrefs: any;
 
@@ -35,11 +35,11 @@ export class PaperplaneComponent implements OnInit {
     }
 
     private updateCanvasPrefs() {
-        let preferredCanvasWidth = $('div#bg-overlay').width();
-        let preferredOffset = preferredCanvasWidth / 16;
+        const preferredCanvasWidth = $('div#bg-overlay').width();
+        const preferredOffset = preferredCanvasWidth / 16;
         let preferredCanvasHeight = $('div#bg-overlay').height() /*- $('div.content').position().top*/ - preferredOffset;
 
-        let minCanvasRatio = 2.0;
+        const minCanvasRatio = 2.0;
         if (preferredCanvasWidth / preferredCanvasHeight < minCanvasRatio) {
             preferredCanvasHeight = preferredCanvasWidth / minCanvasRatio;
         }
@@ -54,21 +54,21 @@ export class PaperplaneComponent implements OnInit {
 
     startTheGame() {
         this.updateCanvasPrefs();
-        let canvas = $('canvas#paperplane-canvas');
+        const canvas = $('canvas#paperplane-canvas');
 
         // Align canvas to bottom
         canvas.css('top', (0.5 * $('div#bg-overlay').height() - this.canvasPrefs.height - this.canvasPrefs.offset) + 'px');
         canvas.css('width', this.canvasPrefs.width + 'px');
         canvas.css('height', this.canvasPrefs.height + 'px');
 
-        let canvasPos = canvas.position();
+        const canvasPos = canvas.position();
 
-        let bgImage = $('body > img#bg-image');
-        let bgImagePos = bgImage.position();
+        const bgImage = $('body > img#bg-image');
+        const bgImagePos = bgImage.position();
 
         // setup target pointers
-        let targetTop = $('div#target-top');
-        let targetBottom = $('div#target-bottom');
+        const targetTop = $('div#target-top');
+        const targetBottom = $('div#target-bottom');
 
         targetBottom.css('top', canvasPos.top + canvas.height());
 
@@ -80,9 +80,9 @@ export class PaperplaneComponent implements OnInit {
 
         if (this.weathertank) {
             this.weathertank.pause();
-            delete this.weathertank;    
+            delete this.weathertank;
         }
-        
+
         this.weathertank = new Weathertank();
 
         this.weathertank.load(canvas[0], {
@@ -91,37 +91,44 @@ export class PaperplaneComponent implements OnInit {
             backgroundTintOpacity: parseFloat($('div#bg-overlay').css('opacity')),
             backgroundBox: { top: bgImagePos.top, left: bgImagePos.left, width: bgImage.width(), height: bgImage.height() },
             canvasBox: { top: canvasPos.top, left: canvasPos.left, width: canvas.width(), height: canvas.height() },
-            solverResolution: Math.pow(2.0, Math.round(Math.log2(canvas.width()/ 4.0))),
+            solverResolution: Math.pow(2.0, Math.round(Math.log2(canvas.width() / 4.0))),
             targetPointer: { top: targetTop, bottom: targetBottom }
         });
     }
 
 
     restoreLauncher() {
-        if(this.launchTimeline)
+        if (this.launchTimeline) {
             this.launchTimeline.kill();
+        }
         $('div#launcher').removeAttr('style');
     }
 
     ngOnInit() {
-        if(!this.launchTimeline) this.launchTimeline = this.animate.paperplaneTakeOff($('div#launcher'))
-            .eventCallback('onComplete', this.startTheGame.bind(this))
-            ;
-        
-        if(!this.hidenavTimeline) this.hidenavTimeline = this.animate.hideNav()
-            .eventCallback('onComplete', this.launchTimeline.play.bind(this.launchTimeline))
-            .eventCallback('onReverseComplete', this.restoreLauncher, null, this);
-            ;
+        if (!this.launchTimeline) {
+            this.launchTimeline = this.animate.paperplaneTakeOff($('div#launcher'))
+                .eventCallback('onComplete', this.startTheGame.bind(this))
+                ;
+            }
+
+        if (!this.hidenavTimeline) {
+            this.hidenavTimeline = this.animate.hideNav()
+                .eventCallback('onComplete', this.launchTimeline.play.bind(this.launchTimeline))
+                .eventCallback('onReverseComplete', this.restoreLauncher, null, this)
+                ;
+            }
 
         $('div.arrows-marker').addClass('hidden');
         this.hidenavTimeline.play();
     }
 
     ngOnDestroy() {
-        if(this.weathertank)
+        if (this.weathertank) {
             this.weathertank.pause();
-        if(this.blinkloopTimeline)
+        }
+        if (this.blinkloopTimeline) {
             this.blinkloopTimeline.kill();
+        }
         $('div.arrows-marker').removeClass('hidden');
         this.hidenavTimeline.reverse(null, true);
     }

@@ -88,11 +88,11 @@ export class Weathertank {
 
 
     private createShader(type, source) {
-        var shader = this.gl.createShader(type);
+        const shader = this.gl.createShader(type);
         this.gl.shaderSource(shader, source);
         this.gl.compileShader(shader);
 
-        var success = this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS);
+        const success = this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS);
 
         if (success) {
             return shader;
@@ -106,7 +106,7 @@ export class Weathertank {
 
     // Controls
     public start() {
-        if (!this.isRunning) {      
+        if (!this.isRunning) {
             this.isRunning = true; // reset stop signal
             requestAnimationFrame(this.stepSimulation.bind(this));
             // console.log('START');
@@ -144,7 +144,6 @@ export class Weathertank {
 
     }
 
-    
     // Loading
     public load(canvas: any, sitePrefs: PaperplaneSitePrefs) {
         this.sitePrefs = sitePrefs;
@@ -155,7 +154,7 @@ export class Weathertank {
 
         this.gl = this.canvas.getContext('webgl2', { premultipliedAlpha: false }); // ('experimental-webgl');
 
-        var ext = this.gl.getExtension('EXT_color_buffer_float');
+        let ext = this.gl.getExtension('EXT_color_buffer_float');
         if (!ext) {
             console.log('need EXT_color_buffer_float');
             return;
@@ -169,54 +168,55 @@ export class Weathertank {
         // Has all the capability, continue loading
         this.isLoaded = true;
 
-        var tank = this;
+        const tank = this;
         this.canvas.onmousemove = function(e) {
             tank.setPaperplaneTarget(e.clientX, e.clientY);
-        }
+        };
 
         // Solver's grid position on canvas
         this.marginTopSolver = 0.1;
         this.marginBottomSolver = 0.1;
         this.aspectSolver = 1.25;
-        this.hMarginSolver = 0.5 * (this.canvas.width * (this.marginTopSolver + 1.0 + this.marginBottomSolver) / (this.sitePrefs.canvasBox.height * this.aspectSolver) - 1.0);
-        
+        this.hMarginSolver =
+            0.5 * (
+                this.canvas.width * (this.marginTopSolver + 1.0 + this.marginBottomSolver) /
+                (this.sitePrefs.canvasBox.height * this.aspectSolver) - 1.0
+                );
 
         // sync loading, init when all is loaded
-        var tank = this;
-        var checkpoints = [];
+        const checkpoints = [];
 
         function sync(i) {
             checkpoints[i - 1] = true;
-            if (checkpoints.every(function(i){return i;})) {
+            if (checkpoints.every(function(ii) { return ii; })) {
                 tank.initPrograms();
             }
         }
 
         // Start loading of background texture
-        var checkIndexImage = checkpoints.push(false);
-        tank.backgroundImage.onload = function () {
+        const checkIndexImage = checkpoints.push(false);
+        tank.backgroundImage.onload = function() {
            sync(checkIndexImage);
-        }
+        };
         tank.backgroundImage.src = sitePrefs.backgroundImageUrl;
-        
 
         // Load and compile solver shaders
-        var xhrVertSolver:any = new XMLHttpRequest();
-        var checkIndexVertSolver = checkpoints.push(false);
+        const xhrVertSolver: any = new XMLHttpRequest();
+        const checkIndexVertSolver = checkpoints.push(false);
         xhrVertSolver.open('GET', 'shaders/weathersolver.vert', true);
         xhrVertSolver.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.solver.vertexShader = tank.createShader(tank.gl.VERTEX_SHADER, xhrVertSolver.response);
                 sync(checkIndexVertSolver);
             }
         };
         xhrVertSolver.send(null);
 
-        var xhrFragSolver:any = new XMLHttpRequest();
-        var checkIndexFragSolver = checkpoints.push(false);
+        const xhrFragSolver: any = new XMLHttpRequest();
+        const checkIndexFragSolver = checkpoints.push(false);
         xhrFragSolver.open('GET', 'shaders/weathersolver.frag', true);
         xhrFragSolver.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.solver.fragmentShader = tank.createShader(tank.gl.FRAGMENT_SHADER, xhrFragSolver.response);
                 sync(checkIndexFragSolver);
             }
@@ -224,22 +224,22 @@ export class Weathertank {
         xhrFragSolver.send(null);
 
         // Load and compile renderer shaders
-        var xhrVertRenderer:any = new XMLHttpRequest();
-        var checkIndexVertRenderer = checkpoints.push(false);
+        const xhrVertRenderer: any = new XMLHttpRequest();
+        const checkIndexVertRenderer = checkpoints.push(false);
         xhrVertRenderer.open('GET', 'shaders/weatherrenderer.vert', true);
         xhrVertRenderer.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.renderer.vertexShader = tank.createShader(tank.gl.VERTEX_SHADER, xhrVertRenderer.response);
                 sync(checkIndexVertRenderer);
             }
         };
         xhrVertRenderer.send(null);
 
-        var xhrFragRenderer:any = new XMLHttpRequest();
-        var checkIndexFragRenderer = checkpoints.push(false);
+        const xhrFragRenderer: any = new XMLHttpRequest();
+        const checkIndexFragRenderer = checkpoints.push(false);
         xhrFragRenderer.open('GET', 'shaders/weatherrenderer.frag', true);
         xhrFragRenderer.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.renderer.fragmentShader = tank.createShader(tank.gl.FRAGMENT_SHADER, xhrFragRenderer.response);
                 sync(checkIndexFragRenderer);
             }
@@ -247,22 +247,22 @@ export class Weathertank {
         xhrFragRenderer.send(null);
 
         // Load and compile paper plane shaders
-        var xhrVertPaperplane:any = new XMLHttpRequest(),
+        const xhrVertPaperplane: any = new XMLHttpRequest(),
             checkIndexVertPaperplane = checkpoints.push(false);
         xhrVertPaperplane.open('GET', 'shaders/paperplane.vert', true);
         xhrVertPaperplane.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.glider.vertexShader = tank.createShader(tank.gl.VERTEX_SHADER, xhrVertPaperplane.response);
                 sync(checkIndexVertPaperplane);
             }
         };
         xhrVertPaperplane.send(null);
 
-        var xhrFragPaperplane: any = new XMLHttpRequest(),
+        const xhrFragPaperplane: any = new XMLHttpRequest(),
             checkIndexFragPaperplane = checkpoints.push(false);
         xhrFragPaperplane.open('GET', 'shaders/paperplane.frag', true);
         xhrFragPaperplane.onload = function(e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 tank.glider.fragmentShader = tank.createShader(tank.gl.FRAGMENT_SHADER, xhrFragPaperplane.response);
                 sync(checkIndexFragPaperplane);
             }
@@ -270,13 +270,13 @@ export class Weathertank {
         xhrFragPaperplane.send(null);
 
         {
-            var xhrPresets: any = new XMLHttpRequest();
-            var checkIndexPresets = checkpoints.push(false);
+            const xhrPresets: any = new XMLHttpRequest();
+            const checkIndexPresets = checkpoints.push(false);
             xhrPresets.open('GET', 'presets.json', true);
             xhrPresets.onload = function(e) {
-                if (this.status == 200) {
-                    let presets = JSON.parse(xhrPresets.response);
-                    let clearSky = presets.remembered.ClearSky[0];
+                if (this.status === 200) {
+                    const presets = JSON.parse(xhrPresets.response);
+                    const clearSky = presets.remembered.ClearSky[0];
                     tank.simParams.update(clearSky);
                     tank.simParams.update(sitePrefs);
                     tank.solverResolution = sitePrefs.solverResolution;
@@ -289,7 +289,7 @@ export class Weathertank {
     }
 
 
-    private initPrograms(skipStep?:boolean) {
+    private initPrograms(skipStep?: boolean) {
         this.solver.initProgram(this.gl, this.simParams);
         this.renderer.initProgram(this.gl, this.simParams, { backgroundImage: this.backgroundImage, useLinear: this.useLinear});
         this.glider.initPaperplaneProgram(this.gl, this.canvas, this.simParams, this.marginBottomSolver - 0.015);
@@ -301,25 +301,26 @@ export class Weathertank {
         this.solver.initializeAtmosphere();
         this.doRender(); // RENDER
 
-        if (!skipStep)
+        if (!skipStep) {
             this.stepSimulation();
+        }
     }
 
 
     private setupBackgroundCoords() {
-        let backgroundBox = {top: -1, left: -1, bottom: 1, right: 1};
+        // const backgroundBox = {top: -1, left: -1, bottom: 1, right: 1};
 
-        let cn = this.sitePrefs.canvasBox;
-        let bg = this.sitePrefs.backgroundBox;
+        const cn = this.sitePrefs.canvasBox;
+        const bg = this.sitePrefs.backgroundBox;
 
-        let bgPlacement = {
+        const bgPlacement = {
             top: (cn.top - bg.top) / bg.height,
             left: (cn.left - bg.left) / bg.width,
             bottom: (cn.top + cn.height - bg.top) / bg.height,
             right: (cn.left + cn.width - bg.left) / bg.width,
         };
 
-        var bgTexCoord = [
+        const bgTexCoord = [
             bgPlacement.left, bgPlacement.bottom,
             bgPlacement.left, bgPlacement.top,
             bgPlacement.right, bgPlacement.bottom,
@@ -334,7 +335,7 @@ export class Weathertank {
 
     private setupSolverGridReadCoords() {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.texCoordBuffer);
-        var texCoord = [
+        const texCoord = [
             -this.hMarginSolver, -this.marginBottomSolver,
             -this.hMarginSolver, 1.0 + this.marginTopSolver,
             1.0 + this.hMarginSolver, -this.marginBottomSolver,
@@ -344,8 +345,12 @@ export class Weathertank {
         ];
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoord), this.gl.STATIC_DRAW);
 
-        this.solverToCanvasPixelScale[0] = this.sitePrefs.canvasBox.width / (this.simParams.resolution * (1.0 + 2.0 * this.hMarginSolver));
-        this.solverToCanvasPixelScale[1] = this.sitePrefs.canvasBox.height / (this.simParams.resolution * (1.0 + this.marginTopSolver + this.marginBottomSolver));
+        this.solverToCanvasPixelScale[0] =
+            this.sitePrefs.canvasBox.width /
+            (this.simParams.resolution * (1.0 + 2.0 * this.hMarginSolver));
+        this.solverToCanvasPixelScale[1] =
+            this.sitePrefs.canvasBox.height /
+            (this.simParams.resolution * (1.0 + this.marginTopSolver + this.marginBottomSolver));
     }
 
     private getSolverToCanvasRatio() {
@@ -353,8 +358,8 @@ export class Weathertank {
     }
 
     private getPointOnSolverGrid(canvasPoint) {
-        var x = canvasPoint[0] * (1.0 + 2.0 * this.hMarginSolver) - this.hMarginSolver;
-        var y = canvasPoint[1] * (1.0 + this.marginBottomSolver + this.marginTopSolver) - this.marginBottomSolver;
+        let x = canvasPoint[0] * (1.0 + 2.0 * this.hMarginSolver) - this.hMarginSolver;
+        let y = canvasPoint[1] * (1.0 + this.marginBottomSolver + this.marginTopSolver) - this.marginBottomSolver;
         x -= Math.floor(x); // Wrap around x-axis
         y = Math.min(Math.max(y, 0.0), 1.0); // Clamp y-axis
         return [x * this.solverResolution, y * this.solverResolution];
@@ -385,7 +390,7 @@ export class Weathertank {
 
 
     private correctLinearScale() {
-        var ratio = this.getSolverToCanvasRatio(),
+        const ratio = this.getSolverToCanvasRatio(),
             factor = [256.0 / (this.solverResolution * ratio[0]), 256.0 / (this.solverResolution * ratio[1])];
         this.readBasefluid[0] *= factor[0];
         this.readBasefluid[1] *= factor[1];
@@ -396,18 +401,24 @@ export class Weathertank {
     private updateReaderGUI() {
         if (!this.isRunning && this.renderer.transferBasefluidFramebuffer && this.renderer.transferSolutesFramebuffer) {
             // If not running, maunaly read the data
-            var sloverGridReadCoords = this.getPointOnSolverGrid(this.readCoords);
+            const sloverGridReadCoords = this.getPointOnSolverGrid(this.readCoords);
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.renderer.transferBasefluidFramebuffer);
-            this.gl.readPixels(sloverGridReadCoords[0] * this.solverResolution, sloverGridReadCoords[1] * this.solverResolution, 1, 1, this.gl.RGBA, this.gl.FLOAT, this.readBasefluid);
+            this.gl.readPixels(
+                sloverGridReadCoords[0] * this.solverResolution,
+                sloverGridReadCoords[1] * this.solverResolution,
+                1, 1, this.gl.RGBA, this.gl.FLOAT, this.readBasefluid);
             this.correctLinearScale();
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.renderer.transferSolutesFramebuffer);
-            this.gl.readPixels(sloverGridReadCoords[0] * this.solverResolution, sloverGridReadCoords[1] * this.solverResolution, 1, 1, this.gl.RGBA, this.gl.FLOAT, this.readSolutes);
+            this.gl.readPixels(
+                sloverGridReadCoords[0] * this.solverResolution,
+                sloverGridReadCoords[1] * this.solverResolution,
+                1, 1, this.gl.RGBA, this.gl.FLOAT, this.readSolutes);
         }
     }
 
     private doRender() {
-        var sloverGridReadCoords = this.getPointOnSolverGrid(this.readCoords),
-            solverGridGliderCoords = this.getPointOnSolverGrid(this.glider.location);
+        const sloverGridReadCoords = this.getPointOnSolverGrid(this.readCoords);
+        const solverGridGliderCoords = this.getPointOnSolverGrid(this.glider.location);
 
         this.solver.doCalcFunction(this.renderer.transferBasefluidFramebuffer, 0); // 0 - COPY basefluid
         this.gl.readPixels(sloverGridReadCoords[0], sloverGridReadCoords[1], 1, 1, this.gl.RGBA, this.gl.FLOAT, this.readBasefluid);
@@ -460,7 +471,7 @@ export class Weathertank {
 
         // Bind the position buffer.
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.positionBuffer);
-        this.gl.vertexAttribPointer(this.renderer.positionAttributeLocation, 2, this.gl.FLOAT, false, 0, 0)
+        this.gl.vertexAttribPointer(this.renderer.positionAttributeLocation, 2, this.gl.FLOAT, false, 0, 0);
 
         // TEXTURE COORDINATE
         // Turn on the attribute
@@ -468,7 +479,7 @@ export class Weathertank {
 
         // Bind the position buffer.
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.texCoordBuffer);
-        this.gl.vertexAttribPointer(this.renderer.texCoordAttributeLocation, 2, this.gl.FLOAT, false, 0, 0)
+        this.gl.vertexAttribPointer(this.renderer.texCoordAttributeLocation, 2, this.gl.FLOAT, false, 0, 0);
 
         // BACKGROUND TEXTURE COORDINATE
         // Turn on the attribute
@@ -476,48 +487,81 @@ export class Weathertank {
 
         // Bind the position buffer.
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.renderer.bgTexCoordBuffer);
-        this.gl.vertexAttribPointer(this.renderer.bgTexCoordAttributeLocation, 2, this.gl.FLOAT, false, 0, 0)
+        this.gl.vertexAttribPointer(this.renderer.bgTexCoordAttributeLocation, 2, this.gl.FLOAT, false, 0, 0);
 
         // Display uniforms
-        this.gl.uniform3f(this.renderer.backgroundImageTintUniformLocation, this.simParams.backgroundImageTint[0] / 256.0, this.simParams.backgroundImageTint[1] / 256.0, this.simParams.backgroundImageTint[2] / 256.0);
+        this.gl.uniform3f(this.renderer.backgroundImageTintUniformLocation,
+            this.simParams.backgroundImageTint[0] / 256.0,
+            this.simParams.backgroundImageTint[1] / 256.0,
+            this.simParams.backgroundImageTint[2] / 256.0);
         this.gl.uniform1f(this.renderer.backgroundImageBrightnessUniformLocation, this.simParams.backgroundImageBrightness);
 
-        this.gl.uniform3f(this.renderer.backgroundTintColorUniformLocation, this.simParams.backgroundTintColor[0] / 256.0, this.simParams.backgroundTintColor[1] / 256.0, this.simParams.backgroundTintColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.backgroundTintColorUniformLocation,
+            this.simParams.backgroundTintColor[0] / 256.0,
+            this.simParams.backgroundTintColor[1] / 256.0,
+            this.simParams.backgroundTintColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.backgroundTintOpacityUniformLocation, this.simParams.backgroundTintOpacity);
 
-        this.gl.uniform3f(this.renderer.pressureColorUniformLocation, this.simParams.pressureColor[0] / 256.0, this.simParams.pressureColor[1] / 256.0, this.simParams.pressureColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.pressureColorUniformLocation,
+            this.simParams.pressureColor[0] / 256.0,
+            this.simParams.pressureColor[1] / 256.0,
+            this.simParams.pressureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.pressureOpacityUniformLocation, this.simParams.pressureOpacity);
         this.gl.uniform1f(this.renderer.pressureCutoffUniformLocation, this.simParams.pressureCutoff);
         this.gl.uniform1f(this.renderer.pressureIORUniformLocation, this.simParams.pressureIOR);
-        this.gl.uniform3f(this.renderer.updraftColorUniformLocation, this.simParams.updraftColor[0] / 256.0, this.simParams.updraftColor[1] / 256.0, this.simParams.updraftColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.updraftColorUniformLocation,
+            this.simParams.updraftColor[0] / 256.0,
+            this.simParams.updraftColor[1] / 256.0,
+            this.simParams.updraftColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.updraftOpacityUniformLocation, this.simParams.updraftOpacity);
         this.gl.uniform1f(this.renderer.updraftCutoffUniformLocation, this.simParams.updraftCutoff);
         this.gl.uniform1f(this.renderer.updraftIORUniformLocation, this.simParams.updraftIOR);
-        this.gl.uniform3f(this.renderer.cloudColorUniformLocation, this.simParams.cloudColor[0] / 256.0, this.simParams.cloudColor[1] / 256.0, this.simParams.cloudColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.cloudColorUniformLocation,
+            this.simParams.cloudColor[0] / 256.0,
+            this.simParams.cloudColor[1] / 256.0,
+            this.simParams.cloudColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.cloudOpacityUniformLocation, this.simParams.cloudOpacity);
         this.gl.uniform1f(this.renderer.cloudCutoffUniformLocation, this.simParams.cloudCutoff);
         this.gl.uniform1f(this.renderer.cloudIORUniformLocation, this.simParams.cloudIOR);
-        this.gl.uniform3f(this.renderer.rainColorUniformLocation, this.simParams.rainColor[0] / 256.0, this.simParams.rainColor[1] / 256.0, this.simParams.rainColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.rainColorUniformLocation,
+            this.simParams.rainColor[0] / 256.0,
+            this.simParams.rainColor[1] / 256.0,
+            this.simParams.rainColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.rainOpacityUniformLocation, this.simParams.rainOpacity);
         this.gl.uniform1f(this.renderer.rainCutoffUniformLocation, this.simParams.rainCutoff);
         this.gl.uniform1f(this.renderer.rainIORUniformLocation, this.simParams.rainIOR);
-        this.gl.uniform3f(this.renderer.humidityColorUniformLocation, this.simParams.humidityColor[0] / 256.0, this.simParams.humidityColor[1] / 256.0, this.simParams.humidityColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.humidityColorUniformLocation,
+            this.simParams.humidityColor[0] / 256.0,
+            this.simParams.humidityColor[1] / 256.0,
+            this.simParams.humidityColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.humidityOpacityUniformLocation, this.simParams.humidityOpacity);
         this.gl.uniform1f(this.renderer.humidityCutoffUniformLocation, this.simParams.humidityCutoff);
         this.gl.uniform1f(this.renderer.humidityIORUniformLocation, this.simParams.humidityIOR);
-        this.gl.uniform3f(this.renderer.temperatureColorUniformLocation, this.simParams.temperatureColor[0] / 256.0, this.simParams.temperatureColor[1] / 256.0, this.simParams.temperatureColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.temperatureColorUniformLocation,
+            this.simParams.temperatureColor[0] / 256.0,
+            this.simParams.temperatureColor[1] / 256.0,
+            this.simParams.temperatureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.temperatureOpacityUniformLocation, this.simParams.temperatureOpacity);
         this.gl.uniform1f(this.renderer.temperatureCutoffUniformLocation, this.simParams.temperatureCutoff);
         this.gl.uniform1f(this.renderer.temperatureIORUniformLocation, this.simParams.temperatureIOR);
-        this.gl.uniform3f(this.renderer.humidityTemperatureColorUniformLocation, this.simParams.humidityTemperatureColor[0] / 256.0, this.simParams.humidityTemperatureColor[1] / 256.0, this.simParams.humidityTemperatureColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.humidityTemperatureColorUniformLocation,
+            this.simParams.humidityTemperatureColor[0] / 256.0,
+            this.simParams.humidityTemperatureColor[1] / 256.0,
+            this.simParams.humidityTemperatureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.humidityTemperatureOpacityUniformLocation, this.simParams.humidityTemperatureOpacity);
         this.gl.uniform1f(this.renderer.humidityTemperatureCutoffUniformLocation, this.simParams.humidityTemperatureCutoff);
         this.gl.uniform1f(this.renderer.humidityTemperatureIORUniformLocation, this.simParams.humidityTemperatureIOR);
-        this.gl.uniform3f(this.renderer.relativeTemperatureColorUniformLocation, this.simParams.relativeTemperatureColor[0] / 256.0, this.simParams.relativeTemperatureColor[1] / 256.0, this.simParams.relativeTemperatureColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.relativeTemperatureColorUniformLocation,
+            this.simParams.relativeTemperatureColor[0] / 256.0,
+            this.simParams.relativeTemperatureColor[1] / 256.0,
+            this.simParams.relativeTemperatureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.relativeTemperatureOpacityUniformLocation, this.simParams.relativeTemperatureOpacity);
         this.gl.uniform1f(this.renderer.relativeTemperatureCutoffUniformLocation, this.simParams.relativeTemperatureCutoff);
         this.gl.uniform1f(this.renderer.relativeTemperatureIORUniformLocation, this.simParams.relativeTemperatureIOR);
-        this.gl.uniform3f(this.renderer.updraftTemperatureColorUniformLocation, this.simParams.updraftTemperatureColor[0] / 256.0, this.simParams.updraftTemperatureColor[1] / 256.0, this.simParams.updraftTemperatureColor[2] / 256.0);
+        this.gl.uniform3f(this.renderer.updraftTemperatureColorUniformLocation,
+            this.simParams.updraftTemperatureColor[0] / 256.0,
+            this.simParams.updraftTemperatureColor[1] / 256.0,
+            this.simParams.updraftTemperatureColor[2] / 256.0);
         this.gl.uniform1f(this.renderer.updraftTemperatureOpacityUniformLocation, this.simParams.updraftTemperatureOpacity);
         this.gl.uniform1f(this.renderer.updraftTemperatureCutoffUniformLocation, this.simParams.updraftTemperatureCutoff);
         this.gl.uniform1f(this.renderer.updraftTemperatureIORUniformLocation, this.simParams.updraftTemperatureIOR);
@@ -530,9 +574,9 @@ export class Weathertank {
         this.gl.uniform1f(this.renderer.groundInversionTemperatureUniformLocation, this.simParams.groundInversionTemperature);
 
         // draw
-        var primitiveType = this.gl.TRIANGLES;
-        var offset = 0;
-        var count = 6;
+        const primitiveType = this.gl.TRIANGLES;
+        const offset = 0;
+        const count = 6;
         this.gl.drawArrays(primitiveType, offset, count);
 
         this.glider.doRender();
@@ -570,8 +614,9 @@ export class Weathertank {
 
         this.doRender(); // RENDER
 
-        if (this.isRunning)
+        if (this.isRunning) {
             requestAnimationFrame(this.stepSimulation.bind(this));
+        }
     }
 
 /*

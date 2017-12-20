@@ -137,16 +137,16 @@ export class WeathertankSolver {
         this.u_basefluidLocation = null;
         this.u_solutesLocation = null;
         this.u_groundLocation = null;
-        
+
         this.groundData = new Uint8Array(16 * 4);
     }
 
     private createProgram(vertexShader: string, fragmentShader: string): any {
-        var program = this.gl.createProgram();
+        const program = this.gl.createProgram();
         this.gl.attachShader(program, vertexShader);
         this.gl.attachShader(program, fragmentShader);
         this.gl.linkProgram(program);
-        var success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
+        const success = this.gl.getProgramParameter(program, this.gl.LINK_STATUS);
         if (success) {
             return program;
         }
@@ -157,7 +157,7 @@ export class WeathertankSolver {
 
     private setupTexture(): any {
         // Create a texture.
-        var texture = this.gl.createTexture();
+        const texture = this.gl.createTexture();
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
         // Set the parameters so we can render any size image.
@@ -177,7 +177,7 @@ export class WeathertankSolver {
         this.positionAttributeLocation = this.gl.getAttribLocation(this.program, 'a_position');
         this.positionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
-        var positions = [
+        const positions = [
          -1, -1,
          -1,  1,
           1, -1,
@@ -190,7 +190,7 @@ export class WeathertankSolver {
         this.texCoordAttributeLocation = this.gl.getAttribLocation(this.program, 'a_texCoord');
         this.texCoordBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
-        var texCoord = [
+        const texCoord = [
          0, 0,
          0, 1,
          1, 0,
@@ -243,7 +243,7 @@ export class WeathertankSolver {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
         this.groundDataToTexture();
 
-        var res = simParams.resolution;
+        const res = simParams.resolution;
 
         const level = 0;
         const internalFormat = this.gl.RGBA32F;
@@ -253,57 +253,57 @@ export class WeathertankSolver {
         const data = null;
 
         // Base fluid textures
-        for (var ii = 0; ii < 2; ++ii) {
-         var basefluidTexture = this.setupTexture();
-         if (ii < this.basefluidTextures.length) {
-            this.gl.deleteTexture(this.basefluidTextures[ii]);
-            this.basefluidTextures[ii] = basefluidTexture;
-         }
-         else
-            this.basefluidTextures.push(basefluidTexture);
+        for (let ii = 0; ii < 2; ++ii) {
+            const basefluidTexture = this.setupTexture();
+                if (ii < this.basefluidTextures.length) {
+                    this.gl.deleteTexture(this.basefluidTextures[ii]);
+                    this.basefluidTextures[ii] = basefluidTexture;
+                } else {
+                    this.basefluidTextures.push(basefluidTexture);
+                }
 
-         // make the texture of the right size
-         this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
+            // make the texture of the right size
+            this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
 
-         // create a framebuffer
-         var basefluidFramebuffer = this.gl.createFramebuffer();
-         if (ii < this.basefluidFramebuffers.length) {
-            this.gl.deleteFramebuffer(this.basefluidFramebuffers[ii]);
-            this.basefluidFramebuffers[ii] = basefluidFramebuffer;
-         }
-         else
-            this.basefluidFramebuffers.push(basefluidFramebuffer);
+            // create a framebuffer
+            const basefluidFramebuffer = this.gl.createFramebuffer();
+            if (ii < this.basefluidFramebuffers.length) {
+                this.gl.deleteFramebuffer(this.basefluidFramebuffers[ii]);
+                this.basefluidFramebuffers[ii] = basefluidFramebuffer;
+            } else {
+                this.basefluidFramebuffers.push(basefluidFramebuffer);
+            }
 
-         // Attach a texture to it
-         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, basefluidFramebuffer);
-         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, basefluidTexture, 0);
+            // Attach a texture to it
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, basefluidFramebuffer);
+            this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, basefluidTexture, 0);
         }
 
         // Solutes textures
-        for (var ii = 0; ii < 2; ++ii) {
-         var solutesTexture = this.setupTexture();
-         if (ii < this.solutesTextures.length) {
-            this.gl.deleteTexture(this.solutesTextures[ii]);
-            this.solutesTextures[ii] = solutesTexture;
-         }
-         else
-            this.solutesTextures.push(solutesTexture);
+        for (let ii = 0; ii < 2; ++ii) {
+            const solutesTexture = this.setupTexture();
+            if (ii < this.solutesTextures.length) {
+                this.gl.deleteTexture(this.solutesTextures[ii]);
+                this.solutesTextures[ii] = solutesTexture;
+            } else {
+                this.solutesTextures.push(solutesTexture);
+            }
 
-         // make the texture of the right size
-         this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
+            // make the texture of the right size
+            this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat, res, res, border, format, type, data);
 
-         // create a framebuffer
-         var solutesFramebuffer = this.gl.createFramebuffer();
-         if (ii < this.solutesFramebuffers.length) {
-            this.gl.deleteFramebuffer(this.solutesFramebuffers[ii]);
-            this.solutesFramebuffers[ii] = solutesFramebuffer;
-         }
-         else
-            this.solutesFramebuffers.push(solutesFramebuffer);
+            // create a framebuffer
+            const solutesFramebuffer = this.gl.createFramebuffer();
+            if (ii < this.solutesFramebuffers.length) {
+                this.gl.deleteFramebuffer(this.solutesFramebuffers[ii]);
+                this.solutesFramebuffers[ii] = solutesFramebuffer;
+            } else {
+                this.solutesFramebuffers.push(solutesFramebuffer);
+            }
 
-         // Attach a texture to it
-         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, solutesFramebuffer);
-         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, solutesTexture, 0);
+            // Attach a texture to it
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, solutesFramebuffer);
+            this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, solutesTexture, 0);
         }
 
 
@@ -328,7 +328,7 @@ export class WeathertankSolver {
         let width: any;
         let height: any;
 
-        if (fbo == null) {
+        if (fbo === null) {
             width = this.gl.canvas.width;
             height = this.gl.canvas.height;
         } else {
@@ -344,8 +344,8 @@ export class WeathertankSolver {
     }
 
 
-    private swapSolutes() { this.solutesSrc = (this.solutesSrc == 0) ? 1 : 0; this.solutesDst = (this.solutesDst == 0) ? 1 : 0; }
-    private swapBase() { this.baseSrc = (this.baseSrc == 0) ? 1 : 0; this.baseDst = (this.baseDst == 0) ? 1 : 0; }
+    private swapSolutes() { this.solutesSrc = (this.solutesSrc === 0) ? 1 : 0; this.solutesDst = (this.solutesDst === 0) ? 1 : 0; }
+    private swapBase() { this.baseSrc = (this.baseSrc === 0) ? 1 : 0; this.baseDst = (this.baseDst === 0) ? 1 : 0; }
 
     public doCalcFunction(framebuffer, calcFunction) {
         /*
@@ -384,16 +384,6 @@ export class WeathertankSolver {
         // Tell the shader the resolution of the framebuffer.
         this.gl.uniform1f(this.resolutionUniformLocation, this.simParams.resolution);
 
-        /*      if (framebuffer==null) {
-         // Clear the canvas
-         this.gl.clearColor(
-            this.simParams.backgroundColor[0] / 256.0, 
-            this.simParams.backgroundColor[1] / 256.0, 
-            this.simParams.backgroundColor[2] / 256.0, 
-            this.simParams.backgroundColor[3]);
-         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-        }
-        */
         // VERTEX
         // Turn on the attribute
         this.gl.enableVertexAttribArray(this.positionAttributeLocation);
@@ -402,12 +392,12 @@ export class WeathertankSolver {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
 
         // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-        var size = 2;          // 2 components per iteration
-        var type = this.gl.FLOAT;   // the data is 32bit floats
-        var normalize = false; // don't normalize the data
-        var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-        var offset = 0;        // start at the beginning of the buffer
-        this.gl.vertexAttribPointer(this.positionAttributeLocation, size, type, normalize, stride, offset)
+        const size = 2;          // 2 components per iteration
+        const type = this.gl.FLOAT;   // the data is 32bit floats
+        const normalize = false; // don't normalize the data
+        const stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+        const offset = 0;        // start at the beginning of the buffer
+        this.gl.vertexAttribPointer(this.positionAttributeLocation, size, type, normalize, stride, offset);
 
         // TEXTURE COORDINATE
         // Turn on the attribute
@@ -417,12 +407,7 @@ export class WeathertankSolver {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texCoordBuffer);
 
         // Tell the attribute how to get data out of texCoordBuffer (ARRAY_BUFFER)
-        var size = 2;          // 2 components per iteration
-        var type = this.gl.FLOAT;   // the data is 32bit floats
-        var normalize = false; // don't normalize the data
-        var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-        var offset = 0;        // start at the beginning of the buffer
-        this.gl.vertexAttribPointer(this.texCoordAttributeLocation, size, type, normalize, stride, offset)
+        this.gl.vertexAttribPointer(this.texCoordAttributeLocation, size, type, normalize, stride, offset);
 
 
         this.gl.uniform1i(this.calcFunctionUniformLocation, calcFunction);
@@ -454,15 +439,15 @@ export class WeathertankSolver {
         this.gl.uniform1f(this.latentHeatUniformLocation, this.simParams.latentHeat);
 
         // draw
-        var primitiveType = this.gl.TRIANGLES;
-        var offset = 0;
-        var count = 6;
-        this.gl.drawArrays(primitiveType, offset, count);
+        const primitiveType = this.gl.TRIANGLES;
+        const drawOffset = 0;
+        const count = 6;
+        this.gl.drawArrays(primitiveType, drawOffset, count);
     }
 
-    private project(srcIndex?:number) {
+    private project(srcIndex?: number) {
         this.doCalcFunction(this.basefluidFramebuffers[this.baseDst], 4); this.swapBase();
-        for (var i=1; i<this.simParams.pressureSolveSteps; i+=1) {
+        for (let i = 1; i < this.simParams.pressureSolveSteps; i += 1) {
             this.doCalcFunction(this.basefluidFramebuffers[this.baseDst], 5); this.swapBase();
         }
         this.doCalcFunction(this.basefluidFramebuffers[this.baseDst], 6); this.swapBase();

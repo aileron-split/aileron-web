@@ -103,7 +103,7 @@ export class WeathertankParams {
 
     constructor() {
         // Default values
-        
+
         // Buoyancy
         this.buoyancyFactor = 0.01;
         this.rainFallingFactor = 0.01;
@@ -186,9 +186,10 @@ export class WeathertankParams {
 
 
     public update(params: any) {
-        for (let k in params) {
-            if(k in this) 
+        for (const k in params) {
+            if (k in this) {
                 this[k] = params[k];
+            }
         }
     }
 

@@ -5,7 +5,18 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule, MatTooltipModule } from '@angular/material';
+
+import {
+    MatButtonModule,
+    MatCardModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTabsModule,
+    MatGridListModule,
+    MatTooltipModule
+} from '@angular/material';
+
 import { LightboxModule } from 'angular2-lightbox';
 
 import { AppComponent } from './app.component';
