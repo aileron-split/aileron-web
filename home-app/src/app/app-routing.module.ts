@@ -12,15 +12,15 @@ import { BlogPostComponent } from './blog-post/blog-post.component';
 import { PaperplaneComponent } from './paperplane/paperplane.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent, pathMatch: 'full'},
   { path: 'news', component: NewsComponent, pathMatch: 'full' },
   { path: 'news/:id/:slug', component: NewsArticleComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'showcase', component: ShowcaseComponent },
-  { path: 'contact', component: ContactComponent },
+  { path: 'about', component: AboutComponent, pathMatch: 'full' },
+  { path: 'showcase', component: ShowcaseComponent, pathMatch: 'full' },
+  { path: 'contact', component: ContactComponent, pathMatch: 'full' },
   { path: 'blog', component: BlogComponent, pathMatch: 'full' },
   { path: 'blog/:id/:slug', component: BlogPostComponent },
-  { path: 'paperplane', component: PaperplaneComponent },
+  { path: 'paperplane', component: PaperplaneComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
